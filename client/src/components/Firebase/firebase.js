@@ -1,36 +1,17 @@
-import app from 'firebase/app';
-import 'firebase/auth';
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  //Enter your firebase API details
-  };
-class Firebase {
-  constructor() {
-    app.initializeApp(firebaseConfig);
-    this.auth = app.auth();
-  }
-  
-  // *** Auth API ***
+    apiKey: "AIzaSyBVTZUlpllWu2AaX6gddWn8kUu0L38LkZo",
+    authDomain: "msci245-d3-7a81c.firebaseapp.com",
+    databaseURL: "https://msci245-d3-7a81c-default-rtdb.firebaseio.com",
+    projectId: "msci245-d3-7a81c",
+    storageBucket: "msci245-d3-7a81c.appspot.com",
+    messagingSenderId: "592846380585",
+    appId: "1:592846380585:web:a1b6ee383e2f7cfc0a8638",
+    measurementId: "G-5L2LC1BHQV"
+};
 
-  doCreateUserWithEmailAndPassword = (email, password) =>
-  this.auth.createUserWithEmailAndPassword(email, password);
+const app = initializeApp(firebaseConfig);
 
-  doSignInWithEmailAndPassword = (email, password) =>
-  this.auth.signInWithEmailAndPassword(email, password);
-
-  doSignOut = () => this.auth.signOut();
-
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
-
-  doPasswordUpdate = password =>
-    this.auth.currentUser.updatePassword(password);
-
-  doGetIdToken = (bool) => {
-    return this.auth.currentUser.getIdToken(/* forceRefresh */ bool);
-  }
-
-  doGetUserByEmail = email => this.auth.getUserByEmail(email);
-
-}
-
-export default Firebase;
+export const auth = getAuth(app);
