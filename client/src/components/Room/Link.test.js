@@ -20,5 +20,6 @@ it('changes the class when hovered', () => {
     });
     // re-rendering
     tree = component.toJSON();
+
     expect(tree).toMatchSnapshot();
 });
