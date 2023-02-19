@@ -22,6 +22,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import { signOut, onAuthStateChanged, getAuth } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
 
+import CustomAppBar from '../CustomAppBar';
+
 const opacityValue = 0.9;
 
 const theme = createTheme({
@@ -102,59 +104,8 @@ const Settings = (props) => {
 
   const mainMessage = (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
 
-          <Button color="inherit">
-            <Link
-              color="inherit"
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push('/Room')}
-            >
-              <Typography variant="h6" color="inherit">
-                Room
-              </Typography>
-            </Link>
-          </Button>
-
-          <Button color="inherit">
-            <Link
-              color="inherit"
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push('/Calendar')}
-            >
-              <Typography variant="h6" color="inherit">
-                Calendar
-              </Typography>
-            </Link>
-          </Button>
-
-          <Button color="inherit">
-            <Link
-              color="inherit"
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push('/Expenses')}
-            >
-              <Typography variant="h6" color="inherit">
-                Expenses
-              </Typography>
-            </Link>
-          </Button>
-
-          <Button color="inherit">
-            <Link
-              color="inherit"
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push('/Grocery')}
-            >
-              <Typography variant="h6" color="inherit">
-                Grocery
-              </Typography>
-            </Link>
-          </Button>
-
-        </Toolbar>
-      </AppBar>
+      <CustomAppBar/>
 
       <Grid
         container
@@ -236,7 +187,6 @@ const Settings = (props) => {
               <Button onClick={handleDelete}>Yes</Button>
             </DialogActions>
           </Dialog>
-
         </Grid>
       </Grid>
     </Box>

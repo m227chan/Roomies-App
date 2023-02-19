@@ -181,11 +181,8 @@ const SignIn = (props) => {
                                 <Typography>Sign Up</Typography>
                             </Link>
                         </Button>
-
                     </Container>
-
                 </Grid>
-
             </Grid>
         </Box>
     );
