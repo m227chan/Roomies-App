@@ -64,12 +64,15 @@ const styles = theme => ({
 const JoinCreateRoom = (props) => {
 
     const [roomID, setRoomID] = useState("");
-    const [submit, setSubmit] = useState("");
+    const [submit, setSubmit] = useState(false);
 
     const { classes } = props;
 
     const onClickJoinRoom = async () => {
-        history.push('/Room')
+        setSubmit(true);
+        if (roomID !== "") {
+            history.push('/Room')
+        }
     }
 
     const onClickCreateRoom = async () => {
