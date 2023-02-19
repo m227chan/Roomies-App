@@ -14,6 +14,9 @@ import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 
+import { signOut } from "firebase/auth";
+import { auth } from "../Firebase/firebase";
+
 const opacityValue = 0.9;
 
 const theme = createTheme({
@@ -64,6 +67,11 @@ const styles = theme => ({
 const Settings = (props) => {
 
   const { classes } = props;
+
+  const onClickLogOut = async () => {
+    await signOut(auth);
+    history.push('/SignIn');
+  }
 
   const mainMessage = (
     <Box sx={{ flexGrow: 1 }}>
@@ -164,10 +172,10 @@ const Settings = (props) => {
 
           <Button>
             <Link
-              onClick={() => history.push('/SignIn')}
+              onClick={onClickLogOut}
             >
               <Typography variant="h6">
-                Sign Out *not implemented*
+                Sign Out
               </Typography>
             </Link>
           </Button>
