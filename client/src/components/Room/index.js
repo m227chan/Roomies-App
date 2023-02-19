@@ -17,6 +17,8 @@ import Button from '@material-ui/core/Button';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
 
+import CustomAppBar from '../CustomAppBar';
+
 const opacityValue = 0.9;
 
 const theme = createTheme({
@@ -76,7 +78,7 @@ const Room = (props) => {
 
   const mainMessage = (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      {/* <AppBar position="static">
         <Toolbar>
 
           <Button color="inherit">
@@ -128,7 +130,9 @@ const Room = (props) => {
           </Button>
 
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
+
+      <CustomAppBar />
 
       <Grid
         container
