@@ -64,7 +64,7 @@ const styles = theme => ({
 
 });
 
-const Landing = (props) => {
+const Room = (props) => {
 
   const [user, setUser] = useState({});
 
@@ -168,4 +168,4 @@ const Landing = (props) => {
   );
 }
 
-export default withStyles(styles)(Landing);
+export default withStyles(styles)(Room);

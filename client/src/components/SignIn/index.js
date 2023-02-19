@@ -65,7 +65,7 @@ const styles = theme => ({
 
 });
 
-const Landing = (props) => {
+const SignIn = (props) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -202,4 +202,4 @@ const Landing = (props) => {
     );
 }
 
-export default withStyles(styles)(Landing);
+export default withStyles(styles)(SignIn);

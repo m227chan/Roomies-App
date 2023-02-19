@@ -8,6 +8,7 @@ import Settings from '../Settings';
 import SignIn from '../SignIn';
 import SignUp from '../SignUp';
 import history from './history';
+import PasswordChange from '../PasswordChange';
 
 export default function PrivateRoute({
   //authenticated,
@@ -24,6 +25,7 @@ export default function PrivateRoute({
         <Route path="/Settings" exact component={Settings} />
         <Route path="/SignIn" exact component={SignIn} />
         <Route path="/SignUp" exact component={SignUp} />
+        <Route path="/PasswordChange" exact component={PasswordChange} />
       </Switch>
     </Router>
   );

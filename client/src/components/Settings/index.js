@@ -61,7 +61,7 @@ const styles = theme => ({
 
 });
 
-const Landing = (props) => {
+const Settings = (props) => {
 
   const { classes } = props;
 
@@ -117,7 +117,7 @@ const Landing = (props) => {
               </Typography>
             </Link>
           </Button>
-          
+
         </Toolbar>
       </AppBar>
 
@@ -125,7 +125,6 @@ const Landing = (props) => {
         container
         spacing={0}
         direction="column"
-        justify="flex-start"
         alignItems="flex-start"
         style={{ minHeight: '100vh' }}
         className={classes.mainMessageContainer}
@@ -138,6 +137,53 @@ const Landing = (props) => {
           >
             Settings
           </Typography>
+
+          <Button>
+            <Link
+              onClick={() => history.push('/SignIn')}
+            >
+              <Typography variant="h6">
+                Leave Room *not implemented*
+              </Typography>
+            </Link>
+          </Button>
+
+          <br/>
+
+          <Button>
+            <Link
+              onClick={() => history.push('/SignIn')}
+            >
+              <Typography variant="h6">
+                Change Password *not implemented*
+              </Typography>
+            </Link>
+          </Button>
+
+          <br/>
+
+          <Button>
+            <Link
+              onClick={() => history.push('/SignIn')}
+            >
+              <Typography variant="h6">
+                Sign Out *not implemented*
+              </Typography>
+            </Link>
+          </Button>
+          
+          <br/>
+
+          <Button>
+            <Link
+              onClick={() => history.push('/SignIn')}
+            >
+              <Typography variant="h6">
+                Delete Account *not implemented*
+              </Typography>
+            </Link>
+          </Button>
+
         </Grid>
       </Grid>
     </Box>
@@ -155,4 +201,4 @@ const Landing = (props) => {
   );
 }
 
-export default withStyles(styles)(Landing);
+export default withStyles(styles)(Settings);

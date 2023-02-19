@@ -61,7 +61,7 @@ const styles = theme => ({
 
 });
 
-const Landing = (props) => {
+const Expenses = (props) => {
 
   const { classes } = props;
 
@@ -155,4 +155,4 @@ const Landing = (props) => {
   );
 }
 
-export default withStyles(styles)(Landing);
+export default withStyles(styles)(Expenses);
