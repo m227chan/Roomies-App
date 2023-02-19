@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from "@material-ui/core/Typography";
 import Link from '@material-ui/core/Link';
 import history from '../Navigation/history';
@@ -14,10 +14,8 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 
-import { useState } from "react";
 import {
     createUserWithEmailAndPassword,
-    onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
 
