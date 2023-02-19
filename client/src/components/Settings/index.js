@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from "@material-ui/core/Typography";
 import Link from '@material-ui/core/Link';
 import history from '../Navigation/history';
@@ -13,8 +13,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
 
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged, getAuth } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
 
 const opacityValue = 0.9;
@@ -66,10 +71,32 @@ const styles = theme => ({
 
 const Settings = (props) => {
 
+  const [user, setUser] = useState({});
+  const [open, setOpen] = useState(false);
+
   const { classes } = props;
+
+  onAuthStateChanged(auth, (currUser) => {
+    setUser(currUser);
+  });
 
   const onClickLogOut = async () => {
     await signOut(auth);
+    history.push('/SignIn');
+  }
+
+  const handleDelete = async () => {
+    // REQUIRES ADMIN ACCESS - TO BE FIXED
+    console.log(user.uid);
+    getAuth()
+      .deleteUser(user.uid)
+      .then(() => {
+        console.log('Account deleted');
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+
     history.push('/SignIn');
   }
 
@@ -133,7 +160,6 @@ const Settings = (props) => {
         container
         spacing={0}
         direction="column"
-        alignItems="flex-start"
         style={{ minHeight: '100vh' }}
         className={classes.mainMessageContainer}
       >
@@ -141,14 +167,13 @@ const Settings = (props) => {
           <Typography
             variant={"h3"}
             className={classes.mainMessage}
-            align="flex-start"
           >
             Settings
           </Typography>
 
           <Button>
             <Link
-              onClick={() => history.push('/SignIn')}
+              onClick={() => history.push('/JoinCreateRoom')}
             >
               <Typography variant="h6">
                 Leave Room *not implemented*
@@ -156,7 +181,7 @@ const Settings = (props) => {
             </Link>
           </Button>
 
-          <br/>
+          <br />
 
           <Button>
             <Link
@@ -168,7 +193,7 @@ const Settings = (props) => {
             </Link>
           </Button>
 
-          <br/>
+          <br />
 
           <Button>
             <Link
@@ -179,18 +204,38 @@ const Settings = (props) => {
               </Typography>
             </Link>
           </Button>
-          
-          <br/>
+
+          <br />
 
           <Button>
             <Link
-              onClick={() => history.push('/SignIn')}
+              onClick={() => { setOpen(true) }}
             >
               <Typography variant="h6">
                 Delete Account *not implemented*
               </Typography>
             </Link>
           </Button>
+
+          <Dialog
+            open={open}
+            onClose={() => { setOpen(false) }}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Are you sure you want to delete your account?"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Deleting will permanently remove your account and all of its data from Roomies App.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => { setOpen(false) }}>No</Button>
+              <Button onClick={handleDelete}>Yes</Button>
+            </DialogActions>
+          </Dialog>
 
         </Grid>
       </Grid>

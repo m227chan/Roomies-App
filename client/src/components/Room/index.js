@@ -70,8 +70,8 @@ const Room = (props) => {
 
   const { classes } = props;
 
-  onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+  onAuthStateChanged(auth, (currUser) => {
+      setUser(currUser);
   });
 
   const mainMessage = (

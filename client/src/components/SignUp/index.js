@@ -89,6 +89,8 @@ const SignUp = (props) => {
                 password
             );
             setMessage("An account has been created.");
+
+            history.push('/JoinCreateRoom');
         } catch (e) {
             console.log(e.message);
             setMessage(e.message.replace("Firebase: ",""));
