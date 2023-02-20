@@ -22,6 +22,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import { signOut, onAuthStateChanged, getAuth } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
 
+import CustomAppBar from '../CustomAppBar';
+
 const opacityValue = 0.9;
 
 const theme = createTheme({
@@ -72,7 +74,8 @@ const styles = theme => ({
 const Settings = (props) => {
 
   const [user, setUser] = useState({});
-  const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
 
   const { classes } = props;
 
@@ -100,61 +103,14 @@ const Settings = (props) => {
     history.push('/SignIn');
   }
 
+  const handleLeaveRoom = async () => {
+    history.push('/JoinCreateRoom')
+  }
+
   const mainMessage = (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
 
-          <Button color="inherit">
-            <Link
-              color="inherit"
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push('/Room')}
-            >
-              <Typography variant="h6" color="inherit">
-                Room
-              </Typography>
-            </Link>
-          </Button>
-
-          <Button color="inherit">
-            <Link
-              color="inherit"
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push('/Calendar')}
-            >
-              <Typography variant="h6" color="inherit">
-                Calendar
-              </Typography>
-            </Link>
-          </Button>
-
-          <Button color="inherit">
-            <Link
-              color="inherit"
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push('/Expenses')}
-            >
-              <Typography variant="h6" color="inherit">
-                Expenses
-              </Typography>
-            </Link>
-          </Button>
-
-          <Button color="inherit">
-            <Link
-              color="inherit"
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push('/Grocery')}
-            >
-              <Typography variant="h6" color="inherit">
-                Grocery
-              </Typography>
-            </Link>
-          </Button>
-
-        </Toolbar>
-      </AppBar>
+      <CustomAppBar/>
 
       <Grid
         container
@@ -173,13 +129,33 @@ const Settings = (props) => {
 
           <Button>
             <Link
-              onClick={() => history.push('/JoinCreateRoom')}
+              onClick={() => { setOpen1(true) }}
             >
               <Typography variant="h6">
-                Leave Room *not implemented*
+                Leave Room
               </Typography>
             </Link>
           </Button>
+
+          <Dialog
+            open={open1}
+            onClose={() => { setOpen1(false) }}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Are you sure you want to leave this room?"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                You can always rejoin this room or join another.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => { setOpen1(false) }}>No</Button>
+              <Button onClick={handleLeaveRoom}>Yes</Button>
+            </DialogActions>
+          </Dialog>
 
           <br />
 
@@ -209,7 +185,7 @@ const Settings = (props) => {
 
           <Button>
             <Link
-              onClick={() => { setOpen(true) }}
+              onClick={() => { setOpen2(true) }}
             >
               <Typography variant="h6">
                 Delete Account *not implemented*
@@ -218,8 +194,8 @@ const Settings = (props) => {
           </Button>
 
           <Dialog
-            open={open}
-            onClose={() => { setOpen(false) }}
+            open={open2}
+            onClose={() => { setOpen2(false) }}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
@@ -232,7 +208,7 @@ const Settings = (props) => {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => { setOpen(false) }}>No</Button>
+              <Button onClick={() => { setOpen2(false) }}>No</Button>
               <Button onClick={handleDelete}>Yes</Button>
             </DialogActions>
           </Dialog>

@@ -164,7 +164,7 @@ const SignIn = (props) => {
                             </Button>
 
                             <Typography>{(errorStatus === true) ?
-                                "Account not found." : ""}</Typography>
+                                "Invalid email or password." : ""}</Typography>
                         </form>
 
                         <br />
@@ -181,11 +181,8 @@ const SignIn = (props) => {
                                 <Typography>Sign Up</Typography>
                             </Link>
                         </Button>
-
                     </Container>
-
                 </Grid>
-
             </Grid>
         </Box>
     );
