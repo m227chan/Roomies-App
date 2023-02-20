@@ -59,7 +59,7 @@ app.post('/api/addRoom', (req, res) => {
 app.post('/api/addUserToNewRoom', (req, res) => {
 
 	let connection = mysql.createConnection(config);
-	let addRoomSQL = `UPDATE zzammit.Roomate SET idRoom = (SELECT MAX(id) FROM zzammit.Room) WHERE firebaseUID = (?);`;
+	let addRoomSQL = `UPDATE zzammit.Roomate SET idRoom = (SELECT MAX(id) FROM zzammit.Room) WHERE firebaseUID = (?)`;
 	let addRoomData = [req.body.firebaseUID];
 
 	// console.log(req.body);
