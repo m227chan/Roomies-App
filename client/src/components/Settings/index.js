@@ -74,7 +74,8 @@ const styles = theme => ({
 const Settings = (props) => {
 
   const [user, setUser] = useState({});
-  const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
 
   const { classes } = props;
 
@@ -102,6 +103,10 @@ const Settings = (props) => {
     history.push('/SignIn');
   }
 
+  const handleLeaveRoom = async () => {
+    history.push('/JoinCreateRoom')
+  }
+
   const mainMessage = (
     <Box sx={{ flexGrow: 1 }}>
 
@@ -124,13 +129,33 @@ const Settings = (props) => {
 
           <Button>
             <Link
-              onClick={() => history.push('/JoinCreateRoom')}
+              onClick={() => { setOpen1(true) }}
             >
               <Typography variant="h6">
-                Leave Room *not implemented*
+                Leave Room
               </Typography>
             </Link>
           </Button>
+
+          <Dialog
+            open={open1}
+            onClose={() => { setOpen1(false) }}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Are you sure you want to leave this room?"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                You can always rejoin this room or join another.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => { setOpen1(false) }}>No</Button>
+              <Button onClick={handleLeaveRoom}>Yes</Button>
+            </DialogActions>
+          </Dialog>
 
           <br />
 
@@ -160,7 +185,7 @@ const Settings = (props) => {
 
           <Button>
             <Link
-              onClick={() => { setOpen(true) }}
+              onClick={() => { setOpen2(true) }}
             >
               <Typography variant="h6">
                 Delete Account *not implemented*
@@ -169,8 +194,8 @@ const Settings = (props) => {
           </Button>
 
           <Dialog
-            open={open}
-            onClose={() => { setOpen(false) }}
+            open={open2}
+            onClose={() => { setOpen2(false) }}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
@@ -183,10 +208,11 @@ const Settings = (props) => {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => { setOpen(false) }}>No</Button>
+              <Button onClick={() => { setOpen2(false) }}>No</Button>
               <Button onClick={handleDelete}>Yes</Button>
             </DialogActions>
           </Dialog>
+
         </Grid>
       </Grid>
     </Box>
