@@ -84,7 +84,7 @@ const SignUp = (props) => {
         // console.log("email: " + email + " | " + "password: " + password);
         setSubmitClicked(true);
         try {
-            
+
             setMessage("");
             await createUserWithEmailAndPassword(
                 auth,
@@ -103,7 +103,7 @@ const SignUp = (props) => {
             history.push('/JoinCreateRoom');
         } catch (e) {
             console.log(e.message);
-            setMessage(e.message.replace("Firebase: ",""));
+            setMessage(e.message.replace("Firebase: ", ""));
         }
     };
 

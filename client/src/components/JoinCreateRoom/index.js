@@ -159,10 +159,10 @@ const JoinCreateRoom = (props) => {
 
     const checkIfRoomExists = () => {
         callAPICheckIfRoomExists()
-        .then(res => {
-            var parsed = JSON.parse(res.express);
-            setCheck(parsed[0].value);
-        })
+            .then(res => {
+                var parsed = JSON.parse(res.express);
+                setCheck(parsed[0].value);
+            })
     }
 
     const onClickJoinRoom = async () => {
