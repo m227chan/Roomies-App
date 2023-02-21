@@ -116,5 +116,25 @@ app.post('/api/addUser', (req, res) => {
 	connection.end();
 });
 
+app.post('/api/checkIfRoomExists', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let checkIfRoomExistsSQL = `SELECT CAST((EXISTS (SELECT id FROM zzammit.Room WHERE id = ?)) AS UNSIGNED) AS value`;
+	let checkIfRoomExistsData = [req.body.idRoom];
+
+	// console.log(req.body);
+
+	connection.query(checkIfRoomExistsSQL, checkIfRoomExistsData, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server

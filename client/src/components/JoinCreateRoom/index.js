@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from "@material-ui/core/Typography";
 import Link from '@material-ui/core/Link';
 import history from '../Navigation/history';
@@ -73,9 +73,34 @@ const JoinCreateRoom = (props) => {
     const [submit1, setSubmit1] = useState(false);
     const [submit2, setSubmit2] = useState(false);
 
+    const [check, setCheck] = useState(0);
+
+    useEffect(() => {
+        checkIfRoomExists();
+        setSubmit1(false);
+    }, [roomID]);
+
     const user = auth.currentUser;
 
     const { classes } = props;
+
+    const callAPICheckIfRoomExists = async () => {
+        const url = serverURL + "/api/checkIfRoomExists";
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                //authorization: `Bearer ${this.state.token}`
+            },
+            body: JSON.stringify({
+                idRoom: roomID
+            })
+        });
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        // console.log("User settings: ", body);
+        return body;
+    }
 
     const callApiAddUserToExistingRoom = async () => {
         const url = serverURL + "/api/addUserToExistingRoom";
@@ -123,7 +148,7 @@ const JoinCreateRoom = (props) => {
                 //authorization: `Bearer ${this.state.token}`
             },
             body: JSON.stringify({
-                roomName: roomName,
+                roomName: roomName
             })
         });
         const body = await response.json();
@@ -132,11 +157,21 @@ const JoinCreateRoom = (props) => {
         return body;
     }
 
+    const checkIfRoomExists = () => {
+        callAPICheckIfRoomExists()
+        .then(res => {
+            var parsed = JSON.parse(res.express);
+            setCheck(parsed[0].value);
+        })
+    }
+
     const onClickJoinRoom = async () => {
+        checkIfRoomExists();
         setSubmit1(true);
-        if (roomID !== "") {
+        console.log(check);
+        if (roomID !== "" && check === 1) {
             callApiAddUserToExistingRoom();
-            history.push('/Room');
+            // history.push('/Room');
         }
     }
 
@@ -173,15 +208,15 @@ const JoinCreateRoom = (props) => {
                             id="roomID"
                             value={roomID}
                             onChange={(event) => {
-                                setRoomID(event.target.value);
+                                setRoomID(event.target.value)
                             }}
                             label="Input the ID of the room you would like to join"
                             name="roomID"
                             autoComplete="roomID"
                             autoFocus
                             InputLabelProps={{ shrink: true }}
-                            error={roomID === "" && submit1 === true}
-                            helperText={(roomID === "" && submit1 === true) ?
+                            error={(roomID === "" || check !== 1) && submit1 === true}
+                            helperText={((roomID === "" || check !== 1) && submit1 === true) ?
                                 "Please enter an existing Room ID." : ""}
                         />
 
@@ -202,7 +237,7 @@ const JoinCreateRoom = (props) => {
                             id="roomName"
                             value={roomName}
                             onChange={(event) => {
-                                setRoomName(event.target.value);
+                                setRoomName(event.target.value)
                             }}
                             label="Input the name of the room you would like to create"
                             name="roomName"

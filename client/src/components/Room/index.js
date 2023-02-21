@@ -90,7 +90,6 @@ const Room = (props) => {
           <Typography
             variant={"h3"}
             className={classes.mainMessage}
-            align="flex-start"
           >
             Room
           </Typography>
