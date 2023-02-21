@@ -127,7 +127,7 @@ const Settings = (props) => {
               onClick={() => history.push('/JoinCreateRoom')}
             >
               <Typography variant="h6">
-                Leave Room *not implemented*
+                Leave Room
               </Typography>
             </Link>
           </Button>
