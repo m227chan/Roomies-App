@@ -171,7 +171,7 @@ const JoinCreateRoom = (props) => {
         console.log(check);
         if (roomID !== "" && check === 1) {
             callApiAddUserToExistingRoom();
-            // history.push('/Room');
+            history.push('/Room');
         }
     }
 
