@@ -56,6 +56,49 @@ app.post('/api/addRoom', (req, res) => {
 	connection.end();
 });
 
+app.post('/api/addGroceryItem', (req, res) => { 
+
+	let connection = mysql.createConnection(config);
+	let sql = `INSERT INTO zzammit.GroceryItem (item, brand, store, price, idRoomate) VALUES (?,?,?,?,(SELECT id from zzammit.Roomate WHERE firebaseUID = ?));`;
+	let data = [req.body.item, req.body.brand, req.body.store, req.body.price, req.body.idRoomate];
+
+	// console.log(req.body);
+
+	connection.query(sql, data, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
+app.post('/api/viewGrocery', (req, res) => { 
+
+	let connection = mysql.createConnection(config);
+	let sql = `
+		SELECT item, brand, store, price 
+		FROM zzammit.GroceryItem
+		WHERE idRoomate = (SELECT id from zzammit.Roomate WHERE firebaseUID = ?)`;
+	let data = [req.body.idRoomate];
+
+	// console.log(req.body);
+
+	connection.query(sql, data, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
 app.post('/api/addUserToNewRoom', (req, res) => {
 
 	let connection = mysql.createConnection(config);

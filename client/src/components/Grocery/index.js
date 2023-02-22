@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from "@material-ui/core/Typography";
 import Link from '@material-ui/core/Link';
 import history from '../Navigation/history';
@@ -11,12 +11,18 @@ import Paper from "@material-ui/core/Paper";
 
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
+import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 
 import CustomAppBar from '../CustomAppBar';
 
+import { auth } from "../Firebase/firebase";
+
 const opacityValue = 0.9;
+
+const serverURL = "http://localhost:3000/"; //enable for dev mode
+// const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
 const theme = createTheme({
   palette: {
@@ -66,6 +72,68 @@ const styles = theme => ({
 const Grocery = (props) => {
 
   const { classes } = props;
+  const user = auth.currentUser;
+  const [item, setItem] = useState("");
+  const [brand, setBrand] = useState("");
+  const [store, setStore] = useState("");
+  const [price, setPrice] = useState("");
+  
+  const [viewMine, setViewMine] = useState([]);
+
+  const callApiAddGroceryItem = async () => {
+    const url = serverURL + "/api/addGroceryItem";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        item: item,
+        brand: brand,
+        store: store,
+        price: price,
+        idRoomate: user.uid
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  }
+  
+  const onClickGroceryItem = async () => {
+    callApiAddGroceryItem();
+  }
+
+  const callViewGrocery = async () => {
+    const url = serverURL + "/api/viewGrocery";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        idRoomate: user.uid
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  }
+
+  const onClickViewGrocery = async () => {
+    console.log(user.uid);
+    callViewGrocery()
+        .then(res => {
+            console.log("callApiGetSearchMovie returned: ", res)
+            var parsed = JSON.parse(res.express);
+            console.log("callApiGetSearchMovie parsed: ", parsed);
+            setViewMine(parsed);
+    })
+  } 
 
   const mainMessage = (
     <Box sx={{ flexGrow: 1 }}>
@@ -87,8 +155,73 @@ const Grocery = (props) => {
             className={classes.mainMessage}
             align="flex-start"
           >
-            Grocery
+            Add Grocery Items
           </Typography>
+          <TextField
+            variant="outlined"
+            label="Item"
+            onChange={(event) => {
+              setItem(event.target.value)
+            }} />
+          <h3 />
+          <TextField
+            variant="outlined"
+            label="Brand"
+            onChange={(event) => {
+              setBrand(event.target.value)
+            }} />
+          <h3 />
+          <TextField
+            variant="outlined"
+            label="Store"
+            onChange={(event) => {
+              setStore(event.target.value)
+            }} />
+          <h3 />
+          <TextField
+            variant="outlined"
+            label="Price"
+            onChange={(event) => {
+              setPrice(event.target.value)
+            }} />
+          <h3 />
+          <Button>
+            <Link
+              onClick={onClickGroceryItem}
+            >
+              <Typography variant="h6">
+                Add
+              </Typography>
+            </Link>
+          </Button>
+          <Typography
+            variant={"h3"}
+            className={classes.mainMessage}
+            align="flex-start"
+          >
+            My Grocery Items
+          </Typography>
+          <Button>
+            <Link
+              onClick={onClickViewGrocery}
+            >
+              <Typography variant="h6">
+                Refresh
+              </Typography>
+            </Link>
+          </Button>
+          
+        </Grid>
+        <h1>---</h1>
+        <Grid item>
+          <Typography
+            variant={"h3"}
+            className={classes.mainMessage}
+            align="flex-start"
+          >
+            Grocery 2
+          </Typography>
+
         </Grid>
       </Grid>
     </Box>
