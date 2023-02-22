@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import "./index.css";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
-import history from "../Navigation/history";
 
-import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Typography";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -20,68 +18,12 @@ import CustomAppBar from "../CustomAppBar";
 const Room = (props) => {
   const [user, setUser] = useState({});
 
-  const { classes } = props;
-
   onAuthStateChanged(auth, (currUser) => {
     setUser(currUser);
   });
 
   const mainMessage = (
     <Box sx={{ flexGrow: 1 }}>
-      {/* <AppBar position="static">
-        <Toolbar>
-
-          <Button color="inherit">
-            <Link
-              color="inherit"
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push('/Calendar')}
-            >
-              <Typography variant="h6" color="inherit">
-                Calendar
-              </Typography>
-            </Link>
-          </Button>
-
-          <Button color="inherit">
-            <Link
-              color="inherit"
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push('/Expenses')}
-            >
-              <Typography variant="h6" color="inherit">
-                Expenses
-              </Typography>
-            </Link>
-          </Button>
-
-          <Button color="inherit">
-            <Link
-              color="inherit"
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push('/Grocery')}
-            >
-              <Typography variant="h6" color="inherit">
-                Grocery
-              </Typography>
-            </Link>
-          </Button>
-
-          <Button color="inherit">
-            <Link
-              color="inherit"
-              style={{ cursor: "pointer" }}
-              onClick={() => history.push('/Settings')}
-            >
-              <Typography variant="h6" color="inherit">
-                Settings
-              </Typography>
-            </Link>
-          </Button>
-
-        </Toolbar>
-      </AppBar> */}
-
       <CustomAppBar />
 
       <Grid
@@ -93,7 +35,7 @@ const Room = (props) => {
         class="mainMessageContainer"
       >
         <Grid item>
-          <Typography variant={"h3"} className={classes.mainMessage}>
+          <Typography variant={"h3"} className="mainMessage">
             Room
           </Typography>
 
