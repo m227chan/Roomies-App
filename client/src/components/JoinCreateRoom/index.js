@@ -204,6 +204,7 @@ const JoinCreateRoom = (props) => {
                         <TextField
                             variant="outlined"
                             margin="normal"
+                            inputProps={{ maxLength: 20 }}
                             fullWidth
                             id="roomID"
                             value={roomID}
@@ -233,6 +234,7 @@ const JoinCreateRoom = (props) => {
                         <TextField
                             variant="outlined"
                             margin="normal"
+                            inputProps={{ maxLength: 50 }}
                             fullWidth
                             id="roomName"
                             value={roomName}
