@@ -119,6 +119,7 @@ const SignIn = (props) => {
                             <TextField
                                 variant="outlined"
                                 margin="normal"
+                                inputProps={{ maxLength: 50 }}
                                 required
                                 fullWidth
                                 id="email"
@@ -139,6 +140,7 @@ const SignIn = (props) => {
                             <TextField
                                 variant="outlined"
                                 margin="normal"
+                                inputProps={{ maxLength: 50 }}
                                 required
                                 fullWidth
                                 name="password"
