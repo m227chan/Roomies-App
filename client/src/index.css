@@ -1,14 +1,148 @@
-body {
+
+/* Sets the default styling properties for all elements */
+* {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  border: 0;
+  outline: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+/* Set the colour and container scheme for all elements */
+:root {
+  --color-bg: #8ECAE6;
+  --color-bg-variant: #219EBC;
+  --color-primary: #023047;
+  --color-primary-variant:#FB8500;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --transition: all 400ms ease;
+
+  /* in descending because as you go smaller you want to occupy great space */
+  --container-width-lg: 75%;
+  --container-width-md: 85%;
+  --container-width-sm: 90%;
+}
+
+/* not sure if we need this  */
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--color-bg);
+  color: var(--color-black);
+  line-height: 1.4;
+  overflow-x: hidden;
+}
+
+
+
+/* GLOBAL STYLES */
+
+/* Set the fonts to be of medium font weight  */
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 500;
+}
+
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
+
+
+section {
+  margin-top: 8rem;
+}
+
+section > h2,
+section > h4 {
+  text-align: center;
+  color: var(--color-light);
+}
+
+section > h2 {
+  color: var(--color-primary);
+  margin-bottom: 3rem;
+  font-size: 3rem;
+}
+
+.container {
+  width: var(--container-width-lg);
+  margin: 0 auto;
+}
+
+.text-light {
+  color: var(--color-light);
+}
+
+a {
+  color: var(--color-primary);
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--color-black);
+}
+
+.btn {
+  width: max-content;
+  display: inline-block;
+  color: var(--color-primary);
+  padding: 0.75rem 1.2rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  border: 1px solid var(--color-primary);
+  transition: var(--transition);
+}
+
+.btn:hover {
+  background: var(--color-bg-variant);
+  color: var(--color-bg);
+  border-color: transparent;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-bg);
+}
+
+
+/* MEDIA QUERIES (MEDIUM DEVICES) */
+@media screen and (max-width: 1024px) {
+  .container {
+    width: var(--container-width-md);
+  }
+
+  section {
+    margin-top: 6rem;
+  }
+}
+
+/* MEDIA QUERIES (SMALL DEVICES) */
+@media screen and (max-width: 600px) {
+  .container {
+    width: var(--container-width-sm);
+  }
+
+  section > h2 {
+    padding-bottom: 2rem;
+  }
 }
