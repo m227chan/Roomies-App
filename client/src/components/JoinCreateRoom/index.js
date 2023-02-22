@@ -169,7 +169,7 @@ const JoinCreateRoom = (props) => {
         checkIfRoomExists();
         setSubmit1(true);
         console.log(check);
-        if (roomID !== "" && check === 1) {
+        if ((roomID !== '' && roomID !== '-1') && check === 1) {
             callApiAddUserToExistingRoom();
             history.push('/Room');
         }
@@ -204,6 +204,7 @@ const JoinCreateRoom = (props) => {
                         <TextField
                             variant="outlined"
                             margin="normal"
+                            inputProps={{ maxLength: 20 }}
                             fullWidth
                             id="roomID"
                             value={roomID}
@@ -215,8 +216,8 @@ const JoinCreateRoom = (props) => {
                             autoComplete="roomID"
                             autoFocus
                             InputLabelProps={{ shrink: true }}
-                            error={(roomID === "" || check !== 1) && submit1 === true}
-                            helperText={((roomID === "" || check !== 1) && submit1 === true) ?
+                            error={(roomID === "" || roomID === "-1" || check !== 1) && submit1 === true}
+                            helperText={((roomID === "" || roomID === "-1" || check !== 1) && submit1 === true) ?
                                 "Please enter an existing Room ID." : ""}
                         />
 
@@ -233,6 +234,7 @@ const JoinCreateRoom = (props) => {
                         <TextField
                             variant="outlined"
                             margin="normal"
+                            inputProps={{ maxLength: 50 }}
                             fullWidth
                             id="roomName"
                             value={roomName}
