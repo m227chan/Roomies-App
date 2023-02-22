@@ -10,10 +10,7 @@ import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 
-import AppBar from "@material-ui/core/AppBar";
 import Box from "@material-ui/core/Box";
-import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
@@ -31,6 +28,60 @@ const Room = (props) => {
 
   const mainMessage = (
     <Box sx={{ flexGrow: 1 }}>
+      {/* <AppBar position="static">
+        <Toolbar>
+
+          <Button color="inherit">
+            <Link
+              color="inherit"
+              style={{ cursor: "pointer" }}
+              onClick={() => history.push('/Calendar')}
+            >
+              <Typography variant="h6" color="inherit">
+                Calendar
+              </Typography>
+            </Link>
+          </Button>
+
+          <Button color="inherit">
+            <Link
+              color="inherit"
+              style={{ cursor: "pointer" }}
+              onClick={() => history.push('/Expenses')}
+            >
+              <Typography variant="h6" color="inherit">
+                Expenses
+              </Typography>
+            </Link>
+          </Button>
+
+          <Button color="inherit">
+            <Link
+              color="inherit"
+              style={{ cursor: "pointer" }}
+              onClick={() => history.push('/Grocery')}
+            >
+              <Typography variant="h6" color="inherit">
+                Grocery
+              </Typography>
+            </Link>
+          </Button>
+
+          <Button color="inherit">
+            <Link
+              color="inherit"
+              style={{ cursor: "pointer" }}
+              onClick={() => history.push('/Settings')}
+            >
+              <Typography variant="h6" color="inherit">
+                Settings
+              </Typography>
+            </Link>
+          </Button>
+
+        </Toolbar>
+      </AppBar> */}
+
       <CustomAppBar />
 
       <Grid
@@ -42,7 +93,7 @@ const Room = (props) => {
         class="mainMessageContainer"
       >
         <Grid item>
-          <Typography variant={"h3"} class="mainMessage" align="flex-start">
+          <Typography variant={"h3"} className={classes.mainMessage}>
             Room
           </Typography>
 

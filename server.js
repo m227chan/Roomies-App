@@ -59,7 +59,7 @@ app.post('/api/addRoom', (req, res) => {
 app.post('/api/addUserToNewRoom', (req, res) => {
 
 	let connection = mysql.createConnection(config);
-	let addRoomSQL = `UPDATE zzammit.Roomate SET idRoom = (SELECT MAX(id) FROM zzammit.Room) WHERE firebaseUID = (?);`;
+	let addRoomSQL = `UPDATE zzammit.Roomate SET idRoom = (SELECT MAX(id) FROM zzammit.Room) WHERE firebaseUID = (?)`;
 	let addRoomData = [req.body.firebaseUID];
 
 	// console.log(req.body);
@@ -105,6 +105,26 @@ app.post('/api/addUser', (req, res) => {
 	// console.log(req.body);
 
 	connection.query(addUserSQL, addUserData, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
+app.post('/api/checkIfRoomExists', (req, res) => {
+
+	let connection = mysql.createConnection(config);
+	let checkIfRoomExistsSQL = `SELECT CAST((EXISTS (SELECT id FROM zzammit.Room WHERE id = ?)) AS UNSIGNED) AS value`;
+	let checkIfRoomExistsData = [req.body.idRoom];
+
+	// console.log(req.body);
+
+	connection.query(checkIfRoomExistsSQL, checkIfRoomExistsData, (error, results, fields) => { 
 		if (error) {
 			console.log(error.message);
 		}

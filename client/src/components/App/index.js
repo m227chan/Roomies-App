@@ -2,8 +2,6 @@
 // import { BrowserRouter as Router } from 'react-router-dom';
 // import PrivateRoute from '../Navigation/PrivateRoute.js';
 // import { withFirebase } from '../Firebase';
-// import { auth } from "../../firebase-config";
-
 // class App extends Component {
 //   constructor(props) {
 //     super(props);
@@ -13,7 +11,7 @@
 //     };
 //   }
 //   componentDidMount() {
-//     this.listener = auth.onAuthStateChanged(
+//     this.listener = this.props.firebase.auth.onAuthStateChanged(
 //       authUser => {
 //         authUser
 //           ? (
@@ -24,7 +22,6 @@
 //       },
 //     );
 //   }
-
 //   componentWillUnmount() {
 //     this.listener();
 //   }
@@ -43,6 +40,7 @@
 //   }
 // }
 // export default withFirebase(App);
+
 
 import React, { Component } from 'react';
 import {

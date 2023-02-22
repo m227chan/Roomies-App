@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Router, Switch, Route } from "react-router-dom";
 import Room from '../Room';
 import Expenses from '../Expenses';
@@ -11,16 +11,7 @@ import history from './history';
 import PasswordChange from '../PasswordChange';
 import JoinCreateRoom from '../JoinCreateRoom';
 
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../Firebase/firebase";
-
 export default function PrivateRoute({}) {
-
-  const [user, setUser] = useState({});
-
-  onAuthStateChanged(auth, (currUser) => {
-    setUser(currUser);
-  });
 
   return (
     <Router history={history}>
@@ -39,3 +30,41 @@ export default function PrivateRoute({}) {
     </Router>
   );
 }
+
+// import React from "react";
+// import { Router, Switch, Route } from "react-router-dom";
+// import Room from '../Room';
+// import Expenses from '../Expenses';
+// import Grocery from '../Grocery';
+// import Calendar from '../Calendar';
+// import Settings from '../Settings';
+// import SignIn from '../SignIn';
+// import SignUp from '../SignUp';
+// import PasswordChange from '../PasswordChange';
+// import JoinCreateRoom from '../JoinCreateRoom';
+// import history from './history';
+
+// export default function PrivateRoute({
+//   authenticated,
+//   ...rest
+// }) {
+//   return (
+//     <Router history={history}>
+//       <Switch>
+//         <Route
+//           path="/" exact
+//           {...rest}
+//           render={props =>
+//             authenticated === true ? (
+//               <Room {...props} {...rest} />
+//             ) : (
+//               <SignIn {...props} {...rest} />
+//             )
+//           }
+//         />
+//         <Route path="/SignIn" component={SignIn} />
+//         <Route path="/SignUp" component={SignUp} />
+//       </Switch>
+//     </Router>
+//   );
+// }
