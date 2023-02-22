@@ -1,14 +1,30 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.root {
+  background-color: #000000;
+  opacity: opacityValue;
+  overflow: hidden;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.mainMessage {
+  opacity: opacityValue;
+}
+
+.mainMessageContainer {
+  margin-top: 15vh;
+  margin-left: 20vh;
+}
+
+@media (max-width: 600px) {
+  .mainMessageContainer {
+    margin-left: 4px;
+  }
+}
+
+.paper {
+  overflow: hidden;
+}
+
+.message {
+  opacity: 0.9;
+  max-width: 250px;
+  padding-bottom: 8px;
 }
