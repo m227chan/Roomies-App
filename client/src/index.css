@@ -87,6 +87,8 @@ section > h2 {
 .container {
   width: var(--container-width-lg);
   margin: 0 auto;
+  justify-content: space-around;
+  align-items: stretch;
 }
 
 .text-light {
