@@ -78,6 +78,7 @@ const Grocery = (props) => {
 
   const [viewMine, setViewMine] = useState([]);
   const [quantity, setQuantiy] = useState("");
+  const [viewGroup, setGroup] = useState([]);
 
   const [user, setUser] = useState({});
   const [submit, setSubmit] = useState(false);
@@ -95,7 +96,18 @@ const Grocery = (props) => {
 
         setSubmit(false);
       })
+  }, [submit, user]);
 
+  React.useEffect(() => {
+    callViewGroupGrocery()
+      .then(res => {
+        console.log("callApiViewGroupGrocery returned: ", res)
+        var parsed = JSON.parse(res.express);
+        console.log("callApiviewGroupGrocery parsed: ", parsed);
+        setGroup(parsed);
+
+        setSubmit(false);
+      })
   }, [submit, user]);
 
   const callApiAddGroceryItem = async () => {
@@ -148,6 +160,29 @@ const Grocery = (props) => {
     callApiDeleteGroceryItem(i);
   }
 
+  const callApiDeleteGrocery = async (i) => {
+    const url = serverURL + "/api/deleteGrocery";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        id: i
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  }
+
+  const onClickDeleteGrocery = async (i) => {
+    setSubmit(true);
+    callApiDeleteGrocery(i);
+  }
+
   const callApiAddGrocery = async (x,y,z) => {
     const url = serverURL + "/api/addGrocery";
     const response = await fetch(url, {
@@ -169,11 +204,30 @@ const Grocery = (props) => {
   }
 
   const onClickAddGrocery = async (x,y,z) => {
+    setSubmit(true);
     callApiAddGrocery(x,y,z);
   }
 
   const callViewGrocery = async () => {
     const url = serverURL + "/api/viewGrocery";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        idRoomate: user.uid
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  }
+
+  const callViewGroupGrocery = async () => {
+    const url = serverURL + "/api/viewGroupGrocery";
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -208,7 +262,7 @@ const Grocery = (props) => {
             variant={"h3"}
             className={classes.mainMessage}
           >
-            Add Grocery Items
+            Add Grocery Item Preset
           </Typography>
           <TextField
             variant="outlined"
@@ -275,7 +329,24 @@ const Grocery = (props) => {
           })}
         </Grid>
         <h1>---</h1>
-
+        <Typography
+            variant={"h3"}
+            className={classes.mainMessage}
+          >
+            Group Grocery's 
+          </Typography>
+        {viewGroup.map((i) => {
+            return (
+              <div>
+                <h4>Item: {i.item}</h4>
+                <h5>Brand: {i.brand}</h5>
+                <h5>Store: {i.store}</h5>
+                <h5>Price: {i.price}</h5>
+                <h5>Quantity: {i.Quantity}</h5>
+                <Button onClick={() => { onClickDeleteGrocery(i.id) }}>Purchased</Button>
+              </div>
+            )
+          })}
       </Grid>
     </Box>
   );
