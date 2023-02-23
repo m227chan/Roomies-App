@@ -351,5 +351,146 @@ app.post('/api/getRoomates', (req, res) => {
 	connection.end();
 });
 
+app.post('/api/addGroceryItem', (req, res) => { 
+
+	let connection = mysql.createConnection(config);
+	let sql = `INSERT INTO zzammit.GroceryItem (item, brand, store, price, idRoomate) VALUES (?,?,?,?,(SELECT id from zzammit.Roomate WHERE firebaseUID = ?));`;
+	let data = [req.body.item, req.body.brand, req.body.store, req.body.price, req.body.idRoomate];
+
+	// console.log(req.body);
+
+	connection.query(sql, data, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
+app.post('/api/addGrocery', (req, res) => { 
+
+	let connection = mysql.createConnection(config);
+	let sql = `INSERT INTO zzammit.Grocery (idRoomate, idGroceryItem, Quantity) VALUES (?,?,?)`;
+	let data = [req.body.idRoomate, req.body.idGroceryItem, req.body.Quantity];
+
+	// console.log(req.body);
+
+	connection.query(sql, data, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
+
+app.post('/api/viewGrocery', (req, res) => { 
+
+	let connection = mysql.createConnection(config);
+	let sql = `
+		SELECT id, item, brand, store, price, idRoomate
+		FROM zzammit.GroceryItem
+		WHERE idRoomate = (SELECT id from zzammit.Roomate WHERE firebaseUID = ?)`;
+	let data = [req.body.idRoomate];
+
+	// console.log(req.body);
+
+	connection.query(sql, data, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
+app.post('/api/viewGroupGrocery', (req, res) => { 
+
+	let connection = mysql.createConnection(config);
+	let sql = `
+		SELECT Grocery.id, GroceryItem.item, GroceryItem.brand, GroceryItem.store, GroceryItem.price, GroceryItem.idRoomate, Grocery.Quantity
+		From zzammit.GroceryItem, zzammit.Grocery
+		Where GroceryItem.id in (
+			Select idGroceryItem 
+			From zzammit.Grocery
+			WHERE idRoomate in (
+				Select Roomate.id
+				From zzammit.Roomate
+				WHERE idRoom = (
+					SELECT idRoom 
+					FROM zzammit.Roomate
+					WHERE Roomate.id = (SELECT id from zzammit.Roomate WHERE firebaseUID = ?))))
+		And GroceryItem.id = Grocery.idGroceryItem;`;
+	let data = [req.body.idRoomate];
+
+	// console.log(req.body);
+
+	connection.query(sql, data, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
+app.post('/api/deleteGroceryItem', (req, res) => { 
+
+	let connection = mysql.createConnection(config);
+	let sql = 
+		`DELETE FROM zzammit.GroceryItem
+		WHERE id = ?;`;
+	let data = [req.body.id];
+
+	// console.log(req.body);
+
+	connection.query(sql, data, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
+app.post('/api/deleteGrocery', (req, res) => { 
+
+	let connection = mysql.createConnection(config);
+	let sql = 
+		`Delete from zzammit.Grocery 
+		where id = ?; `;
+	let data = [req.body.id];
+
+	// console.log(req.body);
+
+	connection.query(sql, data, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server
