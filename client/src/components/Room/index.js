@@ -44,7 +44,7 @@ const roommateCalendar = [
   },
 ];
 
-const Room = (props) => {
+const Room = () => {
   const [user, setUser] = useState({});
 
   onAuthStateChanged(auth, (currUser) => {

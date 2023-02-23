@@ -5,5 +5,5 @@ let config = {
   database: 'zzammit',
   multipleStatements: true
 };
- 
+
 module.exports = config;
