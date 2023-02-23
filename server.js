@@ -58,6 +58,92 @@ app.post('/api/addRoom', (req, res) => {
 	connection.end();
 });
 
+app.post('/api/addGroceryItem', (req, res) => { 
+
+	let connection = mysql.createConnection(config);
+	let sql = `INSERT INTO zzammit.GroceryItem (item, brand, store, price, idRoomate) VALUES (?,?,?,?,(SELECT id from zzammit.Roomate WHERE firebaseUID = ?));`;
+	let data = [req.body.item, req.body.brand, req.body.store, req.body.price, req.body.idRoomate];
+
+	// console.log(req.body);
+
+	connection.query(sql, data, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
+app.post('/api/addGrocery', (req, res) => { 
+
+	let connection = mysql.createConnection(config);
+	let sql = `INSERT INTO zzammit.Grocery (idRoomate, idGroceryItem, Quantity) VALUES (?,?,?)`;
+	let data = [req.body.idRoomate, req.body.idGroceryItem, req.body.Quantity];
+
+	// console.log(req.body);
+
+	connection.query(sql, data, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
+
+app.post('/api/viewGrocery', (req, res) => { 
+
+	let connection = mysql.createConnection(config);
+	let sql = `
+		SELECT id, item, brand, store, price, idRoomate
+		FROM zzammit.GroceryItem
+		WHERE idRoomate = (SELECT id from zzammit.Roomate WHERE firebaseUID = ?)`;
+	let data = [req.body.idRoomate];
+
+	// console.log(req.body);
+
+	connection.query(sql, data, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
+app.post('/api/deleteGroceryItem', (req, res) => { 
+
+	let connection = mysql.createConnection(config);
+	let sql = 
+		`DELETE FROM zzammit.GroceryItem
+		WHERE id = ?;`;
+	let data = [req.body.id];
+
+	// console.log(req.body);
+
+	connection.query(sql, data, (error, results, fields) => { 
+		if (error) {
+			console.log(error.message);
+		}
+
+		let string = JSON.stringify(results);
+		//let obj = JSON.parse(string);
+		res.send({ express: string });
+	});
+	connection.end();
+});
+
 app.post('/api/addUserToNewRoom', (req, res) => {
 
 	let connection = mysql.createConnection(config);
