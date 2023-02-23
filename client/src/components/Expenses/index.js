@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from "@material-ui/core/Typography";
 import Link from '@material-ui/core/Link';
 import history from '../Navigation/history';
@@ -16,7 +16,13 @@ import Button from '@material-ui/core/Button';
 
 import CustomAppBar from '../CustomAppBar';
 
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { auth } from "../Firebase/firebase";
+
 const opacityValue = 0.9;
+
+const serverURL = "http://localhost:3000/"; //enable for dev mode
+// const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
 const theme = createTheme({
   palette: {
@@ -65,7 +71,53 @@ const styles = theme => ({
 
 const Expenses = (props) => {
 
+  const [expenses, setExpenses] = useState([]);
+  const [user, setUser] = useState({});
+
   const { classes } = props;
+
+  onAuthStateChanged(auth, (currUser) => {
+    setUser(currUser);
+  });
+
+  const callAPIGetExpenseReport = async () => {
+    const url = serverURL + "/api/getExpenseReport";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        user: user.uid,
+        sort: '',
+        dateStart: '',
+        dateStart: '',
+        dateEnd: '',
+        tag: '',
+        spenderID: '',
+        debtorID: '',
+        justUser: ''
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  }
+
+  const getExpenseReport = () => {
+    callAPIGetExpenseReport()
+      .then(res => {
+        var parsed = JSON.parse(res.express);
+        setExpenses(parsed[4]);
+      })
+  }
+
+  const onClick = async () => {
+    getExpenseReport();
+    console.log(expenses);
+  }
 
   const mainMessage = (
     <Box sx={{ flexGrow: 1 }}>
@@ -76,7 +128,6 @@ const Expenses = (props) => {
         container
         spacing={0}
         direction="column"
-        justify="flex-start"
         alignItems="flex-start"
         style={{ minHeight: '100vh' }}
         className={classes.mainMessageContainer}
@@ -89,6 +140,17 @@ const Expenses = (props) => {
           >
             Expenses
           </Typography>
+
+          <Button>
+            <Link
+              onClick={onClick}
+            >
+              <Typography variant="h6">
+                click
+              </Typography>
+            </Link>
+          </Button>
+          
         </Grid>
       </Grid>
     </Box>
