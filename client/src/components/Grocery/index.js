@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Typography from "@material-ui/core/Typography";
 import Link from '@material-ui/core/Link';
-import history from '../Navigation/history';
 
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -9,14 +8,13 @@ import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 
-import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
-import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 
 import CustomAppBar from '../CustomAppBar';
 
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
 
 const opacityValue = 0.9;
@@ -72,13 +70,33 @@ const styles = theme => ({
 const Grocery = (props) => {
 
   const { classes } = props;
-  const user = auth.currentUser;
+  // const user = auth.currentUser;
   const [item, setItem] = useState("");
   const [brand, setBrand] = useState("");
   const [store, setStore] = useState("");
   const [price, setPrice] = useState("");
-  
+
   const [viewMine, setViewMine] = useState([]);
+  const [quantity, setQuantiy] = useState("");
+
+  const [user, setUser] = useState({});
+  const [submit, setSubmit] = useState(false);
+  onAuthStateChanged(auth, (currUser) => {
+    setUser(currUser);
+  });
+
+  React.useEffect(() => {
+    callViewGrocery()
+      .then(res => {
+        console.log("callApiViewGrocery returned: ", res)
+        var parsed = JSON.parse(res.express);
+        console.log("callApiviewGrocery parsed: ", parsed);
+        setViewMine(parsed);
+
+        setSubmit(false);
+      })
+
+  }, [submit, user]);
 
   const callApiAddGroceryItem = async () => {
     const url = serverURL + "/api/addGroceryItem";
@@ -101,9 +119,57 @@ const Grocery = (props) => {
     // console.log("User settings: ", body);
     return body;
   }
-  
+
   const onClickGroceryItem = async () => {
+    setSubmit(true);
     callApiAddGroceryItem();
+  }
+
+  const callApiDeleteGroceryItem = async (i) => {
+    const url = serverURL + "/api/deleteGroceryItem";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        id: i
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  }
+
+  const onClickDeleteGroceryItem = async (i) => {
+    setSubmit(true);
+    callApiDeleteGroceryItem(i);
+  }
+
+  const callApiAddGrocery = async (x,y,z) => {
+    const url = serverURL + "/api/addGrocery";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        idRoomate: x,
+        idGroceryItem: y,
+        Quantity: z
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  }
+
+  const onClickAddGrocery = async (x,y,z) => {
+    callApiAddGrocery(x,y,z);
   }
 
   const callViewGrocery = async () => {
@@ -124,17 +190,6 @@ const Grocery = (props) => {
     return body;
   }
 
-  const onClickViewGrocery = async () => {
-    console.log(user.uid);
-    callViewGrocery()
-        .then(res => {
-            console.log("callApiGetSearchMovie returned: ", res)
-            var parsed = JSON.parse(res.express);
-            console.log("callApiGetSearchMovie parsed: ", parsed);
-            setViewMine(parsed);
-    })
-  } 
-
   const mainMessage = (
     <Box sx={{ flexGrow: 1 }}>
 
@@ -144,7 +199,6 @@ const Grocery = (props) => {
         container
         spacing={0}
         direction="column"
-        justify="flex-start"
         alignItems="flex-start"
         style={{ minHeight: '100vh' }}
         className={classes.mainMessageContainer}
@@ -153,7 +207,6 @@ const Grocery = (props) => {
           <Typography
             variant={"h3"}
             className={classes.mainMessage}
-            align="flex-start"
           >
             Add Grocery Items
           </Typography>
@@ -197,32 +250,32 @@ const Grocery = (props) => {
           <Typography
             variant={"h3"}
             className={classes.mainMessage}
-            align="flex-start"
           >
             My Grocery Items
           </Typography>
-          <Button>
-            <Link
-              onClick={onClickViewGrocery}
-            >
-              <Typography variant="h6">
-                Refresh
-              </Typography>
-            </Link>
-          </Button>
-          
+          {viewMine.map((i) => {
+            return (
+              <div>
+                <h4>Item: {i.item}</h4>
+                <h5>Brand: {i.brand}</h5>
+                <h5>Store: {i.store}</h5>
+                <h5>Price: {i.price}</h5>
+                <TextField
+                  variant="outlined"
+                  label="Quantity"
+                  size="small"
+                  onChange={(event) => {
+                    setQuantiy(event.target.value)
+                  }} />
+                <Button onClick={() => { onClickAddGrocery(i.idRoomate, i.id, quantity)}}>Add</Button>
+                <Button onClick={() => { onClickDeleteGroceryItem(i.id) }}>Delete</Button>
+                <br />
+              </div>
+            )
+          })}
         </Grid>
         <h1>---</h1>
-        <Grid item>
-          <Typography
-            variant={"h3"}
-            className={classes.mainMessage}
-            align="flex-start"
-          >
-            Grocery 2
-          </Typography>
 
-        </Grid>
       </Grid>
     </Box>
   );
