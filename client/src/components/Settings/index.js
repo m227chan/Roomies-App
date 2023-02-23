@@ -87,20 +87,20 @@ const Settings = (props) => {
     history.push('/SignIn');
   }
 
-  const handleDelete = async () => {
-    // REQUIRES ADMIN ACCESS - TO BE FIXED
-    console.log(user.uid);
-    getAuth()
-      .deleteUser(user.uid)
-      .then(() => {
-        console.log('Account deleted');
-      })
-      .catch((e) => {
-        console.log(e.message);
-      });
+  // const handleDelete = async () => {
+  //   // REQUIRES ADMIN ACCESS - TO BE FIXED
+  //   console.log(user.uid);
+  //   getAuth()
+  //     .deleteUser(user.uid)
+  //     .then(() => {
+  //       console.log('Account deleted');
+  //     })
+  //     .catch((e) => {
+  //       console.log(e.message);
+  //     });
 
-    history.push('/SignIn');
-  }
+  //   history.push('/SignIn');
+  // }
 
   const mainMessage = (
     <Box sx={{ flexGrow: 1 }}>
@@ -134,7 +134,7 @@ const Settings = (props) => {
 
           <br />
 
-          <Button>
+          {/* <Button>
             <Link
               onClick={() => history.push('/SignIn')}
             >
@@ -142,7 +142,7 @@ const Settings = (props) => {
                 Change Password *not implemented*
               </Typography>
             </Link>
-          </Button>
+          </Button> */}
 
           <br />
 
@@ -158,7 +158,7 @@ const Settings = (props) => {
 
           <br />
 
-          <Button>
+          {/* <Button>
             <Link
               onClick={() => { setOpen(true) }}
             >
@@ -166,9 +166,9 @@ const Settings = (props) => {
                 Delete Account *not implemented*
               </Typography>
             </Link>
-          </Button>
+          </Button> */}
 
-          <Dialog
+          {/* <Dialog
             open={open}
             onClose={() => { setOpen(false) }}
             aria-labelledby="alert-dialog-title"
@@ -186,7 +186,7 @@ const Settings = (props) => {
               <Button onClick={() => { setOpen(false) }}>No</Button>
               <Button onClick={handleDelete}>Yes</Button>
             </DialogActions>
-          </Dialog>
+          </Dialog> */}
         </Grid>
       </Grid>
     </Box>

@@ -4,13 +4,48 @@
   overflow: hidden;
 }
 
+.customContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 100%;
+}
+
+.topGridSetup{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.card{
+  background-color: var(--color-bg-variant);
+  border-radius: 10px;
+}
+
+.calendar-top-card{
+  background-color: var(--color-primary-variant);
+  border-radius: 10px;
+}
+
+.calendar-card {
+  background-color: var(--color-bg);
+  border-radius: 10px;
+}
+
+.grocery-card {
+  background-color: var(--color-bg);
+  border-radius: 10px;
+}
+
 .mainMessage {
   opacity: opacityValue;
 }
 
 .mainMessageContainer {
   margin-top: 15vh;
-  margin-left: 20vh;
+  margin-left: 10vh;
 }
 
 @media (max-width: 600px) {
