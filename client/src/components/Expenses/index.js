@@ -71,17 +71,52 @@ const styles = theme => ({
 
 const Expenses = (props) => {
 
-  const [expenses, setExpenses] = useState([]);
-  const [user, setUser] = useState({});
+  const [roomates, setRoomates] = useState([]);
 
   const { classes } = props;
+
+  const [user, setUser] = useState({});
 
   onAuthStateChanged(auth, (currUser) => {
     setUser(currUser);
   });
 
-  const callAPIGetExpenseReport = async () => {
-    const url = serverURL + "/api/getExpenseReport";
+  // const callAPIGetExpenseReport = async () => {
+  //   const url = serverURL + "/api/getExpenseReport";
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       //authorization: `Bearer ${this.state.token}`
+  //     },
+  //     body: JSON.stringify({
+  //       user: user.uid,
+  //       sort: '',
+  //       dateStart: '',
+  //       dateEnd: '',
+  //       tag: '',
+  //       spenderID: '',
+  //       debtorID: '',
+  //       justUser: ''
+  //     })
+  //   });
+  //   const body = await response.json();
+  //   if (response.status !== 200) throw Error(body.message);
+  //   // console.log("User settings: ", body);
+  //   return body;
+  // }
+
+  // const getExpenseReport = () => {
+  //   callAPIGetExpenseReport()
+  //     .then(res => {
+  //       var parsed = JSON.parse(res.express);
+  //       setExpenses(parsed[4]);
+  //     })
+  // }
+
+  const callAPIGetRoomates = async () => {
+    console.log(user.uid);
+    const url = serverURL + "/api/getRoomates";
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -89,15 +124,7 @@ const Expenses = (props) => {
         //authorization: `Bearer ${this.state.token}`
       },
       body: JSON.stringify({
-        user: user.uid,
-        sort: '',
-        dateStart: '',
-        dateStart: '',
-        dateEnd: '',
-        tag: '',
-        spenderID: '',
-        debtorID: '',
-        justUser: ''
+        user: user.uid
       })
     });
     const body = await response.json();
@@ -106,17 +133,19 @@ const Expenses = (props) => {
     return body;
   }
 
-  const getExpenseReport = () => {
-    callAPIGetExpenseReport()
+  const getRoomateList = () => {
+    callAPIGetRoomates()
       .then(res => {
         var parsed = JSON.parse(res.express);
-        setExpenses(parsed[4]);
+        setRoomates(parsed);
       })
   }
 
   const onClick = async () => {
-    getExpenseReport();
-    console.log(expenses);
+    // getExpenseReport();
+    // console.log(expenses);
+    getRoomateList();
+    console.log(roomates);
   }
 
   const mainMessage = (
@@ -150,7 +179,7 @@ const Expenses = (props) => {
               </Typography>
             </Link>
           </Button>
-          
+
         </Grid>
       </Grid>
     </Box>
@@ -169,3 +198,4 @@ const Expenses = (props) => {
 }
 
 export default withStyles(styles)(Expenses);
+
