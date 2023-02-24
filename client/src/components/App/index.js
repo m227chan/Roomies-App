@@ -49,7 +49,7 @@ import {
   Link,
 } from 'react-router-dom';
 
-import SignIn from '../SignIn';
+import Landing from '../Landing';
 import PrivateRoute from '../Navigation/PrivateRoute.js';
 
 
@@ -77,7 +77,7 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <PrivateRoute exact path="/SignIn" component={SignIn} />
+          <PrivateRoute exact path="/" component={Landing} />
         </div>
       </Router>
     );
