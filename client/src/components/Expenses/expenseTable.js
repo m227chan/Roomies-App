@@ -29,6 +29,27 @@ export const filterExpensesBy = (expenses, filterBy, input) => {
   }
 }
 
+export const deleteExpenses = (expenses, id) => {
+  if (id < 0){
+    throw new Error("Invalid input");   
+  }
+  const indexFinder = expenses.findIndex(expense => expense.id === id);
+
+  if (indexFinder === -1){
+    throw new Error("Invalid input");
+  }
+  
+  const updatedExpenses = [];
+  for(var i = 0; i< expenses.length; i++){
+    if (i != indexFinder){
+      updatedExpenses.push(expenses[i])
+    }
+  }
+
+  return updatedExpenses;
+
+}
+
 const ExpenseTable = () => {
   const [expenses, setExpenses] = useState([]);
   const [user, setUser] = useState({});
