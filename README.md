@@ -5,3 +5,4 @@ The application includes three main features: expense tracker, grocery list, and
 Installation Requirements:
 
 - install Firebase
+- yarn add @mui/material @emotion/react @emotion/styled
