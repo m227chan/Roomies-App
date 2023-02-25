@@ -12,6 +12,23 @@ import { auth } from "../Firebase/firebase";
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
+export const filterExpensesBy = (expenses, filterBy, input) => {
+  if (filterBy == 'tag' && (input === 'Food' || input === 'Loan'
+    || input === 'Groceries' || input === 'Activity'
+    || input === 'Paid Back' || input === 'Other'
+    || input === 'Consequences')) {
+    return expenses.filter(expense => expense.tag === input);
+  } else if (filterBy == 'idSpender') {
+    return expenses.filter(expense => expense.idSpender === input);
+  } else if (filterBy == 'idDebtor') {
+    return expenses.filter(expense => expense.idDebtor === input);
+  } else if (filterBy == 'amount') {
+    return expenses.filter(expense => expense.amount === input);
+  } else {
+    throw new Error("Invalid input");
+  }
+}
+
 const ExpenseTable = () => {
   const [expenses, setExpenses] = useState([]);
   const [user, setUser] = useState({});
@@ -47,6 +64,7 @@ const ExpenseTable = () => {
     callAPIGetExpenseReport().then((res) => {
       var parsed = JSON.parse(res.express);
       setExpenses(parsed);
+      console.log(parsed);
     });
   };
 
