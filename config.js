@@ -1,3 +1,5 @@
+const mysql = require("mysql");
+
 let config = {
   host    : 'ec2-18-216-101-119.us-east-2.compute.amazonaws.com',
   user    : 'm227chan',
