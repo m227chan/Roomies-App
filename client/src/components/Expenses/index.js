@@ -299,6 +299,7 @@ const ExpenseDialog = ({ open, handleClose }) => {
           >
             <MenuItem value="Grocery">Grocery</MenuItem>
             <MenuItem value="Food">Food</MenuItem>
+            <MenuItem value="Consequences">Consequences</MenuItem>
             <MenuItem value="Activity">Activity</MenuItem>
           </Select>
         </FormControl>
