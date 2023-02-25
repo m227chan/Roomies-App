@@ -10,13 +10,14 @@ import SignUp from '../SignUp';
 import history from './history';
 import PasswordChange from '../PasswordChange';
 import JoinCreateRoom from '../JoinCreateRoom';
+import Landing from '../Landing';
 
 export default function PrivateRoute({}) {
 
   return (
     <Router history={history}>
       <Switch>
-        <Route path="/" exact component={SignIn} />
+        <Route path="/" exact component={Landing} />
         <Route path="/SignIn" exact component={SignIn} />
         <Route path="/SignUp" exact component={SignUp} />
         <Route path="/JoinCreateRoom" exact component={JoinCreateRoom} />
@@ -26,6 +27,7 @@ export default function PrivateRoute({}) {
         <Route path="/Grocery" exact component={Grocery} />
         <Route path="/Calendar" exact component={Calendar} />
         <Route path="/Settings" exact component={Settings} />
+        <Route path="/Landing" exact component={Landing} />
       </Switch>
     </Router>
   );
