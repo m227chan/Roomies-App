@@ -68,13 +68,13 @@ const styles = theme => ({
 });
 
 export const filterGroceryGroupBy = (group, filterBy, input) => {
-  if (filterBy == 'item') {
+  if (filterBy === 'item') {
     return group.filter(item => item.item === input);
-  } else if (filterBy == 'brand') {
+  } else if (filterBy === 'brand') {
     return group.filter(item => item.brand === input);
-  } else if (filterBy == 'store') {
+  } else if (filterBy === 'store') {
     return group.filter(item => item.store === input);
-  } else if (filterBy == 'price') {
+  } else if (filterBy === 'price') {
     return group.filter(item => item.price === input);
   } else {
     throw new Error("Invalid input");
