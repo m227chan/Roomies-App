@@ -25,7 +25,7 @@ const CustomAppBar = () => {
           </Link>
         </Button>
 
-        <Button color="inherit">
+        <Button color="inherit" data-testid = 'Navigation Button to Room'>
           <Link
             color="inherit"
             style={{ cursor: "pointer" }}

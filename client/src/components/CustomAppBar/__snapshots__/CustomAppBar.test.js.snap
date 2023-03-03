@@ -48,6 +48,7 @@ exports[`CustomAppBar renders correctly 1`] = `
     </button>
     <button
       className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
+      data-testid="Navigation Button to Room"
       disabled={false}
       onBlur={[Function]}
       onDragLeave={[Function]}
