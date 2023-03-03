@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SignIn renders correctly 1`] = `
+exports[`SignUp renders correctly 1`] = `
 <div
-  className="SignIn-root-1"
+  className="SignUp-root-1"
 >
   <div
-    className="MuiPaper-root SignIn-paper-4 MuiPaper-elevation1 MuiPaper-rounded"
+    className="MuiPaper-root SignUp-paper-4 MuiPaper-elevation1 MuiPaper-rounded"
   >
     <div
       className="MuiBox-root MuiBox-root-6"
     >
       <div
-        className="MuiGrid-root SignIn-mainMessageContainer-3 MuiGrid-container MuiGrid-direction-xs-column MuiGrid-align-items-xs-flex-start"
+        className="MuiGrid-root SignUp-mainMessageContainer-3 MuiGrid-container MuiGrid-direction-xs-column MuiGrid-align-items-xs-flex-start"
         style={
           Object {
             "minHeight": "100vh",
@@ -31,7 +31,7 @@ exports[`SignIn renders correctly 1`] = `
               <h4
                 className="MuiTypography-root MuiTypography-h4 MuiTypography-colorPrimary"
               >
-                Sign In
+                Create an Account
               </h4>
               <div
                 className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth"
@@ -97,7 +97,7 @@ exports[`SignIn renders correctly 1`] = `
                   htmlFor="password"
                   id="password-label"
                 >
-                  Password
+                  Create Password
                   <span
                     aria-hidden={true}
                     className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
@@ -135,7 +135,117 @@ exports[`SignIn renders correctly 1`] = `
                       className="PrivateNotchedOutline-legendLabelled-9 PrivateNotchedOutline-legendNotched-10"
                     >
                       <span>
-                        Password
+                        Create Password
+                         *
+                      </span>
+                    </legend>
+                  </fieldset>
+                </div>
+                
+              </div>
+              <div
+                className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth"
+              >
+                <label
+                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined Mui-required Mui-required"
+                  data-shrink={true}
+                  htmlFor="firstName"
+                  id="firstName-label"
+                >
+                  First Name
+                  <span
+                    aria-hidden={true}
+                    className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+                  >
+                     
+                    *
+                  </span>
+                </label>
+                <div
+                  className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl"
+                  onClick={[Function]}
+                >
+                  <input
+                    aria-invalid={false}
+                    autoComplete="firstName"
+                    autoFocus={false}
+                    className="MuiInputBase-input MuiOutlinedInput-input"
+                    disabled={false}
+                    id="firstName"
+                    maxLength={20}
+                    name="firstName"
+                    onAnimationStart={[Function]}
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onFocus={[Function]}
+                    required={true}
+                    type="firstName"
+                    value=""
+                  />
+                  <fieldset
+                    aria-hidden={true}
+                    className="PrivateNotchedOutline-root-7 MuiOutlinedInput-notchedOutline"
+                  >
+                    <legend
+                      className="PrivateNotchedOutline-legendLabelled-9 PrivateNotchedOutline-legendNotched-10"
+                    >
+                      <span>
+                        First Name
+                         *
+                      </span>
+                    </legend>
+                  </fieldset>
+                </div>
+                
+              </div>
+              <div
+                className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth"
+              >
+                <label
+                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined Mui-required Mui-required"
+                  data-shrink={true}
+                  htmlFor="lastName"
+                  id="lastName-label"
+                >
+                  Last Name
+                  <span
+                    aria-hidden={true}
+                    className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+                  >
+                     
+                    *
+                  </span>
+                </label>
+                <div
+                  className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl"
+                  onClick={[Function]}
+                >
+                  <input
+                    aria-invalid={false}
+                    autoComplete="lastName"
+                    autoFocus={false}
+                    className="MuiInputBase-input MuiOutlinedInput-input"
+                    disabled={false}
+                    id="lastName"
+                    maxLength={20}
+                    name="lastName"
+                    onAnimationStart={[Function]}
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onFocus={[Function]}
+                    required={true}
+                    type="lastName"
+                    value=""
+                  />
+                  <fieldset
+                    aria-hidden={true}
+                    className="PrivateNotchedOutline-root-7 MuiOutlinedInput-notchedOutline"
+                  >
+                    <legend
+                      className="PrivateNotchedOutline-legendLabelled-9 PrivateNotchedOutline-legendNotched-10"
+                    >
+                      <span>
+                        Last Name
                          *
                       </span>
                     </legend>
@@ -164,7 +274,7 @@ exports[`SignIn renders correctly 1`] = `
                 <span
                   className="MuiButton-label"
                 >
-                  Login
+                  Register
                 </span>
               </button>
               <p
@@ -208,7 +318,7 @@ exports[`SignIn renders correctly 1`] = `
                   <p
                     className="MuiTypography-root MuiTypography-body1"
                   >
-                    Sign Up
+                    Sign In
                   </p>
                 </a>
               </span>
