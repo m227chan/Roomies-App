@@ -41,18 +41,13 @@
 // }
 // export default withFirebase(App);
 
+import React, { Component } from "react";
+import { ProSidebarProvider } from "react-pro-sidebar";
 
-import React, { Component } from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import Landing from '../Landing';
-import PrivateRoute from '../Navigation/PrivateRoute.js';
-
-
+import Landing from "../Landing";
+import PrivateRoute from "../Navigation/PrivateRoute.js";
 
 class App extends Component {
   constructor(props) {
@@ -67,11 +62,9 @@ class App extends Component {
     //
   }
 
-
   componentWillUnmount() {
     this.listener();
   }
-
 
   render() {
     return (
