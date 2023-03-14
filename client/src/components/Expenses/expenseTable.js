@@ -63,6 +63,7 @@ const ExpenseTable = () => {
   }, [user]);
 
   const callAPIGetExpenseReport = async () => {
+    console.log("getAllExpenses called");
     const url = serverURL + "/api/getAllExpenses";
     const response = await fetch(url, {
       method: "POST",
