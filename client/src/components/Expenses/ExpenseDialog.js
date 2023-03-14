@@ -11,6 +11,7 @@ import {
     InputLabel,
     Select,
     MenuItem,
+    Typography,
 } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
@@ -31,12 +32,20 @@ const ExpenseDialog = ({ open, handleClose, onAdd }) => {
     const [comments, setComments] = useState("");
     const [date, setDate] = useState("");
 
+    const [errorStatus, setErrorStatus] = useState(false);
+    const [submitClicked, setSubmitClicked] = useState(false);
+
     const [roomates, setRoomates] = React.useState([]);
     const [user, setUser] = React.useState({});
 
     const handleAddExpense = () => {
-        
-        if (payeeError === false || payerError === false) {
+        setSubmitClicked(true);
+        if ((payeeError === false || payerError === false) &&
+            !payeeList.includes(payer) &&
+            comments != "" &&
+            tag != "" &&
+            date != "" &&
+            amount != "") {
             for (let i = 0; i < payeeList.length; i++) {
                 const newAmount = amount / payeeList.length;
                 const newExpense = {
@@ -49,8 +58,9 @@ const ExpenseDialog = ({ open, handleClose, onAdd }) => {
                 };
                 callApiAddExpense(newExpense);
             }
-        } else {
-            console.log("error!");
+            handleClose();
+        } else if (payeeList.includes(payer)) {
+            setErrorStatus(true);
         }
     };
 
@@ -115,7 +125,7 @@ const ExpenseDialog = ({ open, handleClose, onAdd }) => {
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Add New Expense</DialogTitle>
             <DialogContent>
-                
+
                 <TextField
                     autoFocus
                     margin="dense"
@@ -126,6 +136,9 @@ const ExpenseDialog = ({ open, handleClose, onAdd }) => {
                     variant="standard"
                     value={comments}
                     onChange={(e) => setComments(e.target.value)}
+                    error={comments === "" && submitClicked === true}
+                    helperText={(comments === "" && submitClicked === true) ?
+                        "Please enter an expense description." : ""}
                 />
 
                 <TextField
@@ -137,6 +150,9 @@ const ExpenseDialog = ({ open, handleClose, onAdd }) => {
                     variant="standard"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
+                    error={amount === "" && submitClicked === true}
+                    helperText={(amount === "" && submitClicked === true) ?
+                        "Please enter an amount." : ""}
                 />
 
                 <PayerFormControl
@@ -153,6 +169,10 @@ const ExpenseDialog = ({ open, handleClose, onAdd }) => {
                     onError={() => setPayeeError(true)}
                 />
 
+                <Typography align="left" color="red">{(errorStatus === true) ?
+                    "Error: Cannot select same Payer and Payee." : ""}
+                </Typography>
+
                 <TextField
                     name="numberformat"
                     id="date"
@@ -161,10 +181,13 @@ const ExpenseDialog = ({ open, handleClose, onAdd }) => {
                     variant="standard"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
+                    error={date === "" && submitClicked === true}
+                    helperText={(date === "" && submitClicked === true) ?
+                        "Please enter an date." : ""}
                 />
 
-                <br/>
-                <br/>
+                <br />
+                <br />
 
                 <FormControl fullWidth>
                     <InputLabel id="tag">Tag</InputLabel>
@@ -174,22 +197,27 @@ const ExpenseDialog = ({ open, handleClose, onAdd }) => {
                         value={tag}
                         label="Tag"
                         onChange={(e) => setTag(e.target.value)}
+                        error={tag === "" && submitClicked === true}
+                        helperText={(tag === "" && submitClicked === true) ?
+                            "Please enter an amount." : ""}
                     >
                         <MenuItem value="Grocery">Grocery</MenuItem>
-                        <br/>
+                        <br />
                         <MenuItem value="Food">Food</MenuItem>
-                        <br/>
+                        <br />
                         <MenuItem value="Consequences">Consequences</MenuItem>
-                        <br/>
+                        <br />
                         <MenuItem value="Activity">Activity</MenuItem>
                     </Select>
                 </FormControl>
 
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleAddExpense}>Add</Button>
+                </DialogActions>
+
             </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleAddExpense}>Add</Button>
-            </DialogActions>
+
         </Dialog>
     );
 };
