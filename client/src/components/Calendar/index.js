@@ -1,109 +1,80 @@
-import React from 'react';
-import Typography from "@material-ui/core/Typography";
-import Link from '@material-ui/core/Link';
-import history from '../Navigation/history';
+import React, { useState } from "react";
+import FullCalendar from "@fullcalendar/react";
+import { formatDate } from "@fullcalendar/core";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import listPlugin from "@fullcalendar/list";
+import CustomAppBar from "../CustomAppBar";
+import { Box } from "@mui/material";
+import { blueGrey } from "@material-ui/core/colors";
 
-import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
+const Calendar = () => {
+  const [currentEvents, setCurrentEvents] = useState([]);
 
-import AppBar from '@material-ui/core/AppBar';
-import Box from '@material-ui/core/Box';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
+  const handleDateClick = (selected) => {
+    const title = prompt("Please enter a new title for your event");
+    const calendarApi = selected.view.calendar;
+    calendarApi.unselect();
 
-import CustomAppBar from '../CustomAppBar';
+    if (title) {
+      calendarApi.addEvent({
+        id: `${selected.dateStr}-${title}`,
+        title,
+        start: selected.startStr,
+        end: selected.endStr,
+        allDay: selected.allDay,
+      });
 
-const opacityValue = 0.9;
+      console.log("Start " + selected.startStr);
+      console.log("End " + selected.endStr);
+      console.log("All Day" + selected.allDay);
+    }
+  };
 
-const theme = createTheme({
-  palette: {
-    type: 'light',
-    background: {
-      default: "#000000"
-    },
-    primary: {
-      main: "#7a1a06",
-    },
-    secondary: {
-      main: "#ffcb52",
-    },
-  },
-});
-
-const styles = theme => ({
-  root: {
-    body: {
-      backgroundColor: "#000000",
-      opacity: opacityValue,
-      overflow: "hidden",
-    },
-  },
-  mainMessage: {
-    opacity: opacityValue,
-  },
-
-  mainMessageContainer: {
-    marginTop: "15vh",
-    marginLeft: theme.spacing(20),
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: theme.spacing(4),
-    },
-  },
-  paper: {
-    overflow: "hidden",
-  },
-  message: {
-    opacity: opacityValue,
-    maxWidth: 250,
-    paddingBottom: theme.spacing(2),
-  },
-
-});
-
-const Calendar = (props) => {
-
-  const { classes } = props;
-
-  const mainMessage = (
-    <Box sx={{ flexGrow: 1 }}>
-
-      <CustomAppBar />
-
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{ minHeight: '100vh' }}
-        className={classes.mainMessageContainer}
-      >
-        <Grid item>
-          <Typography
-            variant={"h3"}
-            className={classes.mainMessage}
-            align="flex-start"
-          >
-            Calendar
-          </Typography>
-        </Grid>
-      </Grid>
-    </Box>
-  );
+  const handleEventClick = (selected) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete the event '${selected.event.title}'`
+      )
+    ) {
+      selected.event.remove();
+    }
+  };
 
   return (
-    <MuiThemeProvider theme={theme}>
-      <div className={classes.root}>
-        <CssBaseline />
-        <Paper className={classes.paper}>
-          {mainMessage}
-        </Paper>
-      </div>
-    </MuiThemeProvider>
+    <>
+      <CustomAppBar />
+      <Box m="20px">
+        <Box display="flex" justifyContent="space-between">
+          <Box flex="1 1 100%" ml="15px">
+            <FullCalendar
+              height="85vh"
+              plugins={[
+                dayGridPlugin,
+                timeGridPlugin,
+                interactionPlugin,
+                listPlugin,
+              ]}
+              headerToolbar={{
+                left: "prev next today",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+              }}
+              initialView="dayGridMonth"
+              editable={true}
+              selectable={true}
+              selectMirror={true}
+              dayMaxEvents={true}
+              select={handleDateClick}
+              eventClick={handleEventClick}
+              eventsSet={(events) => setCurrentEvents(events)}
+            />
+          </Box>
+        </Box>
+      </Box>
+    </>
   );
-}
+};
 
-export default withStyles(styles)(Calendar);
+export default Calendar;
