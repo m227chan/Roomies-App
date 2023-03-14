@@ -21,8 +21,7 @@ const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
 // ExpenseDialog component
-const ExpenseDialog = ({ open, handleClose }) => {
-    const [item, setItem] = useState("");
+const ExpenseDialog = ({ open, handleClose, onAdd }) => {
     const [amount, setAmount] = useState("");
     const [payer, setPayer] = useState("");
     const [payeeList, setPayeeList] = useState([]);
@@ -41,7 +40,6 @@ const ExpenseDialog = ({ open, handleClose }) => {
             for (let i = 0; i < payeeList.length; i++) {
                 const newAmount = amount / payeeList.length;
                 const newExpense = {
-                    item: item,
                     amount: newAmount,
                     payer: payer,
                     payee: payeeList[i],
@@ -121,13 +119,13 @@ const ExpenseDialog = ({ open, handleClose }) => {
                 <TextField
                     autoFocus
                     margin="dense"
-                    id="item"
-                    label="Item Description"
+                    id="spender"
+                    label="Expense Description"
                     type="text"
                     fullWidth
                     variant="standard"
-                    value={item}
-                    onChange={(e) => setItem(e.target.value)}
+                    value={comments}
+                    onChange={(e) => setComments(e.target.value)}
                 />
 
                 <TextField
@@ -187,17 +185,6 @@ const ExpenseDialog = ({ open, handleClose }) => {
                     </Select>
                 </FormControl>
 
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="spender"
-                    label="Comments"
-                    type="text"
-                    fullWidth
-                    variant="standard"
-                    value={comments}
-                    onChange={(e) => setComments(e.target.value)}
-                />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
