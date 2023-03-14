@@ -85,7 +85,6 @@ const ExpenseTable = () => {
     callAPIGetExpenseReport().then((res) => {
       var parsed = JSON.parse(res.express);
       setExpenses(parsed);
-      console.log(parsed);
     });
   };
 
