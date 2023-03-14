@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./expense.css";
 import {
     FormControl,
@@ -6,6 +6,8 @@ import {
     FormGroup,
     FormControlLabel,
     Checkbox,
+    Radio,
+    RadioGroup,
 } from "@mui/material";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
@@ -13,46 +15,33 @@ const serverURL = "http://localhost:3000/"; //enable for dev mode
 
 const PayerFormControl = ({ payer, setPayer, roomates }) => {
 
-    // Create a state for the checked roomates
-    const [checkedPayer, setCheckedPayer] = React.useState({});
+    const [changeStatus, setChangeStatus] = useState(false);
 
     const handlePayerChange = (event) => {
-        const selectedPayer = event.target.name; // use event.target.name instead of event.target.Roomate
-        setCheckedPayer({
-            ...checkedPayer,
-            [selectedPayer]: event.target.checked,
-        });
-        if (event.target.checked) {
-            setPayer(selectedPayer);
-        }
+        setChangeStatus(true);
+        const selectedPayer = event.target.value;
+        setPayer(selectedPayer);
     };
-
-    const error = Object.values(checkedPayer).filter((v) => v).length !== 1;
 
     return (
         <FormControl
             required
-            error={error}
+            error={!payer && changeStatus === true}
             component="fieldset"
             sx={{ m: 3 }}
             variant="standard"
         >
             <FormLabel component="legend">Paid By</FormLabel>
-            <FormGroup>
-                {roomates.map((payer) => (
+            <RadioGroup value={payer} onChange={handlePayerChange}>
+                {roomates.map((roommate) => (
                     <FormControlLabel
-                        key={payer.id}
-                        control={
-                            <Checkbox
-                                checked={checkedPayer[payer.firebaseUID] || false}
-                                onChange={handlePayerChange}
-                                name={payer.firebaseUID}
-                            />
-                        }
-                        label={payer.Roomate}
+                        key={roommate.id}
+                        value={roommate.firebaseUID}
+                        control={<Radio />}
+                        label={roommate.Roomate}
                     />
                 ))}
-            </FormGroup>
+            </RadioGroup>
         </FormControl>
     );
 };

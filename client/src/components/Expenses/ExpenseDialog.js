@@ -198,8 +198,6 @@ const ExpenseDialog = ({ open, handleClose, onAdd }) => {
                         label="Tag"
                         onChange={(e) => setTag(e.target.value)}
                         error={tag === "" && submitClicked === true}
-                        helperText={(tag === "" && submitClicked === true) ?
-                            "Please enter an amount." : ""}
                     >
                         <MenuItem value="Grocery">Grocery</MenuItem>
                         <br />

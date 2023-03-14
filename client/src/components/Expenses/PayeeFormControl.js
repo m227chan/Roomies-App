@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./expense.css";
 import {
     FormControl,
@@ -15,8 +15,10 @@ const serverURL = "http://localhost:3000/"; //enable for dev mode
 const PayeeFormControl = ({ payeeList, setPayeeList, roomates }) => {
 
     const [checkedPayee, setCheckedPayee] = React.useState({});
+    const [changeStatus, setChangeStatus] = useState(false);
 
     const handlePayeeChange = (event) => {
+        setChangeStatus(true);
         const selectedPayee = event.target.name;
         const tempPayeeList = payeeList;
 
@@ -30,7 +32,7 @@ const PayeeFormControl = ({ payeeList, setPayeeList, roomates }) => {
         }
     };
 
-    const error = Object.values(checkedPayee).filter((v) => v).length < 1;
+    const error = Object.values(checkedPayee).filter((v) => v).length < 1 && changeStatus === true;
 
     return (
         <FormControl
