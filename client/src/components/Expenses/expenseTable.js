@@ -45,9 +45,7 @@ export const deleteExpenses = (expenses, id) => {
       updatedExpenses.push(expenses[i])
     }
   }
-
   return updatedExpenses;
-
 }
 
 const ExpenseTable = () => {

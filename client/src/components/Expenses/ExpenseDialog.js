@@ -78,13 +78,14 @@ const ExpenseDialog = ({ open, handleClose }) => {
         if (response.status !== 200) throw Error(body.message);
         // console.log("User settings: ", body);
         return body;
-    }
+    };
 
     React.useEffect(() => {
         onAuthStateChanged(auth, (currUser) => {
             setUser(currUser);
         });
-    }, []);
+        getRoomateList();
+    }, [user]);
 
     const callAPIGetRoomates = async () => {
         console.log("getRoomates called");
@@ -112,15 +113,11 @@ const ExpenseDialog = ({ open, handleClose }) => {
         });
     }, [callAPIGetRoomates]);
 
-    React.useEffect(() => {
-        getRoomateList();
-    }, [user]);
-
     return (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>New Expense</DialogTitle>
+            <DialogTitle>Add New Expense</DialogTitle>
             <DialogContent>
-
+                
                 <TextField
                     autoFocus
                     margin="dense"
@@ -167,6 +164,10 @@ const ExpenseDialog = ({ open, handleClose }) => {
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                 />
+
+                <br/>
+                <br/>
+
                 <FormControl fullWidth>
                     <InputLabel id="tag">Tag</InputLabel>
                     <Select
@@ -177,8 +178,11 @@ const ExpenseDialog = ({ open, handleClose }) => {
                         onChange={(e) => setTag(e.target.value)}
                     >
                         <MenuItem value="Grocery">Grocery</MenuItem>
+                        <br/>
                         <MenuItem value="Food">Food</MenuItem>
+                        <br/>
                         <MenuItem value="Consequences">Consequences</MenuItem>
+                        <br/>
                         <MenuItem value="Activity">Activity</MenuItem>
                     </Select>
                 </FormControl>
