@@ -6,11 +6,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../Firebase/firebase";
-
-const serverURL = "http://localhost:3000/"; //enable for dev mode
-// const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
 // export const filterExpensesBy = (expenses, filterBy, input) => {
 //   if (filterBy === 'tag' && (input === 'Food' || input === 'Loan'
@@ -48,44 +43,7 @@ const serverURL = "http://localhost:3000/"; //enable for dev mode
 //   return updatedExpenses;
 // }
 
-const ExpenseTable = ({ open }) => {
-  const [expenses, setExpenses] = useState([]);
-  const [user, setUser] = useState({});
-
-  onAuthStateChanged(auth, (currUser) => {
-    setUser(currUser);
-  });
-
-  useEffect(() => {
-    getExpenseReport();
-  }, [user, open]);
-
-  const callAPIGetExpenseReport = async () => {
-    console.log("getAllExpenses called");
-    const url = serverURL + "/api/getAllExpenses";
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //authorization: `Bearer ${this.state.token}`
-      },
-      body: JSON.stringify({
-        spenderID: user.uid,
-        debtorID: user.uid,
-      }),
-    });
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    // console.log("User settings: ", body);
-    return body;
-  };
-
-  const getExpenseReport = () => {
-    callAPIGetExpenseReport().then((res) => {
-      var parsed = JSON.parse(res.express);
-      setExpenses(parsed);
-    });
-  };
+const ExpenseTable = ({ expenses }) => {
 
   return (
     <TableContainer component={Paper}>
@@ -103,8 +61,8 @@ const ExpenseTable = ({ open }) => {
         <TableBody>
           {expenses.map((expense) => (
             <TableRow key={expense.id}>
-              <TableCell align="right">{expense.idSpender}</TableCell>
-              <TableCell align="right">{expense.idDebtor}</TableCell>
+              <TableCell align="right">{expense.Spender}</TableCell>
+              <TableCell align="right">{expense.Debtor}</TableCell>
               <TableCell align="right">{expense.amount}</TableCell>
               <TableCell align="right">{expense.tag}</TableCell>
               <TableCell align="right">{expense.comments}</TableCell>

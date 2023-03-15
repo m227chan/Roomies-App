@@ -346,8 +346,8 @@ app.post("/api/getExpenseReport", (req, res) => {
   //			Whether or not you only want to look at the user's tracactions(Boolean: True = just user, False = everything))
   //Output: Table of Transactions sorted and filtered.
   let getExpensesSQL = `
-	SET @roomie := (Select id from zzammit.Roomate where firebaseUID = (?))); 
-    SET @justuser := (?));
+	SET @roomie := (Select id from zzammit.Roomate where firebaseUID = (?)); 
+    SET @justuser := (?);
 	
 	DROP TABLE IF EXISTS zzammit.ExpLog;
 	CREATE TEMPORARY TABLE zzammit.ExpLog Select Expenses.id as ExpenseID, CONCAT(firstName, ' ', lastName) as Spender, idDebtor, amount, tag, comments, tDate 
@@ -363,13 +363,7 @@ app.post("/api/getExpenseReport", (req, res) => {
 	DROP TABLE IF EXISTS zzammit.ExpLog;
 	`;
   let getExpensesData = [
-    req.body.user,
-    req.body.sort,
-    req.body.dateStart,
-    req.body.dateEnd,
-    req.body.tag,
-    req.body.spenderID,
-    req.body.debtorID,
+    req.body.firebaseUID,
     req.body.justUser,
   ];
 
@@ -390,31 +384,7 @@ app.post("/api/getExpenseReport", (req, res) => {
   );
   connection.end();
 });
-app.post("/api/getAllExpenses", (req, res) => {
-  let connection = mysql.createConnection(config);
 
-  let getExpensesSQL = `
-  SELECT * FROM zzammit.Expenses where idSpender = (select id from zzammit.Roomate where firebaseUID = (?)) OR idDebtor = (select id from zzammit.Roomate where firebaseUID = (?));
-	`;
-  let getExpensesData = [req.body.spenderID, req.body.debtorID];
-
-  // console.log(req.body);
-
-  connection.query(
-    getExpensesSQL,
-    getExpensesData,
-    (error, results, fields) => {
-      if (error) {
-        console.log(error.message);
-      }
-
-      let string = JSON.stringify(results);
-      //let obj = JSON.parse(string);
-      res.send({ express: string });
-    }
-  );
-  connection.end();
-});
 app.post("/api/addExpense", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
