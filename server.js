@@ -254,8 +254,8 @@ app.post("/api/addUser", (req, res) => {
 
 app.post("/api/checkIfRoomExists", (req, res) => {
   let connection = mysql.createConnection(config);
-  let checkIfRoomExistsSQL = `SELECT CAST((EXISTS (SELECT id FROM zzammit.Room WHERE id = ?)) AS UNSIGNED) AS value`;
-  let checkIfRoomExistsData = [req.body.idRoom];
+  let checkIfRoomExistsSQL = `SELECT CAST((EXISTS (SELECT id FROM zzammit.Room WHERE id = ? AND (SELECT COUNT(idRoom) FROM zzammit.Roomate WHERE idRoom = ?) < 5)) AS UNSIGNED) AS value`;
+  let checkIfRoomExistsData = [req.body.idRoom, req.body.idRoom];
 
   // console.log(req.body);
 

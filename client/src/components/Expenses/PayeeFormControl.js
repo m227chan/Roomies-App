@@ -21,18 +21,18 @@ const PayeeFormControl = ({ payeeList, setPayeeList, roomates }) => {
         setChangeStatus(true);
         const selectedPayee = event.target.name;
         const isChecked = event.target.checked;
-      
+
         if (isChecked) {
-          setPayeeList(prevPayeeList => [...prevPayeeList, selectedPayee]);
-        } else { 
-          setPayeeList(prevPayeeList => prevPayeeList.filter(payee => payee !== selectedPayee));
+            setPayeeList(prevPayeeList => [...prevPayeeList, selectedPayee]);
+        } else {
+            setPayeeList(prevPayeeList => prevPayeeList.filter(payee => payee !== selectedPayee));
         }
-      
+
         setCheckedPayee(prevCheckedPayee => ({
-          ...prevCheckedPayee,
-          [selectedPayee]: isChecked
+            ...prevCheckedPayee,
+            [selectedPayee]: isChecked
         }));
-      };
+    };
 
     const error = Object.values(checkedPayee).filter((v) => v).length < 1 && changeStatus === true;
 
