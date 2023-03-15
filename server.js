@@ -357,7 +357,7 @@ app.post("/api/getExpenseReport", (req, res) => {
 				(SELECT idRoom FROM zzammit.Roomate WHERE id = @roomie)) END
 		;
 		
-	Select ExpenseID, Spender, CONCAT(Roomate.firstName, ' ', Roomate.lastName) as Debtor, amount, tDate, tag, comments, id 
+	Select ExpenseID, Spender, CONCAT(Roomate.firstName, ' ', Roomate.lastName) as Debtor, amount, tDate, tag, comments
 		From zzammit.ExpLog left join zzammit.Roomate on ExpLog.idDebtor = Roomate.id;
 	
 	DROP TABLE IF EXISTS zzammit.ExpLog;
@@ -434,7 +434,7 @@ app.post("/api/deleteExpense", (req, res) => {
 	Update zzammit.Roomate set owed = owed + @oldAmt where id = @oldD;
 	DELETE FROM zzammit.Expenses WHERE id = @expID;
 	`;
-  let delExpenseData = [req.body.expenseID];
+  let delExpenseData = [req.body.ExpenseID];
 
   // console.log(req.body);
 
