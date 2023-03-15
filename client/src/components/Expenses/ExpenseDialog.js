@@ -40,6 +40,17 @@ const ExpenseDialog = ({ open, handleClose, onAdd }) => {
 
     const handleAddExpense = () => {
         setSubmitClicked(true);
+        console.log(payeeList);
+        console.log(payer);
+
+        if (payeeList.includes(payer)) {
+            setErrorStatus(true);
+        }
+
+        if (!payeeList.includes(payer)) {
+            setErrorStatus(false);
+        }
+
         if ((payeeError === false || payerError === false) &&
             !payeeList.includes(payer) &&
             comments != "" &&
@@ -58,10 +69,21 @@ const ExpenseDialog = ({ open, handleClose, onAdd }) => {
                 };
                 callApiAddExpense(newExpense);
             }
+
+            //clear the dialog after new expense made
+            setPayeeList([]);
+            setPayer("");
+
+            setErrorStatus(false);
+
             handleClose();
-        } else if (payeeList.includes(payer)) {
-            setErrorStatus(true);
         }
+    };
+
+    const handleCancel = () => {
+        setPayeeList([]);
+        setPayer("");
+        handleClose();
     };
 
     const callApiAddExpense = async (newExpense) => {
@@ -210,7 +232,7 @@ const ExpenseDialog = ({ open, handleClose, onAdd }) => {
                 </FormControl>
 
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleCancel}>Cancel</Button>
                     <Button onClick={handleAddExpense}>Add</Button>
                 </DialogActions>
 
