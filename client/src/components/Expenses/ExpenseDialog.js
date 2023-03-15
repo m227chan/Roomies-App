@@ -22,7 +22,7 @@ const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
 // ExpenseDialog component
-const ExpenseDialog = ({ open, handleClose, onAdd }) => {
+const ExpenseDialog = ({ open, handleClose }) => {
     const [amount, setAmount] = useState("");
     const [payer, setPayer] = useState("");
     const [payeeList, setPayeeList] = useState([]);
@@ -145,7 +145,7 @@ const ExpenseDialog = ({ open, handleClose, onAdd }) => {
 
     return (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Add New Expense</DialogTitle>
+            <DialogTitle>Expense</DialogTitle>
             <DialogContent>
 
                 <TextField

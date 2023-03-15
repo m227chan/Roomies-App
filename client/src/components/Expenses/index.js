@@ -43,10 +43,10 @@ const Expenses = () => {
               <Button variant="outlined" onClick={handleClickOpen}>
                 Add Expense
               </Button>
-              <ExpenseDialog open={open} handleClose={handleClose} />
+              <ExpenseDialog open={open} handleClose={handleClose}/>
             </Grid>
             <Grid item>
-              <ExpenseTable open={open} />
+              <ExpenseTable open={open}/>
             </Grid>
           </Grid>
         </Box>

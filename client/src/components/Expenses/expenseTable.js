@@ -1,37 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
-// export const filterExpensesBy = (expenses, filterBy, input) => {
-//   if (filterBy === 'tag' && (input === 'Food' || input === 'Loan'
-//     || input === 'Groceries' || input === 'Activity'
-//     || input === 'Paid Back' || input === 'Other'
-//     || input === 'Consequences')) {
-//     return expenses.filter(expense => expense.tag === input);
-//   } else if (filterBy === 'idSpender') {
-//     return expenses.filter(expense => expense.idSpender === input);
-//   } else if (filterBy === 'idDebtor') {
-//     return expenses.filter(expense => expense.idDebtor === input);
-//   } else if (filterBy === 'amount') {
-//     return expenses.filter(expense => expense.amount === input);
-//   } else {
-//     throw new Error("Invalid input");
-//   }
-// }
-
 const ExpenseTable = ({ open }) => {
-
   const [user, setUser] = useState({});
   const [expenses, setExpenses] = useState([]);
 
@@ -78,14 +55,14 @@ const ExpenseTable = ({ open }) => {
   };
 
   const handleDeleteClick = (expense) => {
-    callAPIDeleteExpense(expense.ExpenseID);
-    console.log(expense.ExpenseID);
+    callAPIDeleteExpense(expense.id);
+    console.log(expense.id);
     setTimeout(() => {
       getExpenseReport();
     }, 500);
   };
 
-  const callAPIDeleteExpense = async (ExpenseID) => {
+  const callAPIDeleteExpense = async (expenseID) => {
     console.log("getExpenseReport called");
     const url = serverURL + "/api/deleteExpense";
     const response = await fetch(url, {
@@ -95,7 +72,7 @@ const ExpenseTable = ({ open }) => {
         //authorization: `Bearer ${this.state.token}`
       },
       body: JSON.stringify({
-        ExpenseID: ExpenseID,
+        ExpenseID: expenseID,
       }),
     });
     const body = await response.json();
@@ -104,109 +81,117 @@ const ExpenseTable = ({ open }) => {
     return body;
   };
 
+  const columns = [
+    {
+      field: 'Spender',
+      headerName: 'Payer',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: '18px' }}>
+          <b>{params.value}</b>
+        </div>
+      ),
+    },
+    {
+      field: 'Debtor',
+      headerName: 'Payee',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: '18px' }}>
+          <b>{params.value}</b>
+        </div>
+      ),
+    },
+    {
+      field: 'amount',
+      headerName: 'Amount',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: '18px' }}>{params.value}</div>
+      ),
+    },
+    {
+      field: 'tag',
+      headerName: 'Tag',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: '18px' }}>{params.value}</div>
+      ),
+    },
+    {
+      field: 'comments',
+      headerName: 'Description',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: '18px' }}>{params.value}</div>
+      ),
+    },
+    {
+      field: 'tDate',
+      headerName: 'Date',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: '18px' }}>
+          {params.value.substring(0, params.value.indexOf('T'))}
+        </div>
+      ),
+    },
+    {
+      field: 'Edit',
+      headerName: '',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <Button
+          variant="outlined"
+          onClick={() => handleEditClick(params.row)}
+        >
+          Edit
+        </Button>
+      ),
+    },
+    {
+      field: 'Delete',
+      headerName: '',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <Button
+          variant="outlined"
+          onClick={() => handleDeleteClick(params.row)}
+        >
+          Delete
+        </Button>
+      ),
+    },
+  ];
+
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="simple table">
-
-        <TableHead>
-          <TableRow>
-            <TableCell
-              align="right"
-              style={{ fontSize: "18px" }}
-            >
-              <b>Payer</b>
-            </TableCell>
-
-            <TableCell
-              align="right"
-              style={{ fontSize: "18px" }}
-            >
-              <b>Payee</b>
-            </TableCell>
-
-            <TableCell
-              align="right"
-              style={{ fontSize: "18px" }}
-            >
-              <b>Amount</b>
-            </TableCell>
-
-            <TableCell
-              align="right"
-              style={{ fontSize: "18px" }}
-            >
-              <b>Tag</b>
-            </TableCell>
-
-            <TableCell
-              align="right"
-              style={{ fontSize: "18px" }}
-            >
-              <b>Description</b>
-            </TableCell>
-
-            <TableCell
-              align="right"
-              style={{ fontSize: "18px" }}
-            >
-              <b>Date</b>
-            </TableCell>
-
-          </TableRow>
-        </TableHead>
-
-        <TableBody>
-          {expenses.map((expense) => (
-            <TableRow key={expense.id}>
-
-              <TableCell align="right">
-                {expense.Spender}
-              </TableCell>
-
-              <TableCell align="right">
-                {expense.Debtor}
-              </TableCell>
-
-              <TableCell align="right">
-                {expense.amount}
-              </TableCell>
-
-              <TableCell align="right">
-                {expense.tag}
-              </TableCell>
-
-              <TableCell align="right">
-                {expense.comments}
-              </TableCell>
-
-              <TableCell align="right">
-                {expense.tDate.substring(0, expense.tDate.indexOf("T"))}
-              </TableCell>
-
-              <TableCell align="right">
-                <Button variant="outlined"
-                  onClick={() => handleEditClick(expense)}
-                >
-                  Edit
-                </Button>
-              </TableCell>
-
-              <TableCell align="right">
-                <Button
-                  variant="outlined"
-                  onClick={() => handleDeleteClick(expense)}
-                >
-                  Delete
-                </Button>
-              </TableCell>
-
-            </TableRow>
-          ))};
-        </TableBody>
-
-      </Table>
-    </TableContainer>
+    <div style={{ height: 650, width: '100%' }}>
+      <Paper style={{ height: 650, width: '100%' }}>
+      <DataGrid
+        rows={expenses}
+        columns={columns}
+        pageSize={10}
+      />
+      </Paper>
+    </div>
   );
 };
 
 export default ExpenseTable;
+
