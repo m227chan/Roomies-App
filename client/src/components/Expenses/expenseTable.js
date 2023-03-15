@@ -12,45 +12,43 @@ import { auth } from "../Firebase/firebase";
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
-export const filterExpensesBy = (expenses, filterBy, input) => {
-  if (filterBy === 'tag' && (input === 'Food' || input === 'Loan'
-    || input === 'Groceries' || input === 'Activity'
-    || input === 'Paid Back' || input === 'Other'
-    || input === 'Consequences')) {
-    return expenses.filter(expense => expense.tag === input);
-  } else if (filterBy === 'idSpender') {
-    return expenses.filter(expense => expense.idSpender === input);
-  } else if (filterBy === 'idDebtor') {
-    return expenses.filter(expense => expense.idDebtor === input);
-  } else if (filterBy === 'amount') {
-    return expenses.filter(expense => expense.amount === input);
-  } else {
-    throw new Error("Invalid input");
-  }
-}
+// export const filterExpensesBy = (expenses, filterBy, input) => {
+//   if (filterBy === 'tag' && (input === 'Food' || input === 'Loan'
+//     || input === 'Groceries' || input === 'Activity'
+//     || input === 'Paid Back' || input === 'Other'
+//     || input === 'Consequences')) {
+//     return expenses.filter(expense => expense.tag === input);
+//   } else if (filterBy === 'idSpender') {
+//     return expenses.filter(expense => expense.idSpender === input);
+//   } else if (filterBy === 'idDebtor') {
+//     return expenses.filter(expense => expense.idDebtor === input);
+//   } else if (filterBy === 'amount') {
+//     return expenses.filter(expense => expense.amount === input);
+//   } else {
+//     throw new Error("Invalid input");
+//   }
+// }
 
-export const deleteExpenses = (expenses, id) => {
-  if (id < 0){
-    throw new Error("Invalid input");   
-  }
-  const indexFinder = expenses.findIndex(expense => expense.id === id);
+// export const deleteExpenses = (expenses, id) => {
+//   if (id < 0){
+//     throw new Error("Invalid input");   
+//   }
+//   const indexFinder = expenses.findIndex(expense => expense.id === id);
 
-  if (indexFinder === -1){
-    throw new Error("Invalid input");
-  }
+//   if (indexFinder === -1){
+//     throw new Error("Invalid input");
+//   }
   
-  const updatedExpenses = [];
-  for(var i = 0; i< expenses.length; i++){
-    if (i != indexFinder){
-      updatedExpenses.push(expenses[i])
-    }
-  }
+//   const updatedExpenses = [];
+//   for(var i = 0; i< expenses.length; i++){
+//     if (i != indexFinder){
+//       updatedExpenses.push(expenses[i])
+//     }
+//   }
+//   return updatedExpenses;
+// }
 
-  return updatedExpenses;
-
-}
-
-const ExpenseTable = () => {
+const ExpenseTable = ({ open }) => {
   const [expenses, setExpenses] = useState([]);
   const [user, setUser] = useState({});
 
@@ -60,9 +58,10 @@ const ExpenseTable = () => {
 
   useEffect(() => {
     getExpenseReport();
-  }, [user]);
+  }, [user, open]);
 
   const callAPIGetExpenseReport = async () => {
+    console.log("getAllExpenses called");
     const url = serverURL + "/api/getAllExpenses";
     const response = await fetch(url, {
       method: "POST",
@@ -85,7 +84,6 @@ const ExpenseTable = () => {
     callAPIGetExpenseReport().then((res) => {
       var parsed = JSON.parse(res.express);
       setExpenses(parsed);
-      console.log(parsed);
     });
   };
 
@@ -98,7 +96,7 @@ const ExpenseTable = () => {
             <TableCell align="right">Payee</TableCell>
             <TableCell align="right">Amount</TableCell>
             <TableCell align="right">Tag</TableCell>
-            <TableCell align="right">Comments</TableCell>
+            <TableCell align="right">Description</TableCell>
             <TableCell align="right">Date</TableCell>
           </TableRow>
         </TableHead>

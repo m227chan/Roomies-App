@@ -81,7 +81,6 @@ const JoinCreateRoom = (props) => {
         CheckIfRoomExists(roomID)
             .then(value => setCheck(value))
             .catch(error => console.error(error));
-
         setSubmit1(false);
     }, [roomID]);
 
@@ -147,7 +146,6 @@ const JoinCreateRoom = (props) => {
     const onClickJoinRoom = async () => {
         CheckIfRoomExists(roomID)
             .then(value => setCheck(value))
-            .catch(error => console.error(error));
 
         setSubmit1(true);
         console.log(check);
@@ -200,7 +198,7 @@ const JoinCreateRoom = (props) => {
                             InputLabelProps={{ shrink: true }}
                             error={(roomID === "" || roomID === "-1" || check !== 1) && submit1 === true}
                             helperText={((roomID === "" || roomID === "-1" || check !== 1) && submit1 === true) ?
-                                "Please enter an existing Room ID." : ""}
+                                "Please enter a valid Room ID (This Room ID may be full or may not exist)." : ""}
                         />
 
                         <Button>

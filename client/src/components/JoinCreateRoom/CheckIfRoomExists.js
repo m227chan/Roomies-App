@@ -13,6 +13,7 @@ const CheckIfRoomExists = async (roomID) => {
                     //authorization: `Bearer ${this.state.token}`
                 },
                 body: JSON.stringify({
+                    idRoom: roomID,
                     idRoom: roomID
                 })
             });
