@@ -342,59 +342,28 @@ app.post("/api/getOwedByPerson", (req, res) => {
 
 app.post("/api/getExpenseReport", (req, res) => {
   let connection = mysql.createConnection(config);
-  //8 Inputs: (Firebase ID, Sort Value (4 Character String see below), Start of Date Range, End of Date Range, Tag to filter by,
-  //			Spender Firebase ID to filter by, Debtor Firebase ID to filter by,
-  //			Whether or not you only want to look at the user's tracactions(Empty String = Yes, Anything Else = No))
+  //8 Inputs: (Firebase ID,
+  //			Whether or not you only want to look at the user's tracactions(Boolean: True = just user, False = everything))
   //Output: Table of Transactions sorted and filtered.
   let getExpensesSQL = `
 	SET @roomie := (Select id from zzammit.Roomate where firebaseUID = (?)); 
-	SET @orderV := (?);
-	
-	SET @DateStart := (?);
-	SET @DateEnd := (?);
-	SET @Tag := (?);
-	SET @Spender := (?);
-	SET @Debtor := (?);
-	SET @justUser := (?);
+    SET @justuser := (?);
 	
 	DROP TABLE IF EXISTS zzammit.ExpLog;
 	CREATE TEMPORARY TABLE zzammit.ExpLog Select Expenses.id as ExpenseID, CONCAT(firstName, ' ', lastName) as Spender, idDebtor, amount, tag, comments, tDate 
 		From zzammit.Expenses left join zzammit.Roomate on Expenses.idSpender = Roomate.id where 
-		CASE @justUser WHEN '' THEN (idSpender = @roomie or idDebtor = @roomie) ELSE idSpender IN 
+		CASE @justUser WHEN TRUE THEN (idSpender = @roomie or idDebtor = @roomie) ELSE idSpender IN 
 			(SELECT id FROM zzammit.Roomate WHERE idRoom = 
 				(SELECT idRoom FROM zzammit.Roomate WHERE id = @roomie)) END
 		;
 		
-	Select ExpenseID, Spender, CONCAT(Roomate.firstName, ' ', Roomate.lastName) as Debtor, amount, tDate, tag, comments 
-		From zzammit.ExpLog left join zzammit.Roomate on ExpLog.idDebtor = Roomate.id
-		WHERE
-			CASE @Tag WHEN '' THEN tDate >= '1900-01-01' ELSE tag = @Tag END AND
-			CASE @Spender WHEN '' THEN tDate >= '1900-01-01' ELSE Spender = (Select CONCAT(firstName, ' ', lastName) from zzammit.Roomate where firebaseUID = @Spender) END AND
-			CASE @Debtor WHEN '' THEN tDate >= '1900-01-01' ELSE idDebtor = (Select id from zzammit.Roomate where firebaseUID = @Debtor) END AND
-			CASE @DateStart WHEN '' THEN tDate >= '1900-01-01' ELSE tDate >= @DateStart END AND
-			CASE @DateEnd WHEN '' THEN tDate >= '1900-01-01' ELSE tDate <= @DateEnd END
-		Order By 
-		CASE @orderV WHEN 'TagA' THEN tag END ASC,
-		CASE @orderV WHEN 'TagD' THEN tag END DESC,
-		CASE @orderV WHEN 'SpdA' THEN Spender END ASC,
-		CASE @orderV WHEN 'SpdD' THEN Spender END DESC,
-		CASE @orderV WHEN 'DbtA' THEN Debtor END ASC,
-		CASE @orderV WHEN 'DbtD' THEN Debtor END DESC,
-		CASE @orderV WHEN 'AmtA' THEN amount END ASC,
-		CASE @orderV WHEN 'AmtD' THEN amount END DESC,
-		CASE @orderV WHEN 'DatA' THEN tDate END ASC,
-		CASE @orderV WHEN 'DatD' THEN tDate END DESC;
+	Select ExpenseID, Spender, CONCAT(Roomate.firstName, ' ', Roomate.lastName) as Debtor, amount, tDate, tag, comments, id 
+		From zzammit.ExpLog left join zzammit.Roomate on ExpLog.idDebtor = Roomate.id;
 	
 	DROP TABLE IF EXISTS zzammit.ExpLog;
 	`;
   let getExpensesData = [
-    req.body.user,
-    req.body.sort,
-    req.body.dateStart,
-    req.body.dateEnd,
-    req.body.tag,
-    req.body.spenderID,
-    req.body.debtorID,
+    req.body.firebaseUID,
     req.body.justUser,
   ];
 
@@ -415,31 +384,7 @@ app.post("/api/getExpenseReport", (req, res) => {
   );
   connection.end();
 });
-app.post("/api/getAllExpenses", (req, res) => {
-  let connection = mysql.createConnection(config);
 
-  let getExpensesSQL = `
-  SELECT * FROM zzammit.Expenses where idSpender = (select id from zzammit.Roomate where firebaseUID = (?)) OR idDebtor = (select id from zzammit.Roomate where firebaseUID = (?));
-	`;
-  let getExpensesData = [req.body.spenderID, req.body.debtorID];
-
-  // console.log(req.body);
-
-  connection.query(
-    getExpensesSQL,
-    getExpensesData,
-    (error, results, fields) => {
-      if (error) {
-        console.log(error.message);
-      }
-
-      let string = JSON.stringify(results);
-      //let obj = JSON.parse(string);
-      res.send({ express: string });
-    }
-  );
-  connection.end();
-});
 app.post("/api/addExpense", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
