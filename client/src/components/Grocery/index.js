@@ -168,7 +168,7 @@ const Grocery = (props) => {
   const today = async () => {
     var today = new Date();
     var dd = today.getDate();
-    var mm = today.getMonth(); 
+    var mm = today.getMonth() + 1; 
     var yyyy = today.getFullYear();
     if(dd<10) 
     {
@@ -179,7 +179,7 @@ const Grocery = (props) => {
     {
         mm='0'+mm;
     } 
-    return yyyy+'-'+mm+'-'+dd;
+    return `${yyyy}-${mm}-${dd}`;
   }
 
   const callApiDeleteGroceryItem = async (i) => {
@@ -245,10 +245,10 @@ const Grocery = (props) => {
       body: JSON.stringify({
         amount: i.price,
         spender: user.uid,
-        debtor: i.idRoomate,
+        debtor: "l2loSzSePNb2SxhEUgDiKepRRgN2", //WAS i.idRoomate. THIS NEEDS TO BE THE FIREBASE ID, NOT ROOMATE ID-----------------------------------------------------------------------------------------
         tag: "Grocery",
         comment: i.brand + " " + i.item + " from " + i.store,
-        date: today()
+        date: await today()
       })
     });
     const body = await response.json();

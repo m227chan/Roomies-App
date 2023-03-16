@@ -394,7 +394,7 @@ app.post("/api/addExpense", (req, res) => {
 	SET @spender = (Select id from zzammit.Roomate where firebaseUID = (?));
 	SET @debtor = (Select id from zzammit.Roomate where firebaseUID = (?));
 	INSERT INTO zzammit.Expenses (idSpender, idDebtor, amount, tag, comments, tDate) VALUES (@spender, @debtor, @amt, ?, ?, ?);
-	Update zzammit.Roomate set owed = owed + @amt where id = @spendor;
+	Update zzammit.Roomate set owed = owed + @amt where id = @spender;
 	Update zzammit.Roomate set owed = owed - @amt where id = @debtor;
 	`;
   let addExpenseData = [

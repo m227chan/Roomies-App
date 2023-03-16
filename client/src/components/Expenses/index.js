@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import CustomAppBar from "../CustomAppBar";
-import ExpenseTable from "./ExpenseTable.js";
+import ExpenseTable from "./expenseTable.js";
 import ExpenseDialog from "./AddExpenseDialog";
 
 // Expenses component
