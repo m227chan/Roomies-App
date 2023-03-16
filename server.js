@@ -350,14 +350,14 @@ app.post("/api/getExpenseReport", (req, res) => {
     SET @justuser := (?);
 	
 	DROP TABLE IF EXISTS zzammit.ExpLog;
-	CREATE TEMPORARY TABLE zzammit.ExpLog Select Expenses.id as ExpenseID, CONCAT(firstName, ' ', lastName) as Spender, idDebtor, amount, tag, comments, tDate 
+	CREATE TEMPORARY TABLE zzammit.ExpLog Select Expenses.id as ExpenseID, CONCAT(firstName, ' ', lastName) as Spender, idDebtor, amount, tag, comments, tDate
 		From zzammit.Expenses left join zzammit.Roomate on Expenses.idSpender = Roomate.id where 
 		CASE @justUser WHEN TRUE THEN (idSpender = @roomie or idDebtor = @roomie) ELSE idSpender IN 
 			(SELECT id FROM zzammit.Roomate WHERE idRoom = 
 				(SELECT idRoom FROM zzammit.Roomate WHERE id = @roomie)) END
 		;
 		
-	Select ExpenseID, Spender, CONCAT(Roomate.firstName, ' ', Roomate.lastName) as Debtor, amount, tDate, tag, comments
+	Select ExpenseID as id, Spender, CONCAT(Roomate.firstName, ' ', Roomate.lastName) as Debtor, amount, tDate, tag, comments
 		From zzammit.ExpLog left join zzammit.Roomate on ExpLog.idDebtor = Roomate.id;
 	
 	DROP TABLE IF EXISTS zzammit.ExpLog;
@@ -434,7 +434,7 @@ app.post("/api/deleteExpense", (req, res) => {
 	Update zzammit.Roomate set owed = owed + @oldAmt where id = @oldD;
 	DELETE FROM zzammit.Expenses WHERE id = @expID;
 	`;
-  let delExpenseData = [req.body.expenseID];
+  let delExpenseData = [req.body.ExpenseID];
 
   // console.log(req.body);
 
