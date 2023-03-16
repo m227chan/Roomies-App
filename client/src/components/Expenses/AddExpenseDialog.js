@@ -235,9 +235,7 @@ const AddExpenseDialog = ({ open, handleClose }) => {
                     <Button onClick={handleCancel}>Cancel</Button>
                     <Button onClick={handleAddExpense}>Add</Button>
                 </DialogActions>
-
             </DialogContent>
-
         </Dialog>
     );
 };

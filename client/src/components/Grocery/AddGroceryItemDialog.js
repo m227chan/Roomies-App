@@ -5,22 +5,33 @@ import {
     Link,
     Typography,
     TextField,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
 } from "@mui/material";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
-const AddGroceryItemDialog = ({ user, setSubmit }) => {
+const AddGroceryItemDialog = ({ user, setSubmit, open, handleClose }) => {
 
     const [item, setItem] = useState("");
     const [brand, setBrand] = useState("");
     const [store, setStore] = useState("");
     const [price, setPrice] = useState("");
 
+    const [submitDialogClicked, setSubmitDialogClicked] = useState(false);
+
     const onClickGroceryItem = async () => {
-        console.log(user);
-        setSubmit(true);
-        callApiAddGroceryItem();
+        setSubmitDialogClicked(true);
+
+        if (item != "" && brand != "" && store != "" && price != "") {
+            console.log(user);
+            setSubmit(true);
+            callApiAddGroceryItem();
+            handleClose();
+        }
     }
 
     const callApiAddGroceryItem = async () => {
@@ -46,52 +57,77 @@ const AddGroceryItemDialog = ({ user, setSubmit }) => {
     }
 
     return (
-        <div>
-            <Typography
-                variant={"h3"}
-            >
-                Add a Grocery Item
-            </Typography>
-            <Paper>
+        <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Add a New Grocery Item</DialogTitle>
+            <DialogContent>
+
                 <TextField
-                    variant="outlined"
                     label="Item"
+                    autoFocus
+                    margin="dense"
+                    fullWidth
+                    type="text"
+                    value={item}
                     onChange={(event) => {
                         setItem(event.target.value)
-                    }} />
-                <h3 />
+                    }}
+                    error={item === "" && submitDialogClicked === true}
+                    helperText={(item === "" && submitDialogClicked === true) ?
+                        "Please enter an item." : ""}
+                />
+
                 <TextField
-                    variant="outlined"
                     label="Brand"
+                    autoFocus
+                    margin="dense"
+                    fullWidth
+                    type="text"
+                    value={brand}
                     onChange={(event) => {
                         setBrand(event.target.value)
-                    }} />
-                <h3 />
+                    }}
+                    error={brand === "" && submitDialogClicked === true}
+                    helperText={(brand === "" && submitDialogClicked === true) ?
+                        "Please enter a brand." : ""}
+                />
+
                 <TextField
-                    variant="outlined"
                     label="Store"
+                    autoFocus
+                    margin="dense"
+                    fullWidth
+                    type="text"
+                    value={store}
                     onChange={(event) => {
                         setStore(event.target.value)
-                    }} />
-                <h3 />
+                    }}
+                    error={store === "" && submitDialogClicked === true}
+                    helperText={(store === "" && submitDialogClicked === true) ?
+                        "Please enter a store." : ""}
+                />
+
                 <TextField
-                    variant="outlined"
                     label="Price"
+                    autoFocus
+                    margin="dense"
+                    fullWidth
+                    type="number"
+                    value={price}
                     onChange={(event) => {
                         setPrice(event.target.value)
-                    }} />
-                <h3 />
-                <Button>
-                    <Link
-                        onClick={onClickGroceryItem}
-                    >
-                        <Typography variant="h6">
-                            Add
-                        </Typography>
-                    </Link>
-                </Button>
-            </Paper>
-        </div>
+                    }}
+                    error={price === "" && submitDialogClicked === true}
+                    helperText={(price === "" && submitDialogClicked === true) ?
+                        "Please enter a price." : ""}
+                />
+
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={onClickGroceryItem}>Add</Button>
+                </DialogActions>
+
+            </DialogContent>
+        </Dialog>
     );
 }
 
