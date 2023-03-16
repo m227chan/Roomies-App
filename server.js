@@ -364,12 +364,6 @@ app.post("/api/getExpenseReport", (req, res) => {
 	`;
   let getExpensesData = [
     req.body.user,
-    req.body.sort,
-    req.body.dateStart,
-    req.body.dateEnd,
-    req.body.tag,
-    req.body.spenderID,
-    req.body.debtorID,
     req.body.justUser,
   ];
 

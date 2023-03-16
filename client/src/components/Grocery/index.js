@@ -165,6 +165,23 @@ const Grocery = (props) => {
     callApiAddGroceryItem();
   }
 
+  const today = async () => {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth(); 
+    var yyyy = today.getFullYear();
+    if(dd<10) 
+    {
+      dd='0'+dd;
+    } 
+
+    if(mm<10) 
+    {
+        mm='0'+mm;
+    } 
+    return yyyy+'-'+mm+'-'+dd;
+  }
+
   const callApiDeleteGroceryItem = async (i) => {
     const url = serverURL + "/api/deleteGroceryItem";
     const response = await fetch(url, {
@@ -209,6 +226,35 @@ const Grocery = (props) => {
   const onClickDeleteGrocery = async (i) => {
     setSubmit(true);
     callApiDeleteGrocery(i);
+  }
+
+  const onClickPurchaseGrocery = async (i) => {
+    setSubmit(true);
+    callApiPurchase(i);
+    callApiDeleteGrocery(i.id);
+  }
+
+  const callApiPurchase = async (i) => {
+    const url = serverURL + "/api/addExpense";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        amount: i.price,
+        spender: user.uid,
+        debtor: i.idRoomate,
+        tag: "Grocery",
+        comment: i.brand + " " + i.item + " from " + i.store,
+        date: today()
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
   }
 
   const callApiAddGrocery = async (x, y, z) => {
@@ -384,7 +430,7 @@ const Grocery = (props) => {
               <br />
               <Typography variant='p'>{calculateTotal(i.price, i.Quantity)}</Typography>
               <br />
-              <Button onClick={() => { onClickDeleteGrocery(i.id) }}>Purchased</Button>
+              <Button onClick={() => { onClickPurchaseGrocery(i) }}>Purchased</Button>
             </div>
           )
         })}
