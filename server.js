@@ -347,7 +347,7 @@ app.post("/api/getExpenseReport", (req, res) => {
   //Output: Table of Transactions sorted and filtered.
   let getExpensesSQL = `
 	SET @roomie := (Select id from zzammit.Roomate where firebaseUID = (?)); 
-    SET @justuser := (?);
+  SET @justuser := (?);
 	
 	DROP TABLE IF EXISTS zzammit.ExpLog;
 	CREATE TEMPORARY TABLE zzammit.ExpLog Select Expenses.id as ExpenseID, CONCAT(firstName, ' ', lastName) as Spender, idDebtor, amount, tag, comments, tDate
@@ -529,6 +529,124 @@ app.post("/api/shortExchange", (req, res) => {
       res.send({ express: string });
     }
   );
+  connection.end();
+});
+
+app.post("/api/addEvent", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
+  //Output: None
+  let addExpenseSQL = `
+	INSERT INTO zzammit.Calendar (idRoomate, title, startdate, enddate, tag, eventDescription, Consequence) VALUES ((Select id from zzammit.Roomate where firebaseUID = (?)), ?, ?, ?, ?, ?, ?);
+	`;
+  let addExpenseData = [
+    req.body.roomie,
+    req.body.title,
+    req.body.start,
+    req.body.end,
+    req.body.tag,
+    req.body.description,
+    req.body.consequence,
+  ];
+
+  // console.log(req.body);
+
+  connection.query(addExpenseSQL, addExpenseData, (error, results, fields) => {
+    if (error) {
+      console.log(error.message);
+    }
+
+    let string = JSON.stringify(results);
+    //let obj = JSON.parse(string);
+    res.send({ express: string });
+  });
+  connection.end();
+});
+
+app.post("/api/deleteEvent", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: Expense Trasaction ID
+  //Output: None
+  let delExpenseSQL = `
+	DELETE FROM zzammit.Expenses WHERE id = ?;
+	`;
+  let delExpenseData = [req.body.eventID];
+
+  // console.log(req.body);
+
+  connection.query(delExpenseSQL, delExpenseData, (error, results, fields) => {
+    if (error) {
+      console.log(error.message);
+    }
+
+    let string = JSON.stringify(results);
+    //let obj = JSON.parse(string);
+    res.send({ express: string });
+  });
+  connection.end();
+});
+
+app.post("/api/editEvent", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: (Expense ID, Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
+  //Output: None
+  let editExpenseSQL = `
+	UPDATE zzammit.Calendar SET idRoomate = (Select id from zzammit.Roomate where firebaseUID = (?)), title = ?, startdate = ?, enddate = ?, tag = ?, eventDescription = ?, Consequence = ? WHERE id =?;
+	`;
+  let editExpenseData = [
+    req.body.roomie,
+    req.body.title,
+    req.body.start,
+    req.body.end,
+    req.body.tag,
+    req.body.description,
+    req.body.consequence,
+    req.body.eventID,
+  ];
+
+  // console.log(req.body);
+
+  connection.query(
+    editExpenseSQL,
+    editExpenseData,
+    (error, results, fields) => {
+      if (error) {
+        console.log(error.message);
+      }
+
+      let string = JSON.stringify(results);
+      //let obj = JSON.parse(string);
+      res.send({ express: string });
+    }
+  );
+  connection.end();
+});
+
+app.post("/api/viewEvent", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
+  //Output: None
+  let addExpenseSQL = `
+	SELECT id, CONCAT(firstName, ' ', lastName) as creator, title, startdate, enddate, tag, eventDescription, Consequence 
+	FROM zzammit.Calendar left join zzammit.Roomate on Calendar.idRoomate = Roomate.id 
+		WHERE idRoomate IN (SELECT id FROM zzammit.Roomate WHERE idRoom = 
+							(SELECT idRoom FROM zzammit.Roomate WHERE id = ?));
+	`;
+  let addExpenseData = [
+    req.body.roomie,
+  ];
+
+  // console.log(req.body);
+
+  connection.query(addExpenseSQL, addExpenseData, (error, results, fields) => {
+    if (error) {
+      console.log(error.message);
+    }
+
+    let string = JSON.stringify(results);
+    //let obj = JSON.parse(string);
+    res.send({ express: string });
+  });
   connection.end();
 });
 
