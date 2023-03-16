@@ -14,7 +14,7 @@ const CheckIfRoomExists = async (roomID) => {
                 },
                 body: JSON.stringify({
                     idRoom: roomID,
-                    idRoom: roomID
+                    idRoom: roomID,
                 })
             });
             const body = await response.json();
