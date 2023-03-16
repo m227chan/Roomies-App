@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./expense.css";
 import {
   Button,
@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import CustomAppBar from "../CustomAppBar";
 import ExpenseTable from "./ExpenseTable.js";
-import ExpenseDialog from "./ExpenseDialog";
+import ExpenseDialog from "./AddExpenseDialog";
 
 // Expenses component
 const Expenses = () => {
@@ -43,7 +43,7 @@ const Expenses = () => {
               <Button variant="outlined" onClick={handleClickOpen}>
                 Add Expense
               </Button>
-              <ExpenseDialog open={open} handleClose={handleClose} />
+              <ExpenseDialog open={open} handleClose={handleClose}/>
             </Grid>
             <Grid item>
               <ExpenseTable open={open}/>

@@ -1,68 +1,32 @@
 import React, { useState, useEffect } from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
+import { DataGrid } from '@mui/x-data-grid';
+import EditExpenseDialog from "./EditExpenseDialog";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
-// export const filterExpensesBy = (expenses, filterBy, input) => {
-//   if (filterBy === 'tag' && (input === 'Food' || input === 'Loan'
-//     || input === 'Groceries' || input === 'Activity'
-//     || input === 'Paid Back' || input === 'Other'
-//     || input === 'Consequences')) {
-//     return expenses.filter(expense => expense.tag === input);
-//   } else if (filterBy === 'idSpender') {
-//     return expenses.filter(expense => expense.idSpender === input);
-//   } else if (filterBy === 'idDebtor') {
-//     return expenses.filter(expense => expense.idDebtor === input);
-//   } else if (filterBy === 'amount') {
-//     return expenses.filter(expense => expense.amount === input);
-//   } else {
-//     throw new Error("Invalid input");
-//   }
-// }
-
-// export const deleteExpenses = (expenses, id) => {
-//   if (id < 0){
-//     throw new Error("Invalid input");   
-//   }
-//   const indexFinder = expenses.findIndex(expense => expense.id === id);
-
-//   if (indexFinder === -1){
-//     throw new Error("Invalid input");
-//   }
-  
-//   const updatedExpenses = [];
-//   for(var i = 0; i< expenses.length; i++){
-//     if (i != indexFinder){
-//       updatedExpenses.push(expenses[i])
-//     }
-//   }
-//   return updatedExpenses;
-// }
-
 const ExpenseTable = ({ open }) => {
-  const [expenses, setExpenses] = useState([]);
   const [user, setUser] = useState({});
+  const [expenses, setExpenses] = useState([]);
+  const [currExpense, setCurrExpense] = useState({});
 
-  onAuthStateChanged(auth, (currUser) => {
-    setUser(currUser);
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, (currUser) => {
+      setUser(currUser);
+    });
+  }, []);
 
   useEffect(() => {
     getExpenseReport();
-  }, [user, open]);
+  }, [open, user]);
 
   const callAPIGetExpenseReport = async () => {
-    console.log("getAllExpenses called");
-    const url = serverURL + "/api/getAllExpenses";
+    console.log("getExpenseReport called");
+    const url = serverURL + "/api/getExpenseReport";
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -70,8 +34,8 @@ const ExpenseTable = ({ open }) => {
         //authorization: `Bearer ${this.state.token}`
       },
       body: JSON.stringify({
-        spenderID: user.uid,
-        debtorID: user.uid,
+        firebaseUID: user.uid,
+        justUser: false,
       }),
     });
     const body = await response.json();
@@ -83,39 +47,167 @@ const ExpenseTable = ({ open }) => {
   const getExpenseReport = () => {
     callAPIGetExpenseReport().then((res) => {
       var parsed = JSON.parse(res.express);
-      setExpenses(parsed);
+      setExpenses(parsed[4]);
     });
   };
 
+  const [openEdit, setOpenEdit] = useState(false);
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+    setTimeout(() => {
+      getExpenseReport();
+    }, 500);
+  };
+
+  const handleEditClick = (expense) => {
+    setCurrExpense(expense);
+    setOpenEdit(true);
+  };
+
+  const handleDeleteClick = (expense) => {
+    callAPIDeleteExpense(expense.id);
+    console.log(expense.id);
+    setTimeout(() => {
+      getExpenseReport();
+    }, 500);
+  };
+
+  const callAPIDeleteExpense = async (expenseID) => {
+    console.log("getExpenseReport called");
+    const url = serverURL + "/api/deleteExpense";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        ExpenseID: expenseID,
+      }),
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  };
+
+  const columns = [
+    {
+      field: 'Spender',
+      headerName: 'Payer',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: '18px' }}>
+          {params.value}
+        </div>
+      ),
+    },
+    {
+      field: 'Debtor',
+      headerName: 'Payee',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: '18px' }}>
+          {params.value}
+        </div>
+      ),
+    },
+    {
+      field: 'amount',
+      headerName: 'Amount',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: '18px' }}>{params.value}</div>
+      ),
+    },
+    {
+      field: 'tag',
+      headerName: 'Tag',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: '18px' }}>{params.value}</div>
+      ),
+    },
+    {
+      field: 'comments',
+      headerName: 'Description',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: '18px' }}>{params.value}</div>
+      ),
+    },
+    {
+      field: 'tDate',
+      type: 'Date',
+      headerName: 'Date',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: '18px' }}>
+          {params.value.substring(0, params.value.indexOf('T'))}
+        </div>
+      ),
+    },
+    {
+      field: 'Edit Expense',
+      headerName: '',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <Button
+          variant="outlined"
+          onClick={() => handleEditClick(params.row)}
+        >
+          Edit
+        </Button>
+      ),
+    },
+    {
+      field: 'Delete Expense',
+      headerName: '',
+      headerAlign: 'left',
+      headerClassName: 'tableHeader',
+      flex: 1,
+      renderCell: (params) => (
+        <Button
+          variant="outlined"
+          onClick={() => handleDeleteClick(params.row)}
+        >
+          Delete
+        </Button>
+      ),
+    },
+  ];
+
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="right">Payer</TableCell>
-            <TableCell align="right">Payee</TableCell>
-            <TableCell align="right">Amount</TableCell>
-            <TableCell align="right">Tag</TableCell>
-            <TableCell align="right">Description</TableCell>
-            <TableCell align="right">Date</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {expenses.map((expense) => (
-            <TableRow key={expense.id}>
-              <TableCell align="right">{expense.idSpender}</TableCell>
-              <TableCell align="right">{expense.idDebtor}</TableCell>
-              <TableCell align="right">{expense.amount}</TableCell>
-              <TableCell align="right">{expense.tag}</TableCell>
-              <TableCell align="right">{expense.comments}</TableCell>
-              <TableCell align="right">
-                {expense.tDate.substring(0, expense.tDate.indexOf("T"))}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div style={{ height: 650, width: '100%' }}>
+      <Paper style={{ height: 650, width: '100%' }}>
+        <DataGrid
+          rows={expenses}
+          columns={columns}
+          pageSize={10}
+        />
+      </Paper>
+
+      <EditExpenseDialog
+        openEdit={openEdit}
+        handleCloseEdit={handleCloseEdit}
+        currExpense={currExpense}
+      />
+    </div>
   );
 };
 

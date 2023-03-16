@@ -346,24 +346,24 @@ app.post("/api/getExpenseReport", (req, res) => {
   //			Whether or not you only want to look at the user's tracactions(Boolean: True = just user, False = everything))
   //Output: Table of Transactions sorted and filtered.
   let getExpensesSQL = `
-	SET @roomie := (Select id from zzammit.Roomate where firebaseUID = (?))); 
-    SET @justuser := (?));
+	SET @roomie := (Select id from zzammit.Roomate where firebaseUID = (?)); 
+    SET @justuser := (?);
 	
 	DROP TABLE IF EXISTS zzammit.ExpLog;
-	CREATE TEMPORARY TABLE zzammit.ExpLog Select Expenses.id as ExpenseID, CONCAT(firstName, ' ', lastName) as Spender, idDebtor, amount, tag, comments, tDate 
+	CREATE TEMPORARY TABLE zzammit.ExpLog Select Expenses.id as ExpenseID, CONCAT(firstName, ' ', lastName) as Spender, idDebtor, amount, tag, comments, tDate
 		From zzammit.Expenses left join zzammit.Roomate on Expenses.idSpender = Roomate.id where 
 		CASE @justUser WHEN TRUE THEN (idSpender = @roomie or idDebtor = @roomie) ELSE idSpender IN 
 			(SELECT id FROM zzammit.Roomate WHERE idRoom = 
 				(SELECT idRoom FROM zzammit.Roomate WHERE id = @roomie)) END
 		;
 		
-	Select ExpenseID, Spender, CONCAT(Roomate.firstName, ' ', Roomate.lastName) as Debtor, amount, tDate, tag, comments
+	Select ExpenseID as id, Spender, CONCAT(Roomate.firstName, ' ', Roomate.lastName) as Debtor, amount, tDate, tag, comments
 		From zzammit.ExpLog left join zzammit.Roomate on ExpLog.idDebtor = Roomate.id;
 	
 	DROP TABLE IF EXISTS zzammit.ExpLog;
 	`;
   let getExpensesData = [
-    req.body.user,
+    req.body.firebaseUID,
     req.body.justUser,
   ];
 
@@ -384,31 +384,7 @@ app.post("/api/getExpenseReport", (req, res) => {
   );
   connection.end();
 });
-app.post("/api/getAllExpenses", (req, res) => {
-  let connection = mysql.createConnection(config);
 
-  let getExpensesSQL = `
-  SELECT * FROM zzammit.Expenses where idSpender = (select id from zzammit.Roomate where firebaseUID = (?)) OR idDebtor = (select id from zzammit.Roomate where firebaseUID = (?));
-	`;
-  let getExpensesData = [req.body.spenderID, req.body.debtorID];
-
-  // console.log(req.body);
-
-  connection.query(
-    getExpensesSQL,
-    getExpensesData,
-    (error, results, fields) => {
-      if (error) {
-        console.log(error.message);
-      }
-
-      let string = JSON.stringify(results);
-      //let obj = JSON.parse(string);
-      res.send({ express: string });
-    }
-  );
-  connection.end();
-});
 app.post("/api/addExpense", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
@@ -458,7 +434,7 @@ app.post("/api/deleteExpense", (req, res) => {
 	Update zzammit.Roomate set owed = owed + @oldAmt where id = @oldD;
 	DELETE FROM zzammit.Expenses WHERE id = @expID;
 	`;
-  let delExpenseData = [req.body.expenseID];
+  let delExpenseData = [req.body.ExpenseID];
 
   // console.log(req.body);
 

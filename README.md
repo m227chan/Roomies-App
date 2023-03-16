@@ -6,3 +6,9 @@ Installation Requirements:
 
 - install Firebase
 - yarn add @mui/material @emotion/react @emotion/styled
+- yarn add @fullcalendar/react
+- yarn add @fullcalendar/daygrid
+- yarn add @fullcalendar/core
+- yarn add @fullcalendar/timegrid
+- yarn add @fullcalendar/interaction
+- yarn add @fullcalendar/list
