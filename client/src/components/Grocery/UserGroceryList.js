@@ -67,29 +67,51 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
             <Typography
                 variant={"h3"}
             >
-                List of My Grocery Items
+                My Grocery Items
             </Typography>
             {userGroceryList.map((item) => {
                 return (
                     <div key={item.id}>
                         <Paper>
-                            <Typography variant='body1'>Item: {item.item}</Typography>
+                            <Typography variant='body1'>
+                                Item: {item.item}
+                            </Typography>
                             <br />
-                            <Typography variant='body1'>Brand: {item.brand}</Typography>
+                            <Typography variant='body1'>
+                                Brand: {item.brand}
+                            </Typography>
                             <br />
-                            <Typography variant='body1'>Store: {item.store}</Typography>
+                            <Typography variant='body1'>
+                                Store: {item.store}
+                            </Typography>
                             <br />
-                            <Typography variant='body1'>Price: {item.price}</Typography>
+                            <Typography variant='body1'>
+                                Price: {item.price}
+                            </Typography>
                             <br />
                             <TextField
                                 variant="outlined"
                                 label="Quantity"
                                 size="small"
-                                onChange={(event) => {
-                                    setQuantity(event.target.value)
-                                }} />
-                            <Button onClick={() => { onClickAddGrocery(item.idRoomate, item.id, quantity) }}>Add</Button>
-                            <Button onClick={() => { onClickDeleteGroceryItem(item.id) }}>Delete</Button>
+                                onChange={
+                                    (event) => {
+                                        setQuantity(event.target.value)
+                                    }} />
+                            <Button onClick={
+                                () => {
+                                    onClickAddGrocery(
+                                        item.idRoomate,
+                                        item.id,
+                                        quantity)
+                                }}>
+                                Add To Room Grocery List
+                            </Button>
+                            <Button onClick={
+                                () => {
+                                    onClickDeleteGroceryItem(item.id)
+                                }}>
+                                Delete
+                            </Button>
                             <br />
                         </Paper>
                     </div>

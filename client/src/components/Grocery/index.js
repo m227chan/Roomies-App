@@ -3,6 +3,7 @@ import {
   Grid,
   Paper,
   Box,
+  Button,
 } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
@@ -39,7 +40,7 @@ const Grocery = () => {
         // console.log(viewGroup);
       })
 
-      callViewGroupGrocery()
+    callViewGroupGrocery()
       .then(res => {
         // console.log("callApiViewGroupGrocery returned: ", res)
         var parsed = JSON.parse(res.express);
@@ -86,6 +87,16 @@ const Grocery = () => {
     return body;
   }
 
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <div>
       <Paper class="paper">
@@ -95,18 +106,48 @@ const Grocery = () => {
 
           <Grid
             container
-            spacing={0}
+            spacing={3}
+            columns={16}
+            justifyContent="center"
             style={{ minHeight: "100vh" }}
-            class="mainMessageContainer"
+            className="mainMessageContainer"
           >
-            <Grid item>
-              <AddGroceryItemDialog user={user} setSubmit={setSubmit} />
 
-              <UserGroceryList userGroceryList={userGroceryList} setSubmit={setSubmit}/>
+            <Grid item xs={6} md={7.5}>
 
-              <RoomGroceryList roomGroceryList={roomGroceryList} setSubmit={setSubmit}/>
+              <UserGroceryList
+                userGroceryList={userGroceryList}
+                setSubmit={setSubmit}
+              />
+
+              <Button
+                variant="outlined"
+                onClick={handleClickOpen}
+              >
+                Add Grocery Item
+              </Button>
+
+              <AddGroceryItemDialog
+                user={user}
+                setSubmit={setSubmit}
+                open={open}
+                handleClose={handleClose}
+              />
+
             </Grid>
+
+            <Grid item xs={6} md={7.5}>
+
+              <RoomGroceryList
+                user={user}
+                roomGroceryList={roomGroceryList}
+                setSubmit={setSubmit}
+              />
+
+            </Grid>
+
           </Grid>
+
         </Box>
       </Paper>
     </div>
