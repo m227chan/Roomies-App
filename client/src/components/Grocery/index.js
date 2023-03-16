@@ -67,6 +67,33 @@ const styles = theme => ({
 
 });
 
+export const filterGroceryGroupBy = (group, filterBy, input) => {
+  if (filterBy === 'item') {
+    return group.filter(item => item.item === input);
+  } else if (filterBy === 'brand') {
+    return group.filter(item => item.brand === input);
+  } else if (filterBy === 'store') {
+    return group.filter(item => item.store === input);
+  } else if (filterBy === 'price') {
+    return group.filter(item => item.price === input);
+  } else {
+    throw new Error("Invalid input");
+  }
+}
+
+export const calculateTotal = (price, quantity) => {
+  try {
+    if (isNaN(price) || isNaN(quantity)) {
+      return null;
+    }
+    const total = (price * quantity).toString();
+    return 'Total Cost is $' + total + '.';
+
+  } catch (e) {
+    return null;
+  }
+}
+
 const Grocery = (props) => {
 
   const { classes } = props;
@@ -82,6 +109,7 @@ const Grocery = (props) => {
 
   const [user, setUser] = useState({});
   const [submit, setSubmit] = useState(false);
+
   onAuthStateChanged(auth, (currUser) => {
     setUser(currUser);
   });
@@ -95,6 +123,7 @@ const Grocery = (props) => {
         setViewMine(parsed);
 
         setSubmit(false);
+        console.log(viewGroup);
       })
   }, [submit, user]);
 
@@ -105,7 +134,6 @@ const Grocery = (props) => {
         var parsed = JSON.parse(res.express);
         console.log("callApiviewGroupGrocery parsed: ", parsed);
         setGroup(parsed);
-
         setSubmit(false);
       })
   }, [submit, user]);
@@ -183,7 +211,7 @@ const Grocery = (props) => {
     callApiDeleteGrocery(i);
   }
 
-  const callApiAddGrocery = async (x,y,z) => {
+  const callApiAddGrocery = async (x, y, z) => {
     const url = serverURL + "/api/addGrocery";
     const response = await fetch(url, {
       method: "POST",
@@ -203,9 +231,9 @@ const Grocery = (props) => {
     return body;
   }
 
-  const onClickAddGrocery = async (x,y,z) => {
+  const onClickAddGrocery = async (x, y, z) => {
     setSubmit(true);
-    callApiAddGrocery(x,y,z);
+    callApiAddGrocery(x, y, z);
   }
 
   const callViewGrocery = async () => {
@@ -310,10 +338,14 @@ const Grocery = (props) => {
           {viewMine.map((i) => {
             return (
               <div>
-                <h4>Item: {i.item}</h4>
-                <h5>Brand: {i.brand}</h5>
-                <h5>Store: {i.store}</h5>
-                <h5>Price: {i.price}</h5>
+                <Typography variant='p'>Item: {i.item}</Typography>
+                <br />
+                <Typography variant='p'>Brand: {i.brand}</Typography>
+                <br />
+                <Typography variant='p'>Store: {i.store}</Typography>
+                <br />
+                <Typography variant='p'>Price: {i.price}</Typography>
+                <br />
                 <TextField
                   variant="outlined"
                   label="Quantity"
@@ -321,32 +353,41 @@ const Grocery = (props) => {
                   onChange={(event) => {
                     setQuantiy(event.target.value)
                   }} />
-                <Button onClick={() => { onClickAddGrocery(i.idRoomate, i.id, quantity)}}>Add</Button>
+                <Button onClick={() => { onClickAddGrocery(i.idRoomate, i.id, quantity) }}>Add</Button>
                 <Button onClick={() => { onClickDeleteGroceryItem(i.id) }}>Delete</Button>
                 <br />
               </div>
             )
           })}
         </Grid>
+
         <h1>---</h1>
+
         <Typography
-            variant={"h3"}
-            className={classes.mainMessage}
-          >
-            Group Grocery's 
-          </Typography>
+          variant={"h3"}
+          className={classes.mainMessage}
+        >
+          Group Grocery's
+        </Typography>
         {viewGroup.map((i) => {
-            return (
-              <div>
-                <h4>Item: {i.item}</h4>
-                <h5>Brand: {i.brand}</h5>
-                <h5>Store: {i.store}</h5>
-                <h5>Price: {i.price}</h5>
-                <h5>Quantity: {i.Quantity}</h5>
-                <Button onClick={() => { onClickDeleteGrocery(i.id) }}>Purchased</Button>
-              </div>
-            )
-          })}
+          return (
+            <div>
+              <Typography variant='p'>Item: {i.item}</Typography>
+              <br />
+              <Typography variant='p'>Brand: {i.brand}</Typography>
+              <br />
+              <Typography variant='p'>Store: {i.store}</Typography>
+              <br />
+              <Typography variant='p'>Price: {i.price}</Typography>
+              <br />
+              <Typography variant='p'>Quantity: {i.Quantity}</Typography>
+              <br />
+              <Typography variant='p'>{calculateTotal(i.price, i.Quantity)}</Typography>
+              <br />
+              <Button onClick={() => { onClickDeleteGrocery(i.id) }}>Purchased</Button>
+            </div>
+          )
+        })}
       </Grid>
     </Box>
   );
