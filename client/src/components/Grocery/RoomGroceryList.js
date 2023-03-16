@@ -1,11 +1,12 @@
 import React from 'react';
 import {
-    Typography,
     Paper,
     Button,
+    Dialog,
 } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 import "./Grocery.css";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
@@ -26,8 +27,14 @@ const RoomGroceryList = ({ roomGroceryList, setSubmit, user }) => {
     }
 
     const onClickPurchase = async (item) => {
+        console.log(item);
         setSubmit(true);
         callApiPurchase(item)
+        callApiDeleteItemRoomList(item);
+    }
+
+    const onClickDelete = async (item) => {
+        setSubmit(true);
         callApiDeleteItemRoomList(item);
     }
 
@@ -87,115 +94,95 @@ const RoomGroceryList = ({ roomGroceryList, setSubmit, user }) => {
         return body;
     }
 
-    // const columns = [
-    //     {
-    //         field: 'item',
-    //         headerName: 'Item',
-    //         headerAlign: 'left',
-    //         headerClassName: 'tableHeader',
-    //         flex: 1,
-    //         renderCell: (params) => (
-    //             <div style={{ fontSize: '18px' }}>
-    //                 {params.value}
-    //             </div>
-    //         ),
-    //     },
-    //     {
-    //         field: 'brand',
-    //         headerName: 'Brand',
-    //         headerAlign: 'left',
-    //         headerClassName: 'tableHeader',
-    //         flex: 1,
-    //         renderCell: (params) => (
-    //             <div style={{ fontSize: '18px' }}>
-    //                 {params.value}
-    //             </div>
-    //         ),
-    //     },
-    //     {
-    //         field: 'store',
-    //         headerName: 'Store',
-    //         headerAlign: 'left',
-    //         headerClassName: 'tableHeader',
-    //         flex: 1,
-    //         renderCell: (params) => (
-    //             <div style={{ fontSize: '18px' }}>
-    //                 {params.value}
-    //             </div>
-    //         ),
-    //     },
-    //     {
-    //         field: 'price',
-    //         headerName: 'Price',
-    //         headerAlign: 'left',
-    //         headerClassName: 'tableHeader',
-    //         flex: 1,
-    //         renderCell: (params) => (
-    //             <div style={{ fontSize: '18px' }}>
-    //                 {params.value}
-    //             </div>
-    //         ),
-    //     },
-    //     {
-    //         field: 'Quantity',
-    //         headerName: 'Quantity',
-    //         headerAlign: 'left',
-    //         headerClassName: 'tableHeader',
-    //         flex: 1,
-    //         renderCell: (params) => (
-    //             <div style={{ fontSize: '18px' }}>
-    //                 {params.value}
-    //             </div>
-    //         ),
-    //     },
-    //     {
-    //         headerName: 'Actions',
-    //         headerAlign: 'left',
-    //         headerClassName: 'tableHeader',
-    //         flex: 1,
-    //         renderCell: (params) => (
-    //             <>
-    //                 <Typography variant='body1'>{calculateTotal(params.price, params.Quantity)}</Typography>
-    //                 <Button onClick={() => { onClickPurchase(params.value) }}>Purchase</Button>
-    //             </>
-    //         ),
-    //     },
-    // ]
+    const columns = [
+        {
+            field: 'item',
+            headerName: 'Item',
+            headerAlign: 'left',
+            headerClassName: 'tableHeader',
+            flex: 1,
+            renderCell: (params) => (
+                <div style={{ fontSize: '18px' }}>
+                    {params.value}
+                </div>
+            ),
+        },
+        {
+            field: 'brand',
+            headerName: 'Brand',
+            headerAlign: 'left',
+            headerClassName: 'tableHeader',
+            flex: 1,
+            renderCell: (params) => (
+                <div style={{ fontSize: '18px' }}>
+                    {params.value}
+                </div>
+            ),
+        },
+        {
+            field: 'store',
+            headerName: 'Store',
+            headerAlign: 'left',
+            headerClassName: 'tableHeader',
+            flex: 1,
+            renderCell: (params) => (
+                <div style={{ fontSize: '18px' }}>
+                    {params.value}
+                </div>
+            ),
+        },
+        {
+            field: 'price',
+            headerName: 'Price Per Item',
+            headerAlign: 'left',
+            headerClassName: 'tableHeader',
+            flex: 1,
+            renderCell: (params) => (
+                <div style={{ fontSize: '18px' }}>
+                    {params.value}
+                </div>
+            ),
+        },
+        {
+            field: 'Quantity',
+            headerName: 'Quantity',
+            headerAlign: 'left',
+            headerClassName: 'tableHeader',
+            flex: 1,
+            renderCell: (params) => (
+                <div style={{ fontSize: '18px' }}>
+                    {params.value}
+                </div>
+            ),
+        },
+        {
+            headerName: 'Actions',
+            headerAlign: 'left',
+            headerClassName: 'tableHeader',
+            flex: 1,
+            renderCell: (params) => (
+                <>
+                    <Button onClick={() => { onClickPurchase(params.row) }}>Purchase</Button>
+                    <br/>
+                    <br/>
+                    <Button onClick={() => { onClickDelete(params.row) }}>
+                        <DeleteIcon/>
+                    </Button>
+                </>
+            ),
+        },
+    ]
 
     return (
-        <div>
-            {roomGroceryList.map((item) => {
-                return (
-                    <div key={item.id}>
-                        <Paper>
-                            <Typography variant='body1'>Item: {item.item}</Typography>
-                            <br />
-                            <Typography variant='body1'>Brand: {item.brand}</Typography>
-                            <br />
-                            <Typography variant='body1'>Store: {item.store}</Typography>
-                            <br />
-                            <Typography variant='body1'>Price: {item.price}</Typography>
-                            <br />
-                            <Typography variant='body1'>Quantity: {item.Quantity}</Typography>
-                            <br />
-                            <Typography variant='body1'>{calculateTotal(item.price, item.Quantity)}</Typography>
-                            <br />
-                            <Button onClick={() => { onClickPurchase(item) }}>Purchased</Button>
-                        </Paper>
-                    </div>
-                )
-            })}
+        <div style={{ height: 650, width: '100%' }}>
+            <Paper style={{ height: 650, width: '100%' }}>
+                <DataGrid
+                    rows={roomGroceryList}
+                    columns={columns}
+                    pageSize={10}
+                />
+            </Paper>
         </div>
-
-        // <div style={{ height: 650, width: '100%' }}>
-        //     <Paper style={{ height: 650, width: '100%' }}>
-        //         <DataGrid
-        //             rows={roomGroceryList}
-        //             columns={columns}
-        //             pageSize={10}
-        //         />
-        //     </Paper>
-        // </div>
     );
 }
 
