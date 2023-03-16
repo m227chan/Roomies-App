@@ -50,9 +50,23 @@ const EditExpenseDialog = ({ openEdit, handleCloseEdit, currExpense }) => {
     }, [currExpense]);
 
     const handleSubmitEditExpense = () => {
-        callApiEditExpense();
-        handleCloseEdit();
-    };
+        if (payee === payer) {
+            setErrorStatus(true);
+        }
+
+        if (payee != payer) {
+            setErrorStatus(false);
+        }
+
+        if (payee != payer &&
+            comments != "" &&
+            tag != "" &&
+            date != "" &&
+            amount != "") {
+            callApiEditExpense();
+            handleCloseEdit();
+        };
+    }
 
     const handleCancel = () => {
         console.log(currExpense);
@@ -208,7 +222,7 @@ const EditExpenseDialog = ({ openEdit, handleCloseEdit, currExpense }) => {
                 </FormControl>
 
                 <Typography align="left" color="red">{(errorStatus === true) ?
-                    "Error: Cannot select same Payer and Payee." : ""}
+                    "Error: Must select payer and payee. Cannot be the same Person." : ""}
                 </Typography>
 
                 <TextField
