@@ -4,6 +4,7 @@ import {
     Paper,
     Button,
 } from "@mui/material";
+import { DataGrid } from '@mui/x-data-grid';
 import "./Grocery.css";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
@@ -54,7 +55,7 @@ const RoomGroceryList = ({ roomGroceryList, setSubmit, user }) => {
                 //authorization: `Bearer ${this.state.token}`
             },
             body: JSON.stringify({
-                amount: item.price,
+                amount: item.price * item.Quantity,
                 spender: user.uid,
                 debtor: item.idRoomate,
                 tag: "Grocery",
@@ -86,13 +87,83 @@ const RoomGroceryList = ({ roomGroceryList, setSubmit, user }) => {
         return body;
     }
 
+    // const columns = [
+    //     {
+    //         field: 'item',
+    //         headerName: 'Item',
+    //         headerAlign: 'left',
+    //         headerClassName: 'tableHeader',
+    //         flex: 1,
+    //         renderCell: (params) => (
+    //             <div style={{ fontSize: '18px' }}>
+    //                 {params.value}
+    //             </div>
+    //         ),
+    //     },
+    //     {
+    //         field: 'brand',
+    //         headerName: 'Brand',
+    //         headerAlign: 'left',
+    //         headerClassName: 'tableHeader',
+    //         flex: 1,
+    //         renderCell: (params) => (
+    //             <div style={{ fontSize: '18px' }}>
+    //                 {params.value}
+    //             </div>
+    //         ),
+    //     },
+    //     {
+    //         field: 'store',
+    //         headerName: 'Store',
+    //         headerAlign: 'left',
+    //         headerClassName: 'tableHeader',
+    //         flex: 1,
+    //         renderCell: (params) => (
+    //             <div style={{ fontSize: '18px' }}>
+    //                 {params.value}
+    //             </div>
+    //         ),
+    //     },
+    //     {
+    //         field: 'price',
+    //         headerName: 'Price',
+    //         headerAlign: 'left',
+    //         headerClassName: 'tableHeader',
+    //         flex: 1,
+    //         renderCell: (params) => (
+    //             <div style={{ fontSize: '18px' }}>
+    //                 {params.value}
+    //             </div>
+    //         ),
+    //     },
+    //     {
+    //         field: 'Quantity',
+    //         headerName: 'Quantity',
+    //         headerAlign: 'left',
+    //         headerClassName: 'tableHeader',
+    //         flex: 1,
+    //         renderCell: (params) => (
+    //             <div style={{ fontSize: '18px' }}>
+    //                 {params.value}
+    //             </div>
+    //         ),
+    //     },
+    //     {
+    //         headerName: 'Actions',
+    //         headerAlign: 'left',
+    //         headerClassName: 'tableHeader',
+    //         flex: 1,
+    //         renderCell: (params) => (
+    //             <>
+    //                 <Typography variant='body1'>{calculateTotal(params.price, params.Quantity)}</Typography>
+    //                 <Button onClick={() => { onClickPurchase(params.value) }}>Purchase</Button>
+    //             </>
+    //         ),
+    //     },
+    // ]
+
     return (
         <div>
-            <Typography
-                variant={"h3"}
-            >
-                Room Grocery List
-            </Typography>
             {roomGroceryList.map((item) => {
                 return (
                     <div key={item.id}>
@@ -109,12 +180,22 @@ const RoomGroceryList = ({ roomGroceryList, setSubmit, user }) => {
                             <br />
                             <Typography variant='body1'>{calculateTotal(item.price, item.Quantity)}</Typography>
                             <br />
-                            <Button onClick={() => {onClickPurchase(item)}}>Purchased</Button>
+                            <Button onClick={() => { onClickPurchase(item) }}>Purchased</Button>
                         </Paper>
                     </div>
                 )
             })}
         </div>
+
+        // <div style={{ height: 650, width: '100%' }}>
+        //     <Paper style={{ height: 650, width: '100%' }}>
+        //         <DataGrid
+        //             rows={roomGroceryList}
+        //             columns={columns}
+        //             pageSize={10}
+        //         />
+        //     </Paper>
+        // </div>
     );
 }
 

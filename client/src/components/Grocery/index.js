@@ -4,6 +4,7 @@ import {
   Paper,
   Box,
   Button,
+  Typography,
 } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
@@ -115,10 +116,11 @@ const Grocery = () => {
 
             <Grid item xs={6} md={7.5}>
 
-              <UserGroceryList
-                userGroceryList={userGroceryList}
-                setSubmit={setSubmit}
-              />
+              <Typography
+                variant={"h3"}
+              >
+                My Grocery Items
+              </Typography>
 
               <Button
                 variant="outlined"
@@ -126,6 +128,11 @@ const Grocery = () => {
               >
                 Add Grocery Item
               </Button>
+
+              <UserGroceryList
+                userGroceryList={userGroceryList}
+                setSubmit={setSubmit}
+              />
 
               <AddGroceryItemDialog
                 user={user}
@@ -137,6 +144,12 @@ const Grocery = () => {
             </Grid>
 
             <Grid item xs={6} md={7.5}>
+
+              <Typography
+                variant={"h3"}
+              >
+                Room Grocery List
+              </Typography>
 
               <RoomGroceryList
                 user={user}

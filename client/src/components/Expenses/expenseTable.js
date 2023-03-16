@@ -126,7 +126,9 @@ const ExpenseTable = ({ open }) => {
       headerClassName: 'tableHeader',
       flex: 1,
       renderCell: (params) => (
-        <div style={{ fontSize: '18px' }}>{params.value}</div>
+        <div style={{ fontSize: '18px' }}>
+          {params.value}
+        </div>
       ),
     },
     {
@@ -136,7 +138,9 @@ const ExpenseTable = ({ open }) => {
       headerClassName: 'tableHeader',
       flex: 1,
       renderCell: (params) => (
-        <div style={{ fontSize: '18px' }}>{params.value}</div>
+        <div style={{ fontSize: '18px' }}>
+          {params.value}
+        </div>
       ),
     },
     {
@@ -146,7 +150,9 @@ const ExpenseTable = ({ open }) => {
       headerClassName: 'tableHeader',
       flex: 1,
       renderCell: (params) => (
-        <div style={{ fontSize: '18px' }}>{params.value}</div>
+        <div style={{ fontSize: '18px' }}>
+          {params.value}
+        </div>
       ),
     },
     {
@@ -163,7 +169,6 @@ const ExpenseTable = ({ open }) => {
       ),
     },
     {
-      field: 'Edit or Delete Expense',
       headerName: 'Actions',
       headerAlign: 'left',
       headerClassName: 'tableHeader',
