@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import "./expense.css";
+import React, { useState } from "react";
+import "./Expense.css";
 import {
   Button,
   Paper,

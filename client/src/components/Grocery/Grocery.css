@@ -1,0 +1,32 @@
+.root {
+    background-color: #000000;
+    opacity: 0.9;
+    overflow: hidden;
+  }
+
+.mainMessage {
+    opacity: 0.9;
+  }
+  
+  .mainMessageContainer {
+    margin-top: 15vh;
+    margin-left: 10vh;
+    margin-right: 10vh;
+  }
+  
+  @media (max-width: 600px) {
+    .mainMessageContainer {
+      margin-left: 4px;
+    }
+  }
+  
+  .paper {
+    overflow: hidden;
+  }
+  
+  .message {
+    opacity: 0.9;
+    max-width: 250px;
+    padding-bottom: 8px;
+  }
+  
