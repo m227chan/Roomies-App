@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import CustomAppBar from "../CustomAppBar";
 import ExpenseTable from "./ExpenseTable.js";
-import ExpenseDialog from "./ExpenseDialog";
+import ExpenseDialog from "./AddExpenseDialog";
 
 // Expenses component
 const Expenses = () => {

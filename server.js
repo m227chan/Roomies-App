@@ -350,7 +350,7 @@ app.post("/api/getExpenseReport", (req, res) => {
     SET @justuser := (?);
 	
 	DROP TABLE IF EXISTS zzammit.ExpLog;
-	CREATE TEMPORARY TABLE zzammit.ExpLog Select Expenses.id as ExpenseID, CONCAT(firstName, ' ', lastName) as Spender, idDebtor, amount, tag, comments, tDate 
+	CREATE TEMPORARY TABLE zzammit.ExpLog Select Expenses.id as ExpenseID, CONCAT(firstName, ' ', lastName) as Spender, idDebtor, amount, tag, comments, tDate
 		From zzammit.Expenses left join zzammit.Roomate on Expenses.idSpender = Roomate.id where 
 		CASE @justUser WHEN TRUE THEN (idSpender = @roomie or idDebtor = @roomie) ELSE idSpender IN 
 			(SELECT id FROM zzammit.Roomate WHERE idRoom = 
