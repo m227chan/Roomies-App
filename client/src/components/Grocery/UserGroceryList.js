@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {
     Button,
-    Typography,
     TextField,
     Paper,
 } from "@mui/material";
+import { DataGrid } from '@mui/x-data-grid';
 import "./Grocery.css";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
@@ -62,62 +62,103 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
         return body;
     }
 
-    return (
-        <div>
-            <Typography
-                variant={"h3"}
-            >
-                My Grocery Items
-            </Typography>
-            {userGroceryList.map((item) => {
-                return (
-                    <div key={item.id}>
-                        <Paper>
-                            <Typography variant='body1'>
-                                Item: {item.item}
-                            </Typography>
-                            <br />
-                            <Typography variant='body1'>
-                                Brand: {item.brand}
-                            </Typography>
-                            <br />
-                            <Typography variant='body1'>
-                                Store: {item.store}
-                            </Typography>
-                            <br />
-                            <Typography variant='body1'>
-                                Price: {item.price}
-                            </Typography>
-                            <br />
-                            <TextField
-                                variant="outlined"
-                                label="Quantity"
-                                size="small"
-                                onChange={
-                                    (event) => {
-                                        setQuantity(event.target.value)
-                                    }} />
-                            <Button onClick={
-                                () => {
-                                    onClickAddGrocery(
-                                        item.idRoomate,
-                                        item.id,
-                                        quantity)
-                                }}>
-                                Add To Room Grocery List
-                            </Button>
-                            <Button onClick={
-                                () => {
-                                    onClickDeleteGroceryItem(item.id)
-                                }}>
-                                Delete
-                            </Button>
-                            <br />
-                        </Paper>
-                    </div>
-                )
-            })}
+    const columns = [
+        {
+            field: 'item',
+            headerName: 'Item',
+            headerAlign: 'left',
+            headerClassName: 'tableHeader',
+            flex: 1,
+            renderCell: (params) => (
+                <div style={{ fontSize: '18px' }}>
+                    {params.value}
+                </div>
+            ),
+        },
+        {
+            field: 'brand',
+            headerName: 'Brand',
+            headerAlign: 'left',
+            headerClassName: 'tableHeader',
+            flex: 1,
+            renderCell: (params) => (
+                <div style={{ fontSize: '18px' }}>
+                    {params.value}
+                </div>
+            ),
+        },
+        {
+            field: 'store',
+            headerName: 'Store',
+            headerAlign: 'left',
+            headerClassName: 'tableHeader',
+            flex: 1,
+            renderCell: (params) => (
+                <div style={{ fontSize: '18px' }}>
+                    {params.value}
+                </div>
+            ),
+        },
+        {
+            field: 'price',
+            headerName: 'Price',
+            headerAlign: 'left',
+            headerClassName: 'tableHeader',
+            flex: 1,
+            renderCell: (params) => (
+                <div style={{ fontSize: '18px' }}>
+                    {params.value}
+                </div>
+            ),
+        },
+        {
+            headerName: 'Actions',
+            headerAlign: 'left',
+            headerClassName: 'tableHeader',
+            flex: 2,
+            renderCell: (params) => (
+                <>
+                    <TextField
+                        variant="outlined"
+                        label="Quantity"
+                        size="small"
+                        onChange={
+                            (event) => {
+                                setQuantity(event.target.value)
+                            }}
+                    />
 
+                    <Button onClick={
+                        () => {
+                            onClickAddGrocery(
+                                params.row.idRoomate,
+                                params.row.id,
+                                quantity)
+                        }}
+                    >
+                        Add
+                    </Button>
+                    <Button onClick={
+                        () => {
+                            onClickDeleteGroceryItem(params.row.id)
+                        }}
+                    >
+                        Delete
+                    </Button>
+                </>
+            ),
+        },
+    ]
+
+    return (
+        <div style={{ height: 650, width: '100%' }}>
+            <Paper style={{ height: 650, width: '100%' }}>
+                <DataGrid
+                    rows={userGroceryList}
+                    columns={columns}
+                    pageSize={10}
+                />
+            </Paper>
         </div>
     );
 }
