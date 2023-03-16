@@ -12,8 +12,29 @@ import { blueGrey } from "@material-ui/core/colors";
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = useState([]);
 
+  //update this component by retriving date from the database
+  var initialEvents = {
+    events: [
+      {
+        title: "event1",
+        start: "2023-03-01",
+      },
+      {
+        title: "event2",
+        start: "2023-03-05",
+        end: "2023-03-07",
+      },
+      {
+        title: "event3",
+        start: "2023-03-09T12:30:00",
+        allDay: false, // will make the time show
+      },
+    ],
+  };
+
   const handleDateClick = (selected) => {
     const title = prompt("Please enter a new title for your event");
+    const creator = prompt("Please enter a new title for your event");
     const calendarApi = selected.view.calendar;
     calendarApi.unselect();
 
@@ -24,12 +45,20 @@ const Calendar = () => {
         start: selected.startStr,
         end: selected.endStr,
         allDay: selected.allDay,
+        creator,
       });
 
       console.log("Start " + selected.startStr);
       console.log("End " + selected.endStr);
       console.log("All Day" + selected.allDay);
     }
+  };
+
+  const handleHover = (selected) => {
+    const creator = selected.event.extendedProps.creator;
+    const title = selected.event.title;
+    const tooltip = `Created by ${creator}`;
+    selected.el.setAttribute("title", tooltip);
   };
 
   const handleEventClick = (selected) => {
@@ -69,6 +98,8 @@ const Calendar = () => {
               select={handleDateClick}
               eventClick={handleEventClick}
               eventsSet={(events) => setCurrentEvents(events)}
+              eventMouseEnter={handleHover}
+              initialEvents={initialEvents}
             />
           </Box>
         </Box>
