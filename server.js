@@ -501,24 +501,29 @@ app.post("/api/shortExchange", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: FireBase ID
   //Output:
-  let editExpenseSQL = `
-	
+  let shortExchangeSQL = `
+	SET @roomie := (Select id from zzammit.Roomate where firebaseUID = (?)); 
+
+  SELECT CONCAT_WS(' pays ', idDebtor, idSpender, MIN(amount)) AS transaction
+  FROM zzammit.Expenses
+  JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM zzammit.Expenses UNION SELECT idSpender AS id FROM zzammit.Expenses) AS allID JOIN zzammit.Roomate ON allID.id1 = zzammit.Roomate.id) AS debtor ON Expenses.idDebtor = debtor.id1
+  JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM zzammit.Expenses UNION SELECT idSpender AS id FROM zzammit.Expenses) AS allID JOIN zzammit.Roomate ON allID.id1 = zzammit.Roomate.id) AS spender ON Expenses.idSpender = spender.id1
+  WHERE (debtor.id1 != spender.id1) AND debtor.id1 IN 
+  			(SELECT id FROM zzammit.Roomate WHERE idRoom = 
+  				(SELECT idRoom FROM zzammit.Roomate WHERE id = @roomie))
+  GROUP BY debtor.id1, spender.id1
+  HAVING SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END) <> 0
+  ORDER BY SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END);
 	`;
-  let editExpenseData = [
-    req.body.expenseID,
-    req.body.amount,
-    req.body.spender,
-    req.body.debtor,
-    req.body.tag,
-    req.body.comment,
-    req.body.date,
+  let shortExchangeData = [
+    req.body.roommateID,
   ];
 
   // console.log(req.body);
 
   connection.query(
-    editExpenseSQL,
-    editExpenseData,
+    shortExchangeSQL,
+    shortExchangeData,
     (error, results, fields) => {
       if (error) {
         console.log(error.message);
