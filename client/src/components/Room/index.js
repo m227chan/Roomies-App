@@ -56,10 +56,14 @@ const Room = () => {
       <CustomAppBar />
       <Container class="container">
         <Grid container spacing={2} style={{ margin: "0px" }}>
+
           {/* This is the Welcome Message */}
+          <Card class="card">
           <Grid item xs={6} md={8}>
             <Typography variant={"h4"}>Welcome, {user.email}</Typography>
           </Grid>
+          </Card>
+
           {/*  This shows the user the other roommates in the room */}
           <Grid item xs={6} md={4}>
             <Card class="card">
@@ -83,6 +87,7 @@ const Room = () => {
               </CardContent>
             </Card>
           </Grid>
+
           {/* This shows the top three calendar reminders */}
           <Grid item xs={6} md={8}>
             <Card class="card">
@@ -143,6 +148,7 @@ const Room = () => {
               </CardContent>
             </Card>
           </Grid>
+
           {/* The Grid for the right modules */}
           <Grid item xs={6} md={4}>
             <Grid container style={{ height: "100%" }} spacing={2}>
@@ -205,6 +211,7 @@ const Room = () => {
               </Grid>
             </Grid>
           </Grid>
+
         </Grid>
       </Container>
     </Box>
