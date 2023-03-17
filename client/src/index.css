@@ -12,10 +12,10 @@
 
 /* Set the colour and container scheme for all elements */
 :root {
-  --color-bg: #8ECAE6;
-  --color-bg-variant: #219EBC;
-  --color-primary: #023047;
-  --color-primary-variant:#FB8500;
+  --color-bg: #FFFFFF;
+  --color-bg-variant: #D2EADA;
+  --color-primary: #02473B;
+  --color-primary-variant:#F4D0A8;
 
   --color-white: #ffffff;
   --color-black: #000000;

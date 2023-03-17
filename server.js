@@ -596,5 +596,36 @@ app.post("/api/getRoomates", (req, res) => {
   connection.end();
 });
 
+//Room Page APIs
+app.post("/api/getRoomPageInfo", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: User Firebase ID
+  //Output: Names and Firebase IDs of roomates (for use in Dropdowns and such)
+  let sql = `
+  SELECT CONCAT(r.firstName, ' ', r.lastName) AS Roomates, r.idRoom, r.owed, rm.roomName 
+  FROM zzammit.Roomate r 
+  INNER JOIN zzammit.Room rm ON r.idRoom = rm.id 
+  WHERE r.idRoom = (SELECT idRoom FROM zzammit.Roomate WHERE firebaseUID = (?))
+	`;
+  let data = [req.body.firebaseUID];
+
+  // console.log(req.body);
+
+  connection.query(
+    sql,
+    data,
+    (error, results, fields) => {
+      if (error) {
+        console.log(error.message);
+      }
+
+      let string = JSON.stringify(results);
+      //let obj = JSON.parse(string);
+      res.send({ express: string });
+    }
+  );
+  connection.end();
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server

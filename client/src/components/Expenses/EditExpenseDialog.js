@@ -65,7 +65,8 @@ const EditExpenseDialog = ({ openEdit, handleCloseEdit, currExpense }) => {
             comments !== "" &&
             tag !== "" &&
             date !== "" &&
-            amount !== "") {
+            amount !== "" &&
+            amount > 0) {
             callApiEditExpense();
             handleCloseEdit();
         };
@@ -178,7 +179,7 @@ const EditExpenseDialog = ({ openEdit, handleCloseEdit, currExpense }) => {
                     variant="standard"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    error={amount === "" && submitClicked === true}
+                    error={(amount <= 0 || amount === "") && submitClicked === true}
                     helperText={(amount === "" && submitClicked === true) ?
                         "Please enter an amount." : ""}
                 />
