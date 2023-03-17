@@ -516,7 +516,7 @@ app.post("/api/shortExchange", (req, res) => {
   ORDER BY SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END);
 	`;
   let shortExchangeData = [
-    req.body.roommateID,
+    req.body.user,
   ];
 
   // console.log(req.body);
@@ -541,10 +541,10 @@ app.post("/api/addEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
-  let addExpenseSQL = `
+  let addEventSQL = `
 	INSERT INTO zzammit.Calendar (idRoomate, title, startdate, enddate, tag, eventDescription, Consequence) VALUES ((Select id from zzammit.Roomate where firebaseUID = (?)), ?, ?, ?, ?, ?, ?);
 	`;
-  let addExpenseData = [
+  let addEventData = [
     req.body.roomie,
     req.body.title,
     req.body.start,
@@ -556,7 +556,7 @@ app.post("/api/addEvent", (req, res) => {
 
   // console.log(req.body);
 
-  connection.query(addExpenseSQL, addExpenseData, (error, results, fields) => {
+  connection.query(addEventSQL, addEventData, (error, results, fields) => {
     if (error) {
       console.log(error.message);
     }
@@ -572,14 +572,14 @@ app.post("/api/deleteEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: Expense Trasaction ID
   //Output: None
-  let delExpenseSQL = `
+  let delEventSQL = `
 	DELETE FROM zzammit.Expenses WHERE id = ?;
 	`;
-  let delExpenseData = [req.body.eventID];
+  let delEventData = [req.body.eventID];
 
   // console.log(req.body);
 
-  connection.query(delExpenseSQL, delExpenseData, (error, results, fields) => {
+  connection.query(delEventSQL, delEventData, (error, results, fields) => {
     if (error) {
       console.log(error.message);
     }
@@ -595,10 +595,10 @@ app.post("/api/editEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Expense ID, Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
-  let editExpenseSQL = `
+  let editEventSQL = `
 	UPDATE zzammit.Calendar SET idRoomate = (Select id from zzammit.Roomate where firebaseUID = (?)), title = ?, startdate = ?, enddate = ?, tag = ?, eventDescription = ?, Consequence = ? WHERE id =?;
 	`;
-  let editExpenseData = [
+  let editEventData = [
     req.body.roomie,
     req.body.title,
     req.body.start,
@@ -612,8 +612,8 @@ app.post("/api/editEvent", (req, res) => {
   // console.log(req.body);
 
   connection.query(
-    editExpenseSQL,
-    editExpenseData,
+    editEventSQL,
+    editEventData,
     (error, results, fields) => {
       if (error) {
         console.log(error.message);
@@ -631,19 +631,19 @@ app.post("/api/viewEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
-  let addExpenseSQL = `
+  let viewEventSQL = `
 	SELECT id, CONCAT(firstName, ' ', lastName) as creator, title, startdate, enddate, tag, eventDescription, Consequence 
 	FROM zzammit.Calendar left join zzammit.Roomate on Calendar.idRoomate = Roomate.id 
 		WHERE idRoomate IN (SELECT id FROM zzammit.Roomate WHERE idRoom = 
 							(SELECT idRoom FROM zzammit.Roomate WHERE id = ?));
 	`;
-  let addExpenseData = [
+  let viewEventData = [
     req.body.roomie,
   ];
 
   // console.log(req.body);
 
-  connection.query(addExpenseSQL, addExpenseData, (error, results, fields) => {
+  connection.query(viewEventSQL, viewEventData, (error, results, fields) => {
     if (error) {
       console.log(error.message);
     }
@@ -661,16 +661,16 @@ app.post("/api/getRoomates", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: User Firebase ID
   //Output: Names and Firebase IDs of roomates (for use in Dropdowns and such)
-  let getOwedSummarySQL = `
+  let getRoommatesSQL = `
 	SELECT CONCAT(firstName, ' ', lastName) AS Roomate, firebaseUID FROM zzammit.Roomate WHERE idRoom = (Select idRoom FROM zzammit.Roomate WHERE firebaseUID = (?));
 	`;
-  let getOwedSummary = [req.body.user];
+  let getRoomates = [req.body.user];
 
   // console.log(req.body);
 
   connection.query(
-    getOwedSummarySQL,
-    getOwedSummary,
+    getRoommatesSQL,
+    getRoommates,
     (error, results, fields) => {
       if (error) {
         console.log(error.message);
