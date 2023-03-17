@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import "./expense.css";
+import React, { useState } from "react";
+import "./Expense.css";
 import {
   Button,
   Paper,
@@ -40,13 +40,13 @@ const Expenses = () => {
               </Typography>
             </Grid>
             <Grid item>
-              <Button variant="outlined" onClick={handleClickOpen}>
+              <ExpenseTable open={open}/>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" onClick={handleClickOpen}>
                 Add Expense
               </Button>
               <ExpenseDialog open={open} handleClose={handleClose}/>
-            </Grid>
-            <Grid item>
-              <ExpenseTable open={open}/>
             </Grid>
           </Grid>
         </Box>

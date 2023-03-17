@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./expense.css";
+import "./Expense.css";
 import {
     Dialog,
     DialogTitle,
@@ -40,8 +40,8 @@ const AddExpenseDialog = ({ open, handleClose }) => {
 
     const handleAddExpense = () => {
         setSubmitClicked(true);
-        console.log(payeeList);
-        console.log(payer);
+        // console.log(payeeList);
+        // console.log(payer);
 
         if (payeeList.includes(payer)) {
             setErrorStatus(true);
@@ -87,7 +87,7 @@ const AddExpenseDialog = ({ open, handleClose }) => {
     };
 
     const callApiAddExpense = async (newExpense) => {
-        console.log("addExpense called");
+        // console.log("addExpense called");
         const url = serverURL + "/api/addExpense";
         const response = await fetch(url, {
             method: "POST",
@@ -118,7 +118,7 @@ const AddExpenseDialog = ({ open, handleClose }) => {
     }, [user]);
 
     const callAPIGetRoomates = async () => {
-        console.log("getRoomates called");
+        // console.log("getRoomates called");
         const url = serverURL + "/api/getRoomates";
         const response = await fetch(url, {
             method: "POST",
@@ -235,9 +235,7 @@ const AddExpenseDialog = ({ open, handleClose }) => {
                     <Button onClick={handleCancel}>Cancel</Button>
                     <Button onClick={handleAddExpense}>Add</Button>
                 </DialogActions>
-
             </DialogContent>
-
         </Dialog>
     );
 };

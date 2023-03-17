@@ -420,6 +420,41 @@ app.post("/api/addExpense", (req, res) => {
   connection.end();
 });
 
+app.post("/api/addExpenseGrocery", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
+  //Output: None
+  let addExpenseSQL = `
+	SET @amt = (?);
+	SET @spender = (Select id from zzammit.Roomate where firebaseUID = (?));
+	SET @debtor = (?);
+	INSERT INTO zzammit.Expenses (idSpender, idDebtor, amount, tag, comments, tDate) VALUES (@spender, @debtor, @amt, ?, ?, ?);
+	Update zzammit.Roomate set owed = owed + @amt where id = @spendor;
+	Update zzammit.Roomate set owed = owed - @amt where id = @debtor;
+	`;
+  let addExpenseData = [
+    req.body.amount,
+    req.body.spender,
+    req.body.debtor,
+    req.body.tag,
+    req.body.comment,
+    req.body.date,
+  ];
+
+  // console.log(req.body);
+
+  connection.query(addExpenseSQL, addExpenseData, (error, results, fields) => {
+    if (error) {
+      console.log(error.message);
+    }
+
+    let string = JSON.stringify(results);
+    //let obj = JSON.parse(string);
+    res.send({ express: string });
+  });
+  connection.end();
+});
+
 app.post("/api/deleteExpense", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: Expense Trasaction ID

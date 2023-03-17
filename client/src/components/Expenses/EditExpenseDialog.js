@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import "./expense.css";
+import React, { useState, useEffect, useCallback } from "react";
+import "./Expense.css";
 import {
     Dialog,
     DialogTitle,
@@ -50,17 +50,33 @@ const EditExpenseDialog = ({ openEdit, handleCloseEdit, currExpense }) => {
     }, [currExpense]);
 
     const handleSubmitEditExpense = () => {
-        callApiEditExpense();
-        handleCloseEdit();
-    };
+
+        setSubmitClicked(true);
+
+        if (payee === payer) {
+            setErrorStatus(true);
+        }
+
+        if (payee !== payer) {
+            setErrorStatus(false);
+        }
+
+        if (payee !== payer &&
+            comments !== "" &&
+            tag !== "" &&
+            date !== "" &&
+            amount !== "") {
+            callApiEditExpense();
+            handleCloseEdit();
+        };
+    }
 
     const handleCancel = () => {
-        console.log(currExpense);
         handleCloseEdit();
     };
 
     const callApiEditExpense = async () => {
-        console.log("editExpense called");
+        // console.log("editExpense called");
         const url = serverURL + "/api/editExpense";
         const response = await fetch(url, {
             method: "POST",
@@ -92,7 +108,7 @@ const EditExpenseDialog = ({ openEdit, handleCloseEdit, currExpense }) => {
     }, [user]);
 
     const callAPIGetRoomates = async () => {
-        console.log("getRoomates called");
+        // console.log("getRoomates called");
         const url = serverURL + "/api/getRoomates";
         const response = await fetch(url, {
             method: "POST",
@@ -110,7 +126,7 @@ const EditExpenseDialog = ({ openEdit, handleCloseEdit, currExpense }) => {
         return body;
     };
 
-    const getRoomateList = React.useCallback(() => {
+    const getRoomateList = useCallback(() => {
         callAPIGetRoomates().then((res) => {
             var parsed = JSON.parse(res.express);
             setRoomates(parsed);
@@ -176,9 +192,9 @@ const EditExpenseDialog = ({ openEdit, handleCloseEdit, currExpense }) => {
                 >
                     <FormLabel component="legend">Paid By</FormLabel>
                     <RadioGroup value={payer} onChange={handlePayerChange}>
-                        {roomates.map((roommate) => (
+                        {roomates.map((roommate, index) => (
                             <FormControlLabel
-                                key={roommate.id}
+                                key={index}
                                 value={roommate.firebaseUID}
                                 control={<Radio />}
                                 label={roommate.Roomate}
@@ -195,10 +211,10 @@ const EditExpenseDialog = ({ openEdit, handleCloseEdit, currExpense }) => {
                     variant="standard"
                 >
                     <FormLabel component="legend">Paid To</FormLabel>
-                    <RadioGroup value={payee} onChange={handlePayeeChange}> 
-                        {roomates.map((roommate) => (
+                    <RadioGroup value={payee} onChange={handlePayeeChange}>
+                        {roomates.map((roommate, index) => (
                             <FormControlLabel
-                                key={roommate.id}
+                                key={index}
                                 value={roommate.firebaseUID}
                                 control={<Radio />}
                                 label={roommate.Roomate}
@@ -208,7 +224,7 @@ const EditExpenseDialog = ({ openEdit, handleCloseEdit, currExpense }) => {
                 </FormControl>
 
                 <Typography align="left" color="red">{(errorStatus === true) ?
-                    "Error: Cannot select same Payer and Payee." : ""}
+                    "Error: Must select payer and payee. Cannot be the same Person." : ""}
                 </Typography>
 
                 <TextField
