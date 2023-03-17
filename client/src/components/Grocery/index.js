@@ -122,17 +122,17 @@ const Grocery = () => {
                 My Grocery Items
               </Typography>
 
-              <Button
-                variant="outlined"
-                onClick={handleClickOpen}
-              >
-                Add Grocery Item
-              </Button>
-
               <UserGroceryList
                 userGroceryList={userGroceryList}
                 setSubmit={setSubmit}
               />
+
+              <Button
+                variant="contained"
+                onClick={handleClickOpen}
+              >
+                Add Grocery Item
+              </Button>
 
               <AddGroceryItemDialog
                 user={user}

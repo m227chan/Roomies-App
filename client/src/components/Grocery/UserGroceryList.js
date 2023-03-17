@@ -141,10 +141,11 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
                     >
                         <AddIcon/>
                     </Button>
-                    <Button onClick={
-                        () => {
-                            onClickDeleteGroceryItem(params.row.id)
-                        }}
+                    <Button
+                        onClick={
+                            () => {
+                                onClickDeleteGroceryItem(params.row.id)
+                            }}
                     >
                         <DeleteIcon/>
                     </Button>
