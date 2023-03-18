@@ -31,24 +31,17 @@ const Grocery = () => {
 
   useEffect(() => {
 
-    callViewGrocery()
-      .then(res => {
-        // console.log("callApiViewGrocery returned: ", res)
-        var parsed = JSON.parse(res.express);
-        // console.log("callApiviewGrocery parsed: ", parsed);
-        setUserGroceryList(parsed);
-        setSubmit(false);
-        // console.log(viewGroup);
-      })
+    callViewGrocery().then(res => {
+      var parsed = JSON.parse(res.express);
+      setUserGroceryList(parsed);
+      setSubmit(false);
+    });
 
-    callViewGroupGrocery()
-      .then(res => {
-        // console.log("callApiViewGroupGrocery returned: ", res)
-        var parsed = JSON.parse(res.express);
-        // console.log("callApiviewGroupGrocery parsed: ", parsed);
-        setRoomGroceryList(parsed);
-        setSubmit(false);
-      })
+    callViewGroupGrocery().then(res => {
+      var parsed = JSON.parse(res.express);
+      setRoomGroceryList(parsed);
+      setSubmit(false);
+    });
 
   }, [submit, user]);
 
@@ -168,4 +161,3 @@ const Grocery = () => {
 }
 
 export default Grocery;
-

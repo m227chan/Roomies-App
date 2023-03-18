@@ -13,19 +13,6 @@ const serverURL = "http://localhost:3000/"; //enable for dev mode
 
 const RoomGroceryList = ({ roomGroceryList, setSubmit, user }) => {
 
-    const calculateTotal = (price, quantity) => {
-        try {
-            if (isNaN(price) || isNaN(quantity)) {
-                return null;
-            }
-            const total = (price * quantity).toString();
-            return 'Total Cost is $' + total + '.';
-
-        } catch (e) {
-            return null;
-        }
-    }
-
     const onClickPurchase = async (item) => {
         console.log(item);
         setSubmit(true);
