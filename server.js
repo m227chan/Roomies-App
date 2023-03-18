@@ -792,5 +792,31 @@ app.post("/api/getTopGrocery", (req, res) => {
   connection.end();
 });
 
+app.post("/api/getUsername", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: User Firebase ID
+  let sql = `
+  SELECT CONCAT(firstName, ' ', lastName) AS name FROM zzammit.Roomate WHERE firebaseUID = "l2loSzSePNb2SxhEUgDiKepRRgN2";
+    `;
+  let data = [req.body.firebaseUID];
+
+  // console.log(req.body);
+
+  connection.query(
+    sql,
+    data,
+    (error, results, fields) => {
+      if (error) {
+        console.log(error.message);
+      }
+
+      let string = JSON.stringify(results);
+      //let obj = JSON.parse(string);
+      res.send({ express: string });
+    }
+  );
+  connection.end();
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server
