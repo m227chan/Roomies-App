@@ -1,29 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css";
 import {
-  Typography,
-  Button,
   Grid,
-  Paper,
-  Card,
-  CardActions,
-  CardContent,
   Box,
-  Link,
 } from "@material-ui/core";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
-import { getAdditionalUserInfo, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
 import SideNav from "../CustomAppBar/sideNav";
 import { Container } from "@material-ui/core";
-import history from "../Navigation/history";
-
-const roommateNames = [
-  "Matthew Chan",
-  "Zack Zammit",
-  "Maximilian Horbik",
-  "Sunischit Thapa",
-];
+import WelcomeMessage from "./WelcomeMessage";
+import DisplayRoomates from "./DisplayRoomates";
+import UpcomingEvents from "./UpcomingEvents";
+import DisplayTopGroceryList from "./DisplayTopGroceryList";
+import Wallet from "./Wallet";
 
 const roommateGrocery = [
   { name: "Matthew Chan", item: "Chicken" },
@@ -44,16 +33,21 @@ const roommateCalendar = [
   },
 ];
 
+const serverURL = "http://localhost:3000/"; //enable for dev mode
+// const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
+
 const Room = () => {
   const [user, setUser] = useState({});
+  const [roomateData, setRoomateData] = useState([]);
+  const [roomTopGrocery, setRoomTopGrocery] = useState([]);
 
   onAuthStateChanged(auth, (currUser) => {
     setUser(currUser);
   });
 
   const mainMessage = (
-    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-      <SideNav />
+    <Box sx={{ flexGrow: 1 }}>
+      <CustomAppBar />
       <Container class="container">
         <Grid container spacing={2} style={{ margin: "0px" }}>
           {/* This is the Welcome Message */}
@@ -204,18 +198,11 @@ const Room = () => {
                 </Card>
               </Grid>
             </Grid>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
-  );
 
-  return (
-    <MuiThemeProvider>
-      <div>
-        <Paper class="paper">{mainMessage}</Paper>
-      </div>
-    </MuiThemeProvider>
+          </Grid>
+        </Container>
+      </Box>
+    </div>
   );
 };
 

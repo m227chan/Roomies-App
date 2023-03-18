@@ -12,7 +12,7 @@
 
 /* Set the colour and container scheme for all elements */
 :root {
-  --color-bg: #ffffff;
+  --color-bg: #FFFFFF;
   --color-bg-variant: #D2EADA;
   --color-primary: #02473B;
   --color-primary-variant:#F4D0A8;

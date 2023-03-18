@@ -6,6 +6,8 @@ import {
 } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 import "./Grocery.css";
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
@@ -39,10 +41,10 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
 
     const onClickAddGrocery = async (idRoomate, idGroceryItem, quantity) => {
         setSubmit(true);
-        callAPIAddItemUserList(idRoomate, idGroceryItem, quantity);
+        callAPIAddItemRoomList(idRoomate, idGroceryItem, quantity);
     }
 
-    const callAPIAddItemUserList = async (idRoomate, idGroceryItem, quantity) => {
+    const callAPIAddItemRoomList = async (idRoomate, idGroceryItem, quantity) => {
         const url = serverURL + "/api/addGrocery";
         const response = await fetch(url, {
             method: "POST",
@@ -53,7 +55,7 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
             body: JSON.stringify({
                 idRoomate: idRoomate,
                 idGroceryItem: idGroceryItem,
-                Quantity: quantity
+                Quantity: quantity,
             })
         });
         const body = await response.json();
@@ -122,6 +124,7 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
                         variant="outlined"
                         label="Quantity"
                         size="small"
+                        type="number"
                         onChange={
                             (event) => {
                                 setQuantity(event.target.value)
@@ -136,14 +139,15 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
                                 quantity)
                         }}
                     >
-                        Add
+                        <AddIcon/>
                     </Button>
-                    <Button onClick={
-                        () => {
-                            onClickDeleteGroceryItem(params.row.id)
-                        }}
+                    <Button
+                        onClick={
+                            () => {
+                                onClickDeleteGroceryItem(params.row.id)
+                            }}
                     >
-                        Delete
+                        <DeleteIcon/>
                     </Button>
                 </>
             ),

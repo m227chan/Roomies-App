@@ -28,18 +28,13 @@ const Grocery = () => {
 
   useEffect(() => {
     callViewGrocery().then((res) => {
-      // console.log("callApiViewGrocery returned: ", res)
       var parsed = JSON.parse(res.express);
-      // console.log("callApiviewGrocery parsed: ", parsed);
       setUserGroceryList(parsed);
       setSubmit(false);
-      // console.log(viewGroup);
     });
 
     callViewGroupGrocery().then((res) => {
-      // console.log("callApiViewGroupGrocery returned: ", res)
       var parsed = JSON.parse(res.express);
-      // console.log("callApiviewGroupGrocery parsed: ", parsed);
       setRoomGroceryList(parsed);
       setSubmit(false);
     });
@@ -107,14 +102,16 @@ const Grocery = () => {
             <Grid item xs={6} md={7.5}>
               <Typography variant={"h3"}>My Grocery Items</Typography>
 
-              <Button variant="outlined" onClick={handleClickOpen}>
-                Add Grocery Item
-              </Button>
+              <Typography variant={"h3"}>My Grocery Items</Typography>
 
               <UserGroceryList
                 userGroceryList={userGroceryList}
                 setSubmit={setSubmit}
               />
+
+              <Button variant="contained" onClick={handleClickOpen}>
+                Add Grocery Item
+              </Button>
 
               <AddGroceryItemDialog
                 user={user}
