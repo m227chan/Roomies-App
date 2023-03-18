@@ -106,7 +106,7 @@ const Room = () => {
             </Grid>
 
             <Grid item xs={6} md={5}>
-              <DisplayRoomates roomateData={roomateData} />
+              <DisplayRoomates roomateData={roomateData} user={user}/>
               <br />
               <Wallet roomateData={roomateData} user={user} />
               <br />

@@ -9,10 +9,19 @@ import {
     Box,
 } from "@material-ui/core";
 
-const DisplayRoomates = ({ roomateData }) => {
+const DisplayRoomates = ({ roomateData, user }) => {
+
     const avatarStyle = {
         backgroundColor: '#FF8700',
     };
+
+    let row = [];
+
+    if (roomateData.length !== 0) {
+        const index = roomateData.findIndex((roommate) => roommate.firebaseUID === user.uid);
+        row = roomateData[index];
+    }
+
     return (
         <div>
             <Card class="card">
@@ -35,18 +44,18 @@ const DisplayRoomates = ({ roomateData }) => {
                         alignItems="center"
                         justifyContent="space-between"
                     >
-                        {roomateData.map((roomate, index) => (
-                            <Grid item xs={1} key={index}>
-                                <Box width="100%" p={1}>
-                                <Avatar align='right' style={avatarStyle}>
-                                    {roomate.firstName[0]}
-                                </Avatar>
-                                <Typography
-                                    variant={"body1"}
-                                    align='center'
-                                >
-                                    <b>{roomate.firstName + " " + roomate.lastName}</b>
-                                </Typography>
+                        {roomateData.filter((roomate) => roomate !== row).map((roomate, index) => (
+                            <Grid item key={index}>
+                                <Box width="100%" p={2}>
+                                    <Avatar style={avatarStyle}>
+                                        {roomate.firstName[0]}
+                                    </Avatar>
+                                    <Typography
+                                        variant={"body1"}
+                                        align='center'
+                                    >
+                                        <b>{roomate.firstName + " " + roomate.lastName}</b>
+                                    </Typography>
                                 </Box>
                             </Grid>
                         ))}
