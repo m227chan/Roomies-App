@@ -6,16 +6,16 @@ import {
     CardContent,
     Grid,
     Box,
+    Button,
 } from "@material-ui/core";
-
 import {
     Chart,
     PieSeries,
     Title,
     Legend,
 } from '@devexpress/dx-react-chart-material-ui';
-
 import { Animation } from '@devexpress/dx-react-chart';
+import history from "../Navigation/history";
 
 const Wallet = ({ roomateData, user }) => {
 
@@ -26,9 +26,9 @@ const Wallet = ({ roomateData, user }) => {
         const row = roomateData[index];
         const amount = row.owed;
         if (amount > 0) {
-            message = "You owe a total of $" + amount;
+            message = "You owe a total of $" + amount + ".";
         } else {
-            message = "You are owed a total of $" + amount * -1;
+            message = "You are owed a total of $" + amount * -1 + ".";
         }
     }
 
@@ -40,13 +40,22 @@ const Wallet = ({ roomateData, user }) => {
                         container
                     >
                         <Grid item xs={12}>
+
+                            <Button
+                                onClick={() => history.push("/Expenses")}
+                                style={{ cursor: "pointer" }}
+                            >
+                                <Typography variant="h6"><b>{"Expenses>"}</b></Typography>
+                            </Button>
+
                             <Box display="flex" justifyContent="flex-start" width="100%" p={1}>
                                 <Typography variant={"h5"}>{message}</Typography>
                             </Box>
+
                             <Box display="flex" justifyContent="flex-start" style={{ width: "100%" }} p={1}>
                                 <Chart
                                     data={roomateData}
-                                    style={{ height: "100%", width: "100%" }}
+                                    style={{ maxHeight: 250, width: "100%" }}
                                 >
                                     <PieSeries
                                         valueField="owed"
@@ -57,6 +66,7 @@ const Wallet = ({ roomateData, user }) => {
                                     <Animation />
                                 </Chart>
                             </Box>
+                            
                         </Grid>
 
                     </Grid>

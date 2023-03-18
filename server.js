@@ -626,5 +626,52 @@ app.post("/api/getRoomPageInfo", (req, res) => {
   connection.end();
 });
 
+app.post("/api/getTopGrocery", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: User Firebase ID
+  let sql = `
+  SELECT gi.item, gi.price, g.Quantity
+  FROM zzammit.GroceryItem gi
+  JOIN zzammit.Grocery g ON gi.id = g.idGroceryItem
+  WHERE gi.id IN (
+      SELECT g2.idGroceryItem 
+      FROM zzammit.Grocery g2
+      WHERE g2.idRoomate IN (
+          SELECT r.id
+          FROM zzammit.Roomate r
+          WHERE r.idRoom = (
+              SELECT r2.idRoom 
+              FROM zzammit.Roomate r2
+              WHERE r2.id = (
+                  SELECT id 
+                  FROM zzammit.Roomate 
+                  WHERE firebaseUID = (?)
+              )
+          )
+      )
+  )
+  ORDER BY g.tDate DESC
+  LIMIT 4;
+    `;
+  let data = [req.body.firebaseUID];
+
+  // console.log(req.body);
+
+  connection.query(
+    sql,
+    data,
+    (error, results, fields) => {
+      if (error) {
+        console.log(error.message);
+      }
+
+      let string = JSON.stringify(results);
+      //let obj = JSON.parse(string);
+      res.send({ express: string });
+    }
+  );
+  connection.end();
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server

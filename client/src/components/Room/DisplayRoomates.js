@@ -24,8 +24,8 @@ const DisplayRoomates = ({ roomateData }) => {
                     >
                         <Grid item>
                             <Box width="100%" p={1}>
-                                <Typography variant={"h5"}>
-                                    Roommates
+                                <Typography variant={"h6"}>
+                                    <b>ROOMMATES</b>
                                 </Typography>
                             </Box>
                         </Grid>

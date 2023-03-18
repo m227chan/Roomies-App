@@ -39,17 +39,26 @@ const serverURL = "http://localhost:3000/"; //enable for dev mode
 const Room = () => {
   const [user, setUser] = useState({});
   const [roomateData, setRoomateData] = useState([]);
+  const [roomTopGrocery, setRoomTopGrocery] = useState([]);
 
   onAuthStateChanged(auth, (currUser) => {
     setUser(currUser);
   });
 
   useEffect(() => {
+
     callApiGetRoomPageInfo().then((res) => {
       var parsed = JSON.parse(res.express);
-      console.log(parsed);
+      // console.log(parsed);
       setRoomateData(parsed);
     });
+
+    callGetTopGrocery().then(res => {
+      var parsed = JSON.parse(res.express);
+      // console.log(parsed);
+      setRoomTopGrocery(parsed);
+    });
+
   }, [user]);
 
   const callApiGetRoomPageInfo = async () => {
@@ -70,27 +79,45 @@ const Room = () => {
     return body;
   }
 
+  const callGetTopGrocery = async () => {
+    const url = serverURL + "/api/getTopGrocery";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        firebaseUID: user.uid
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  }
+
   return (
     <div>
       <CustomAppBar />
-      
+
       <Box sx={{ flexGrow: 1, margin: "50px" }}>
 
         <Container class="container">
           <Grid container spacing={2} style={{ margin: "0px" }}>
 
             <Grid item xs={6} md={7}>
-              <WelcomeMessage roomateData={roomateData} user={user}/>
-              <br/>
+              <WelcomeMessage roomateData={roomateData} user={user} />
+              <br />
               <UpcomingEvents roommateCalendar={roommateCalendar} />
             </Grid>
 
             <Grid item xs={6} md={5}>
               <DisplayRoomates roomateData={roomateData} />
-              <br/>
-              <Wallet roomateData={roomateData} user={user}/>
-              <br/>
-              <DisplayTopGroceryList roommateGrocery={roommateGrocery} />
+              <br />
+              <Wallet roomateData={roomateData} user={user} />
+              <br />
+              <DisplayTopGroceryList roomTopGrocery={roomTopGrocery} />
             </Grid>
 
           </Grid>

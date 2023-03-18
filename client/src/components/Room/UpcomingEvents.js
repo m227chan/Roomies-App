@@ -5,7 +5,7 @@ import {
     Card,
     Grid,
     CardContent,
-    Link,
+    Button,
 } from "@material-ui/core";
 import history from "../Navigation/history";
 
@@ -14,12 +14,18 @@ const UpcomingEvents = ({ roommateCalendar }) => {
     return (
         <div>
             <Card class="card">
-                {" "}
                 <CardContent>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
+
+                            <Button
+                                onClick={() => history.push("/Calendar")}
+                                style={{ cursor: "pointer" }}
+                            >
+                                <Typography variant="h6"><b>{"Upcoming Events>"}</b></Typography>
+                            </Button>
+
                             <Card class="calendar-top-card">
-                                {" "}
                                 <CardContent>
                                     <Typography variant={"h5"}>Quiet Hours</Typography>
                                     <Grid container spacing={2}>
@@ -62,12 +68,6 @@ const UpcomingEvents = ({ roommateCalendar }) => {
                             </Grid>
                         ))}
                     </Grid>
-                    <Link
-                        onClick={() => history.push("/Calendar")}
-                        style={{ cursor: "pointer" }}
-                    >
-                        <Typography variant="body1">SEE ALL UPCOMING EVENTS</Typography>
-                    </Link>
                 </CardContent>
             </Card>
         </div>

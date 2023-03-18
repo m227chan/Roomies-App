@@ -5,37 +5,46 @@ import {
     Card,
     Grid,
     CardContent,
+    Button,
 } from "@material-ui/core";
+import history from "../Navigation/history";
 
-const DisplayTopGroceryList = ({ roommateGrocery }) => {
-
+const DisplayTopGroceryList = ({ roomTopGrocery }) => {
     return (
         <div>
             <Card class="card">
-                {" "}
                 <CardContent>
-                    <Typography variant={"h6"}>
-                        Roommate's Grocery List
-                    </Typography>
+
+                    <Button
+                        onClick={() => history.push("/Grocery")}
+                        style={{ cursor: "pointer" }}
+                    >
+                        <Typography variant="h6"><b>{"Grocery List>"}</b></Typography>
+                    </Button>
+
                     <Grid container spacing={2}>
-                        {roommateGrocery.map((member, index) => (
+                        {roomTopGrocery.map((grocery, index) => (
                             <Grid item xs={12} key={index}>
                                 <Card class="grocery-card">
-                                    {" "}
                                     <CardContent>
                                         <Grid
                                             container
                                             rowspacing={1}
                                             columnspacing={{ xs: 1, sm: 2, md: 3 }}
                                         >
-                                            <Grid item xs={6}>
-                                                <Typography key={member} variant={"body1"}>
-                                                    {member.item}
+                                            <Grid item xs={4}>
+                                                <Typography key={index} variant={"body1"}>
+                                                    <b>{grocery.item}</b>
                                                 </Typography>
                                             </Grid>
-                                            <Grid item xs={6}>
-                                                <Typography key={member} variant={"body1"}>
-                                                    {member.name}
+                                            <Grid item xs={4}>
+                                                <Typography key={index} variant={"body1"}>
+                                                    Quantity: x{grocery.Quantity}
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={4}>
+                                                <Typography key={index} variant={"body1"}>
+                                                    ${grocery.price}
                                                 </Typography>
                                             </Grid>
                                         </Grid>
