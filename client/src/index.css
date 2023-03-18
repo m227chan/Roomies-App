@@ -85,9 +85,10 @@ section > h2 {
 }
 
 .container {
-  width: var(--container-width-lg);
+  width: calc(100% - 240px);
   margin-left: 240px;
-  justify-content: space-around;
+  display: flex;
+  justify-content: space-between;
   align-items: stretch;
 }
 
