@@ -107,8 +107,6 @@ const Grocery = () => {
               <Grid item xs={6} md={7.5}>
                 <Typography variant={"h3"}>My Grocery Items</Typography>
 
-                <Typography variant={"h3"}>My Grocery Items</Typography>
-
                 <UserGroceryList
                   userGroceryList={userGroceryList}
                   setSubmit={setSubmit}
