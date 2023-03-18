@@ -14,7 +14,7 @@ import {
 import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import { getAdditionalUserInfo, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
-import CustomAppBar from "../CustomAppBar";
+import SideNav from "../CustomAppBar/sideNav";
 import { Container } from "@material-ui/core";
 import history from "../Navigation/history";
 
@@ -52,8 +52,8 @@ const Room = () => {
   });
 
   const mainMessage = (
-    <Box sx={{ flexGrow: 1 }}>
-      <CustomAppBar />
+    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <SideNav />
       <Container class="container">
         <Grid container spacing={2} style={{ margin: "0px" }}>
           {/* This is the Welcome Message */}

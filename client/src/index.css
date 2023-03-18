@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Tajawal&display=swap');
 /* Sets the default styling properties for all elements */
 * {
   margin: 0;
@@ -12,10 +12,10 @@
 
 /* Set the colour and container scheme for all elements */
 :root {
-  --color-bg: #8ECAE6;
-  --color-bg-variant: #219EBC;
-  --color-primary: #023047;
-  --color-primary-variant:#FB8500;
+  --color-bg: #ffffff;
+  --color-bg-variant: #D2EADA;
+  --color-primary: #02473B;
+  --color-primary-variant:#F4D0A8;
 
   --color-white: #ffffff;
   --color-black: #000000;
@@ -38,7 +38,7 @@ html {
 }
 
 body {
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Tajawal", "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--color-bg);
@@ -86,7 +86,7 @@ section > h2 {
 
 .container {
   width: var(--container-width-lg);
-  margin: 0 auto;
+  margin-left: 240px;
   justify-content: space-around;
   align-items: stretch;
 }
