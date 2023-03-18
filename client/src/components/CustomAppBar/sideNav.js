@@ -1,162 +1,210 @@
-import { useState } from "react";
-import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Link } from "react-router-dom";
-import "react-pro-sidebar/dist/css/styles.css";
-import { tokens } from "../../theme";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+// Importing react and files
+import * as React from "react";
+import "./sideNav.css";
+import history from "../Navigation/history";
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+// Importing material
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import { Grid } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import { grey } from "@mui/material/colors";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+// Importing icons
+import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import HomeWorkIcon from "@mui/icons-material/HomeWork";
+
+// Sets the width
+const drawerWidth = 240;
+
+// Sets the theme for the file
+const theme = createTheme({
+  typography: {
+    subtitle1: {
+      fontSize: 18,
+    },
+  },
+});
+
+// Component for the top of the Nav
+const NavProfile = () => {
   return (
-    <MenuItem
-      active={selected === title}
-      style={{
-        color: colors.grey[100],
-      }}
-      onClick={() => setSelected(title)}
-      icon={icon}
-    >
-      <Typography>{title}</Typography>
-      <Link onClick={() => history.push(to)} />
-    </MenuItem>
+    <Grid item class="navAvatar">
+      {" "}
+      <Avatar
+        sx={{
+          bgcolor: grey[200],
+          color: "#02473B",
+          width: 60,
+          height: 60,
+        }}
+      >
+        <Typography variant="h4">Z</Typography>
+      </Avatar>
+      <Typography
+        style={{ paddingTop: "10%", fontWeight: "bold" }}
+        variant="h6"
+      >
+        {" "}
+        Zach Zammit
+      </Typography>
+    </Grid>
   );
 };
-
-const Sidebar = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selected, setSelected] = useState("Dashboard");
-
+// Component for the middle of the Nav
+const NavMenu = () => {
   return (
-    <Box
-      sx={{
-        "& .pro-sidebar-inner": {
-          background: `${colors.primary[400]} !important`,
-        },
-        "& .pro-icon-wrapper": {
-          backgroundColor: "transparent !important",
-        },
-        "& .pro-inner-item": {
-          padding: "5px 35px 5px 20px !important",
-        },
-        "& .pro-inner-item:hover": {
-          color: "#868dfb !important",
-        },
-        "& .pro-menu-item.active": {
-          color: "#6870fa !important",
-        },
-      }}
-    >
-      <ProSidebar collapsed={isCollapsed}>
-        <Menu iconShape="square">
-          {/* LOGO AND MENU ICON */}
-          <MenuItem
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-            style={{
-              margin: "10px 0 20px 0",
-              color: colors.grey[100],
-            }}
-          >
-            {!isCollapsed && (
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                ml="15px"
+    <Grid item class="navMiddle">
+      <Grid class="navHeader">
+        <Grid item xs={4}>
+          <Typography variant="p" sx={{ fontWeight: "light" }}>
+            Home{" "}
+          </Typography>
+        </Grid>
+        <Grid item xs={9}>
+          <Divider style={{ background: "#FFFFFF" }} />
+        </Grid>
+      </Grid>
+      <List sx={{ margin: "5% 0%" }}>
+        {["Room"].map((text, index) => (
+          <ListItem key={text}>
+            <ListItemButton>
+              <ListItemIcon style={{ minWidth: "40px" }}>
+                <HomeWorkIcon sx={{ color: "#FFFFFF" }} />
+              </ListItemIcon>
+              <Typography
+                variant="subtitle1"
+                sx={{ fontWeight: "regular" }}
+                onClick={() => history.push("/Room")}
               >
-                <Typography variant="h3" color={colors.grey[100]}>
-                  ADMINIS
-                </Typography>
-                <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                  <MenuOutlinedIcon />
-                </IconButton>
-              </Box>
-            )}
-          </MenuItem>
-
-          {!isCollapsed && (
-            <Box mb="25px">
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <img alt="profile-user" width="100px" height="100px" />
-              </Box>
-              <Box textAlign="center">
-                <Typography
-                  variant="h2"
-                  color={colors.grey[100]}
-                  fontWeight="bold"
-                  sx={{ m: "10px 0 0 0" }}
-                >
-                  Sun Thapa
-                </Typography>
-              </Box>
-            </Box>
-          )}
-
-          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            <Item
-              title="Room"
-              to="/Room"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Spending
-            </Typography>
-            <Item
-              title="Expenses"
-              to="/Expenses"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Grocery"
-              to="/Grocery"
-              icon={<ContactsOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Events
-            </Typography>
-            <Item
-              title="Calendar"
-              to="/calendar"
-              icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-          </Box>
-        </Menu>
-      </ProSidebar>
-    </Box>
+                {text}
+              </Typography>
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Grid class="navHeader">
+        <Grid item xs={4}>
+          <Typography variant="p" sx={{ fontWeight: "light" }}>
+            Spending{" "}
+          </Typography>
+        </Grid>
+        <Grid item xs={8}>
+          <Divider style={{ marginLeft: "12%", background: "#FFFFFF" }} />
+        </Grid>
+      </Grid>
+      <List sx={{ margin: "5% 0%" }}>
+        {["Expenses", "Grocery"].map((text, index) => (
+          <ListItem key={text}>
+            <ListItemButton>
+              <ListItemIcon style={{ minWidth: "40px" }}>
+                {index % 2 === 0 ? (
+                  <CurrencyExchangeIcon sx={{ color: "#FFFFFF" }} />
+                ) : (
+                  <ShoppingCartIcon sx={{ color: "#FFFFFF" }} />
+                )}
+              </ListItemIcon>
+              <Typography
+                variant="subtitle1"
+                onClick={() => history.push("/" + text)}
+              >
+                {text}
+              </Typography>
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Grid class="navHeader">
+        <Grid item xs={4}>
+          <Typography variant="p" sx={{ fontWeight: "light" }}>
+            Events
+          </Typography>
+        </Grid>
+        <Grid item xs={10}>
+          <Divider style={{ background: "#FFFFFF" }} />
+        </Grid>
+      </Grid>
+      <List sx={{ margin: "5% 0%" }}>
+        {["Calendar"].map((text, index) => (
+          <ListItem key={text}>
+            <ListItemButton>
+              <ListItemIcon style={{ minWidth: "40px" }}>
+                <CalendarMonthIcon sx={{ color: "#FFFFFF" }} />
+              </ListItemIcon>
+              <Typography
+                variant="subtitle1"
+                onClick={() => history.push("/Calendar")}
+              >
+                {text}
+              </Typography>
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Grid>
+  );
+};
+// Component for the bottom of the Nav
+const NavBottom = () => {
+  return (
+    <Grid item class="navBottom">
+      <SettingsIcon
+        onClick={() => history.push("/Settings")}
+        sx={{
+          "&:hover": {
+            cursor: "pointer",
+            color: "#D2EADA",
+          },
+        }}
+      />
+      <Typography sx={{ fontWeight: "bold" }}>|</Typography>
+      <LogoutIcon
+        onClick={() => history.push("/Settings")}
+        sx={{
+          "&:hover": {
+            cursor: "pointer",
+            color: "#D2EADA",
+          },
+        }}
+      />
+    </Grid>
   );
 };
 
-export default Sidebar;
+export default function SideNav() {
+  return (
+    <ThemeProvider theme={theme}>
+      <Box sx={{ display: "flex" }}>
+        <Drawer
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
+          }}
+          variant="permanent"
+          anchor="left"
+        >
+          <Grid class="navGrid">
+            <NavProfile />
+            <NavMenu />
+            <NavBottom />
+          </Grid>
+        </Drawer>
+      </Box>
+    </ThemeProvider>
+  );
+}

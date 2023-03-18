@@ -12,3 +12,6 @@ Installation Requirements:
 - yarn add @fullcalendar/timegrid
 - yarn add @fullcalendar/interaction
 - yarn add @fullcalendar/list
+- yarn add @devexpress/dx-react-chart-material-ui
+- yarn add @devexpress/dx-react-core
+- yarn add @devexpress/dx-react-chart
