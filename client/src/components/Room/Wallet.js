@@ -11,7 +11,6 @@ import {
 import {
     Chart,
     PieSeries,
-    Title,
     Legend,
 } from '@devexpress/dx-react-chart-material-ui';
 import { Animation } from '@devexpress/dx-react-chart';

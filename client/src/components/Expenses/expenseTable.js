@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
 import { DataGrid } from '@mui/x-data-grid';
 import EditExpenseDialog from "./EditExpenseDialog";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  Paper,
+  Card,
+  Button,
+} from "@material-ui/core";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
@@ -69,7 +72,6 @@ const ExpenseTable = ({ open }) => {
 
   const handleDeleteClick = (expense) => {
     callAPIDeleteExpense(expense.id);
-    // console.log(expense.id);
     setTimeout(() => {
       getExpenseReport();
     }, 500);
@@ -192,13 +194,13 @@ const ExpenseTable = ({ open }) => {
 
   return (
     <div style={{ height: 650, width: '100%' }}>
-      <Paper style={{ height: 650, width: '100%' }}>
+      <Card class="card" style={{ height: 650, width: '100%' }}>
         <DataGrid
           rows={expenses}
           columns={columns}
           pageSize={10}
         />
-      </Paper>
+      </Card>
 
       <EditExpenseDialog
         openEdit={openEdit}

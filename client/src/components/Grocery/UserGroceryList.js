@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
     Button,
     TextField,
-    Paper,
+    Card,
 } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
 import "./Grocery.css";
@@ -156,13 +156,13 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
 
     return (
         <div style={{ height: 650, width: '100%' }}>
-            <Paper style={{ height: 650, width: '100%' }}>
+            <Card class="card" style={{ height: 650, width: '100%' }}>
                 <DataGrid
                     rows={userGroceryList}
                     columns={columns}
                     pageSize={10}
                 />
-            </Paper>
+            </Card>
         </div>
     );
 }
