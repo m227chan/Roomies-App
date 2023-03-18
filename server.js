@@ -536,24 +536,30 @@ app.post("/api/shortExchange", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: FireBase ID
   //Output:
-  let editExpenseSQL = `
-	
+  let shortExchangeSQL = `
+	SET @roomie := (Select id from zzammit.Roomate where firebaseUID = (?)); 
+  SELECT CONCAT_WS(' pays ', idDebtor, idSpender, MIN(amount)) AS transaction
+  FROM zzammit.Expenses
+  JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM zzammit.Expenses UNION SELECT idSpender AS id FROM zzammit.Expenses) AS allID JOIN zzammit.Roomate ON allID.id1 = zzammit.Roomate.id) AS debtor ON Expenses.idDebtor = debtor.id1
+  JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM zzammit.Expenses UNION SELECT idSpender AS id FROM zzammit.Expenses) AS allID JOIN zzammit.Roomate ON allID.id1 = zzammit.Roomate.id) AS spender ON Expenses.idSpender = spender.id1
+  WHERE (debtor.id1 != spender.id1) AND debtor.id1 IN 
+  			(SELECT id FROM zzammit.Roomate WHERE idRoom = 
+  				(SELECT idRoom FROM zzammit.Roomate WHERE id = @roomie))
+  GROUP BY debtor.id1, spender.id1
+  HAVING SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END) <> 0
+  ORDER BY SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END);
 	`;
-  let editExpenseData = [
-    req.body.expenseID,
-    req.body.amount,
-    req.body.spender,
-    req.body.debtor,
-    req.body.tag,
-    req.body.comment,
-    req.body.date,
+  let shortExchangeData = [
+    req.body.roommateID,
+    req.body.user,
   ];
+
 
   // console.log(req.body);
 
   connection.query(
-    editExpenseSQL,
-    editExpenseData,
+    shortExchangeSQL,
+    shortExchangeData,
     (error, results, fields) => {
       if (error) {
         console.log(error.message);
@@ -566,6 +572,119 @@ app.post("/api/shortExchange", (req, res) => {
   );
   connection.end();
 });
+
+app.post("/api/addEvent", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
+  //Output: None
+  let addEventSQL = `
+	INSERT INTO zzammit.Calendar (idRoomate, title, startdate, enddate, tag, eventDescription, Consequence) VALUES ((Select id from zzammit.Roomate where firebaseUID = (?)), ?, ?, ?, ?, ?, ?);
+	`;
+  let addEventData = [
+    req.body.roomie,
+    req.body.title,
+    req.body.start,
+    req.body.end,
+    req.body.tag,
+    req.body.description,
+    req.body.consequence,
+  ];
+
+  // console.log(req.body);
+
+  connection.query(addEventSQL, addEventData, (error, results, fields) => {
+    if (error) {
+      console.log(error.message);
+    }
+    let string = JSON.stringify(results);
+    //let obj = JSON.parse(string);
+    res.send({ express: string });
+  });
+  connection.end();
+});
+
+app.post("/api/deleteEvent", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: Expense Trasaction ID
+  //Output: None
+  let delEventSQL = `
+	DELETE FROM zzammit.Expenses WHERE id = ?;
+	`;
+  let delEventData = [req.body.eventID];
+
+  // console.log(req.body);
+
+  connection.query(delEventSQL, delEventData, (error, results, fields) => {
+    if (error) {
+      console.log(error.message);
+    }
+    let string = JSON.stringify(results);
+    //let obj = JSON.parse(string);
+    res.send({ express: string });
+  });
+  connection.end();
+});
+
+app.post("/api/editEvent", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: (Expense ID, Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
+  //Output: None
+  let editEventSQL = `
+	UPDATE zzammit.Calendar SET idRoomate = (Select id from zzammit.Roomate where firebaseUID = (?)), title = ?, startdate = ?, enddate = ?, tag = ?, eventDescription = ?, Consequence = ? WHERE id =?;
+	`;
+  let editEventData = [
+    req.body.roomie,
+    req.body.title,
+    req.body.start,
+    req.body.end,
+    req.body.tag,
+    req.body.description,
+    req.body.consequence,
+    req.body.eventID,
+  ];
+  // console.log(req.body);
+
+  connection.query(
+    editEventSQL,
+    editEventData,
+    (error, results, fields) => {
+      if (error) {
+        console.log(error.message);
+      }
+      let string = JSON.stringify(results);
+      //let obj = JSON.parse(string);
+      res.send({ express: string });
+    }
+  );
+  connection.end();
+});
+app.post("/api/viewEvent", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
+  //Output: None
+  let viewEventSQL = `
+	SELECT id, CONCAT(firstName, ' ', lastName) as creator, title, startdate, enddate, tag, eventDescription, Consequence 
+	FROM zzammit.Calendar left join zzammit.Roomate on Calendar.idRoomate = Roomate.id 
+		WHERE idRoomate IN (SELECT id FROM zzammit.Roomate WHERE idRoom = 
+							(SELECT idRoom FROM zzammit.Roomate WHERE id = ?));
+	`;
+  let viewEventData = [
+    req.body.roomie,
+  ];
+
+  // console.log(req.body);
+
+  connection.query(viewEventSQL, viewEventData, (error, results, fields) => {
+    if (error) {
+      console.log(error.message);
+    }
+    let string = JSON.stringify(results);
+    //let obj = JSON.parse(string);
+    res.send({ express: string });
+  });
+  connection.end();
+});
+
 
 //Basic Use APIs
 
