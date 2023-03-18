@@ -31,7 +31,6 @@ const drawerWidth = 240;
 // Sets the theme for the file
 const theme = createTheme({
   typography: {
-    fontFamily: "Tajawal",
     subtitle1: {
       fontSize: 18,
     },

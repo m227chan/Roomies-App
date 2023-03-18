@@ -1,27 +1,21 @@
 import React, { useState } from "react";
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
+import "./Settings.css";
+
+import {
+  Button,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+  Container,
+  Link,
+} from "@material-ui/core";
+
 import history from "../Navigation/history";
-
-import { withStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-
-import AppBar from "@material-ui/core/AppBar";
-import Box from "@material-ui/core/Box";
-import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
 import SideNav from "../CustomAppBar/sideNav";
-import { Container } from "@material-ui/core";
 
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
-
-import CustomAppBar from "../CustomAppBar";
-
-import "./Settings.css";
 
 const Settings = (props) => {
   const [user, setUser] = useState({});
@@ -55,7 +49,7 @@ const Settings = (props) => {
 
   return (
     <>
-      <SideNav></SideNav>
+      <SideNav />
       <Container class="container">
         <Paper class="paper">
           <Box sx={{ flexGrow: 1 }}>

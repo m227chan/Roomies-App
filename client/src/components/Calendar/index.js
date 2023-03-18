@@ -1,15 +1,12 @@
 import React, { useState } from "react";
+import { Box, Container, Paper } from "@material-ui/core";
 import FullCalendar from "@fullcalendar/react";
-import { formatDate } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
-import CustomAppBar from "../CustomAppBar";
+
 import SideNav from "../CustomAppBar/sideNav";
-import { Box } from "@mui/material";
-import { Container } from "@material-ui/core";
-import { blueGrey } from "@material-ui/core/colors";
 
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = useState([]);
@@ -76,38 +73,40 @@ const Calendar = () => {
   return (
     <>
       <SideNav />
-      <Container class="container">
-        <Box m="20px">
-          <Box display="flex" justifyContent="space-between">
-            <Box flex="1 1 100%" ml="15px">
-              <FullCalendar
-                height="85vh"
-                plugins={[
-                  dayGridPlugin,
-                  timeGridPlugin,
-                  interactionPlugin,
-                  listPlugin,
-                ]}
-                headerToolbar={{
-                  left: "prev next today",
-                  center: "title",
-                  right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
-                }}
-                initialView="dayGridMonth"
-                editable={true}
-                selectable={true}
-                selectMirror={true}
-                dayMaxEvents={true}
-                select={handleDateClick}
-                eventClick={handleEventClick}
-                eventsSet={(events) => setCurrentEvents(events)}
-                eventMouseEnter={handleHover}
-                initialEvents={initialEvents}
-              />
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Container class="container">
+          <Paper class="paper">
+            <Box display="flex" justifyContent="space-between">
+              <Box flex="1 1 100%" ml="15px">
+                <FullCalendar
+                  height="85vh"
+                  plugins={[
+                    dayGridPlugin,
+                    timeGridPlugin,
+                    interactionPlugin,
+                    listPlugin,
+                  ]}
+                  headerToolbar={{
+                    left: "prev next today",
+                    center: "title",
+                    right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+                  }}
+                  initialView="dayGridMonth"
+                  editable={true}
+                  selectable={true}
+                  selectMirror={true}
+                  dayMaxEvents={true}
+                  select={handleDateClick}
+                  eventClick={handleEventClick}
+                  eventsSet={(events) => setCurrentEvents(events)}
+                  eventMouseEnter={handleHover}
+                  initialEvents={initialEvents}
+                />
+              </Box>
             </Box>
-          </Box>
-        </Box>
-      </Container>
+          </Paper>
+        </Container>
+      </Box>
     </>
   );
 };
