@@ -5,32 +5,54 @@ import {
     Card,
     Grid,
     CardContent,
+    Avatar,
+    Box,
 } from "@material-ui/core";
 
-const DisplayRoomates = ({ roommateNames }) => {
-
+const DisplayRoomates = ({ roomateData }) => {
+    const avatarStyle = {
+        backgroundColor: '#FF8700',
+    };
     return (
         <div>
             <Card class="card">
-                {" "}
                 <CardContent>
-                  <Grid container alignItems="center" justifyContent="space-between">
-                    <Grid item>
-                      {" "}
-                      <Typography variant={"h6"}>Room 7 Members</Typography>
+                    <Grid
+                        container
+                        alignItems="center"
+                        justifyContent="space-between"
+                    >
+                        <Grid item>
+                            <Box width="100%" p={1}>
+                                <Typography variant={"h5"}>
+                                    Roommates
+                                </Typography>
+                            </Box>
+                        </Grid>
                     </Grid>
-                  </Grid>
-                  <Grid container alignItems="center" justifyContent="space-between">
-                    {roommateNames.map((member) => (
-                      <Grid item xs={6} md={6}>
-                        <Typography key={member} variant={"body1"}>
-                          {member}
-                        </Typography>
-                      </Grid>
-                    ))}
-                  </Grid>
+                    <Grid
+                        container
+                        alignItems="center"
+                        justifyContent="space-between"
+                    >
+                        {roomateData.map((roomate, index) => (
+                            <Grid item xs={1} key={index}>
+                                <Box width="100%" p={1}>
+                                <Avatar align='right' style={avatarStyle}>
+                                    {roomate.firstName[0]}
+                                </Avatar>
+                                <Typography
+                                    variant={"body1"}
+                                    align='center'
+                                >
+                                    <b>{roomate.firstName + " " + roomate.lastName}</b>
+                                </Typography>
+                                </Box>
+                            </Grid>
+                        ))}
+                    </Grid>
                 </CardContent>
-              </Card>
+            </Card>
         </div>
     );
 };

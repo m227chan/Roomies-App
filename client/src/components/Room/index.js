@@ -12,13 +12,7 @@ import WelcomeMessage from "./WelcomeMessage";
 import DisplayRoomates from "./DisplayRoomates";
 import UpcomingEvents from "./UpcomingEvents";
 import DisplayTopGroceryList from "./DisplayTopGroceryList";
-
-const roommateNames = [
-  "Matthew Chan",
-  "Zack Zammit",
-  "Maximilian Horbik",
-  "Sunischit Thapa",
-];
+import Wallet from "./Wallet";
 
 const roommateGrocery = [
   { name: "Matthew Chan", item: "Chicken" },
@@ -39,37 +33,63 @@ const roommateCalendar = [
   },
 ];
 
+const serverURL = "http://localhost:3000/"; //enable for dev mode
+// const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
+
 const Room = () => {
   const [user, setUser] = useState({});
+  const [roomateData, setRoomateData] = useState([]);
 
   onAuthStateChanged(auth, (currUser) => {
     setUser(currUser);
   });
 
+  useEffect(() => {
+    callApiGetRoomPageInfo().then((res) => {
+      var parsed = JSON.parse(res.express);
+      console.log(parsed);
+      setRoomateData(parsed);
+    });
+  }, [user]);
+
+  const callApiGetRoomPageInfo = async () => {
+    const url = serverURL + "/api/getRoomPageInfo";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        firebaseUID: user.uid
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  }
+
   return (
     <div>
-      <Box sx={{ flexGrow: 1 }}>
-        <CustomAppBar />
+      <CustomAppBar />
+      
+      <Box sx={{ flexGrow: 1, margin: "50px" }}>
+
         <Container class="container">
           <Grid container spacing={2} style={{ margin: "0px" }}>
 
-            {/* This is the Welcome Message */}
-            <Grid item xs={6} md={8}>
-              <WelcomeMessage user={user} />
-            </Grid>
-
-            {/*  This shows the user the other roommates in the room */}
-            <Grid item xs={6} md={4}>
-              <DisplayRoomates roommateNames={roommateNames} />
-            </Grid>
-
-            {/* This shows the top three calendar reminders */}
-            <Grid item xs={6} md={8}>
+            <Grid item xs={6} md={7}>
+              <WelcomeMessage roomateData={roomateData} user={user}/>
+              <br/>
               <UpcomingEvents roommateCalendar={roommateCalendar} />
             </Grid>
 
-            {/* The Grid for the right modules */}
-            <Grid item xs={6} md={4}>
+            <Grid item xs={6} md={5}>
+              <DisplayRoomates roomateData={roomateData} />
+              <br/>
+              <Wallet roomateData={roomateData} user={user}/>
+              <br/>
               <DisplayTopGroceryList roommateGrocery={roommateGrocery} />
             </Grid>
 

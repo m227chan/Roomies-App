@@ -80,7 +80,7 @@ app.post("/api/addGroceryItem", (req, res) => {
 
 app.post("/api/addGrocery", (req, res) => {
   let connection = mysql.createConnection(config);
-  let sql = `INSERT INTO zzammit.Grocery (idRoomate, idGroceryItem, Quantity) VALUES (?,?,?)`;
+  let sql = `INSERT INTO zzammit.Grocery (idRoomate, idGroceryItem, Quantity, tDate) VALUES (?,?,?,NOW())`;
   let data = [req.body.idRoomate, req.body.idGroceryItem, req.body.Quantity];
 
   // console.log(req.body);
@@ -600,9 +600,8 @@ app.post("/api/getRoomates", (req, res) => {
 app.post("/api/getRoomPageInfo", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: User Firebase ID
-  //Output: Names and Firebase IDs of roomates (for use in Dropdowns and such)
   let sql = `
-  SELECT CONCAT(r.firstName, ' ', r.lastName) AS Roomates, r.idRoom, r.owed, rm.roomName 
+  SELECT r.firstName, r.lastName, r.idRoom, r.owed * -1 AS owed, rm.roomName, r.firebaseUID 
   FROM zzammit.Roomate r 
   INNER JOIN zzammit.Room rm ON r.idRoom = rm.id 
   WHERE r.idRoom = (SELECT idRoom FROM zzammit.Roomate WHERE firebaseUID = (?))

@@ -12,19 +12,23 @@
   height: 100%;
 }
 
-.topGridSetup{
+.topGridSetup {
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
-.card{
+.card {
   background-color: var(--color-bg-variant);
   border-radius: 10px;
 }
 
-.calendar-top-card{
+.welcome-message-card {
+  background-color: var(--color-bg-variant);
+  border-radius: 10px;
+}
+
+.calendar-top-card {
   background-color: var(--color-primary-variant);
   border-radius: 10px;
 }

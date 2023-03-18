@@ -38,8 +38,8 @@ const UpcomingEvents = ({ roommateCalendar }) => {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        {roommateCalendar.map((member) => (
-                            <Grid item xs={12}>
+                        {roommateCalendar.map((member, index) => (
+                            <Grid item xs={12} key={index}>
                                 <Card class="calendar-card">
                                     {" "}
                                     <CardContent>

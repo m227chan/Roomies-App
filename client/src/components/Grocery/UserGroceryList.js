@@ -41,10 +41,10 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
 
     const onClickAddGrocery = async (idRoomate, idGroceryItem, quantity) => {
         setSubmit(true);
-        callAPIAddItemUserList(idRoomate, idGroceryItem, quantity);
+        callAPIAddItemRoomList(idRoomate, idGroceryItem, quantity);
     }
 
-    const callAPIAddItemUserList = async (idRoomate, idGroceryItem, quantity) => {
+    const callAPIAddItemRoomList = async (idRoomate, idGroceryItem, quantity) => {
         const url = serverURL + "/api/addGrocery";
         const response = await fetch(url, {
             method: "POST",
@@ -55,7 +55,7 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
             body: JSON.stringify({
                 idRoomate: idRoomate,
                 idGroceryItem: idGroceryItem,
-                Quantity: quantity
+                Quantity: quantity,
             })
         });
         const body = await response.json();
