@@ -14,12 +14,6 @@ import UpcomingEvents from "./UpcomingEvents";
 import DisplayTopGroceryList from "./DisplayTopGroceryList";
 import Wallet from "./Wallet";
 
-const roommateGrocery = [
-  { name: "Matthew Chan", item: "Chicken" },
-  { name: "Maximilian Horbik", item: "Polish Stew" },
-  { name: "Zach Zammit", item: "Ice Cap" },
-];
-
 const roommateCalendar = [
   {
     name: "Garbage Day",
@@ -30,6 +24,11 @@ const roommateCalendar = [
     name: "Happy Birthday",
     date: "February 20th, 2023",
     time: "6:00PM to 9:00PM",
+  },
+  {
+    name: "MSCI 342 Final Exam",
+    date: "February 27th, 2023",
+    time: "1:00PM to 2:00PM",
   },
 ];
 

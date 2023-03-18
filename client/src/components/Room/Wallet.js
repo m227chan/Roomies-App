@@ -36,9 +36,7 @@ const Wallet = ({ roomateData, user }) => {
         <div>
             <Card class="card" style={{ height: "100%" }}>
                 <CardContent style={{ height: "100%" }}>
-                    <Grid
-                        container
-                    >
+                    <Grid container>
                         <Grid item xs={12}>
 
                             <Button
@@ -52,7 +50,7 @@ const Wallet = ({ roomateData, user }) => {
                                 <Typography variant={"h5"}>{message}</Typography>
                             </Box>
 
-                            <Box display="flex" justifyContent="flex-start" style={{ width: "100%" }} p={1}>
+                            <Box  justifyContent="flex-start" style={{ width: "100%" }} p={1}>
                                 <Chart
                                     data={roomateData}
                                     style={{ maxHeight: 250, width: "100%" }}
@@ -66,7 +64,7 @@ const Wallet = ({ roomateData, user }) => {
                                     <Animation />
                                 </Chart>
                             </Box>
-                            
+
                         </Grid>
 
                     </Grid>

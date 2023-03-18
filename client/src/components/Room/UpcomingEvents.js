@@ -47,7 +47,6 @@ const UpcomingEvents = ({ roommateCalendar }) => {
                         {roommateCalendar.map((member, index) => (
                             <Grid item xs={12} key={index}>
                                 <Card class="calendar-card">
-                                    {" "}
                                     <CardContent>
                                         <Typography variant={"h5"}> {member.name}</Typography>
                                         <Grid container spacing={2}>
@@ -57,7 +56,6 @@ const UpcomingEvents = ({ roommateCalendar }) => {
                                                 </Typography>
                                             </Grid>
                                             <Grid item xs={6}>
-                                                {" "}
                                                 <Typography variant={"h6"}>
                                                     {member.time}
                                                 </Typography>

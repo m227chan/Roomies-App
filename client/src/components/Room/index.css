@@ -43,6 +43,11 @@
   border-radius: 10px;
 }
 
+.wallet-card {
+  background-color: var(--color-bg);
+  border-radius: 10px;
+}
+
 .mainMessage {
   opacity: opacityValue;
 }
