@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
-import {
-  Grid,
-  Box,
-} from "@material-ui/core";
+import { Box, Grid, Container } from "@material-ui/core";
+
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
-import CustomAppBar from "../CustomAppBar";
-import { Container } from "@material-ui/core";
+
+import SideNav from "../CustomAppBar/sideNav";
+
 import WelcomeMessage from "./WelcomeMessage";
 import DisplayRoomates from "./DisplayRoomates";
 import UpcomingEvents from "./UpcomingEvents";
@@ -46,19 +45,17 @@ const Room = () => {
   });
 
   useEffect(() => {
-
     callApiGetRoomPageInfo().then((res) => {
       var parsed = JSON.parse(res.express);
       // console.log(parsed);
       setRoomateData(parsed);
     });
 
-    callGetTopGrocery().then(res => {
+    callGetTopGrocery().then((res) => {
       var parsed = JSON.parse(res.express);
       // console.log(parsed);
       setRoomTopGrocery(parsed);
     });
-
   }, [user]);
 
   const callApiGetRoomPageInfo = async () => {
@@ -70,14 +67,14 @@ const Room = () => {
         //authorization: `Bearer ${this.state.token}`
       },
       body: JSON.stringify({
-        firebaseUID: user.uid
-      })
+        firebaseUID: user.uid,
+      }),
     });
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     // console.log("User settings: ", body);
     return body;
-  }
+  };
 
   const callGetTopGrocery = async () => {
     const url = serverURL + "/api/getTopGrocery";
@@ -88,24 +85,21 @@ const Room = () => {
         //authorization: `Bearer ${this.state.token}`
       },
       body: JSON.stringify({
-        firebaseUID: user.uid
-      })
+        firebaseUID: user.uid,
+      }),
     });
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     // console.log("User settings: ", body);
     return body;
-  }
+  };
 
   return (
-    <div>
-      <CustomAppBar />
-
-      <Box sx={{ flexGrow: 1, margin: "50px" }}>
-
-        <Container class="container">
+    <>
+      <SideNav />
+      <Container class="container">
+        <Box sx={{ flexGrow: 1, margin: "50px" }}>
           <Grid container spacing={2} style={{ margin: "0px" }}>
-
             <Grid item xs={6} md={7}>
               <WelcomeMessage roomateData={roomateData} user={user} />
               <br />
@@ -119,11 +113,10 @@ const Room = () => {
               <br />
               <DisplayTopGroceryList roomTopGrocery={roomTopGrocery} />
             </Grid>
-
           </Grid>
-        </Container>
-      </Box>
-    </div>
+        </Box>
+      </Container>
+    </>
   );
 };
 

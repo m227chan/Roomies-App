@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Tajawal&display=swap');
 /* Sets the default styling properties for all elements */
 * {
   margin: 0;
@@ -38,7 +38,7 @@ html {
 }
 
 body {
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Tajawal", "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--color-bg);
@@ -86,7 +86,7 @@ section > h2 {
 
 .container {
   width: var(--container-width-lg);
-  margin: 0 auto;
+  margin-left: 240px;
   justify-content: space-around;
   align-items: stretch;
 }
