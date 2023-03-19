@@ -25,6 +25,16 @@ const AddGroceryItemDialog = ({ user, setSubmit, open, handleClose }) => {
 
     const [submitDialogClicked, setSubmitDialogClicked] = useState(false);
 
+    React.useEffect(() => {
+        setItem("");
+        setBrand("");
+        setStore("");
+        setPrice("");
+        setSubmitDialogClicked(false);
+        setClick(false);
+    
+      }, [handleClose]);
+
     const onClickGroceryItem = async () => {
         setSubmitDialogClicked(true);
 
