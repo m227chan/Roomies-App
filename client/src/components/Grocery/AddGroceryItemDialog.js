@@ -28,7 +28,7 @@ const AddGroceryItemDialog = ({ user, setSubmit, open, handleClose }) => {
     const onClickGroceryItem = async () => {
         setSubmitDialogClicked(true);
 
-        if (item != "" && brand != "" && store != "" && price != "") {
+        if (item != "" && brand != "" && store != "" && price > 0) {
             console.log(user);
             setSubmit(true);
             callApiAddGroceryItem();
