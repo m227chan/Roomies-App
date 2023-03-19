@@ -47,18 +47,22 @@ const theme = createTheme({
 // Component for the top of the Nav
 const NavProfile = () => {
 
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState("");
   const [username, setUsername] = useState("");
+  const [letter, setLetter] = useState("");
 
   onAuthStateChanged(auth, (currUser) => {
     setUser(currUser);
   });
 
   useEffect(() => {
-    callAPIGetUsername().then((res) => {
-      var parsed = JSON.parse(res.express);
-      setUsername(parsed[0].name);
-    });
+    if (user) {
+      callAPIGetUsername().then((res) => {
+        var parsed = JSON.parse(res.express);
+        setUsername(parsed[0].name);
+        setLetter(parsed[0].name[0]);
+      });
+    }
   }, [user]);
 
   const callAPIGetUsername = async () => {
@@ -90,7 +94,7 @@ const NavProfile = () => {
           height: 60,
         }}
       >
-        <Typography variant="h4">{username[0]}</Typography>
+        <Typography variant="h4">{letter}</Typography>
       </Avatar>
       <Typography
         style={{ paddingTop: "10%", fontWeight: "bold" }}
@@ -117,7 +121,7 @@ const NavMenu = () => {
       </Grid>
       <List sx={{ margin: "5% 0%" }}>
         {["Room"].map((text, index) => (
-          <ListItem key={text}>
+          <ListItem key={index}>
             <ListItemButton>
               <ListItemIcon style={{ minWidth: "40px" }}>
                 <HomeWorkIcon sx={{ color: "#FFFFFF" }} />

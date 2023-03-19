@@ -1,19 +1,5 @@
-// import { useState } from "react";
+import { createContext } from 'react';
 
-// export const User = () => {
-//   const [firstName, setFirstName] = useState("");
-//   const [lastName, setLastName] = useState("");
-//   const [roomID, setRoomID] = useState("");
-//   const [firebaseUID, setFirebaseUID] = useState("");
+const UserContext = createContext(null);
 
-//   return {
-//     firstName,
-//     setFirstName,
-//     lastName,
-//     setLastName,
-//     roomID,
-//     setRoomID,
-//     firebaseUID,
-//     setFirebaseUID,
-//   };
-// };
+export default UserContext;

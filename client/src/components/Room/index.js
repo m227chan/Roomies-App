@@ -95,7 +95,7 @@ const Room = () => {
 
   return (
     <>
-      <SideNav />
+      <SideNav/>
       <Container class="container">
         <Box sx={{ flexGrow: 1, margin: "50px" }}>
           <Grid container spacing={2} style={{ margin: "0px" }}>

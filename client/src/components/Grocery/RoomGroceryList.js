@@ -39,7 +39,7 @@ const RoomGroceryList = ({ roomGroceryList, setSubmit, user }) => {
     }
 
     const callApiPurchase = async (item) => {
-        console.log(item);
+        console.log(user.uid);
         const url = serverURL + "/api/addExpenseGrocery";
         const response = await fetch(url, {
             method: "POST",
