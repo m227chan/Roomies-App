@@ -15,6 +15,7 @@ const serverURL = "http://localhost:3000/"; //enable for dev mode
 const UserGroceryList = ({ userGroceryList, setSubmit }) => {
 
     const [quantity, setQuantity] = useState("");
+    const [click, setClick] = useState(false);
 
     const onClickDeleteGroceryItem = async (item) => {
         setSubmit(true);
@@ -128,9 +129,10 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
                         onChange={
                             (event) => {
                                 setQuantity(event.target.value)
+                                setClick(true)
                             }}
-                        error={(quantity < 0) }
-                        helperText={(quantity < 0) ?
+                        error={(quantity <= 0 && click === true) }
+                        helperText={(quantity <= 0 && click === true) ?
                         "Please enter a positive amount." : ""}
                     />
 
