@@ -33,6 +33,12 @@ const AddGroceryItemDialog = ({ user, setSubmit, open, handleClose }) => {
             setSubmit(true);
             callApiAddGroceryItem();
             handleClose();
+            setItem("");
+            setBrand("");
+            setStore("");
+            setPrice("");
+            setSubmitDialogClicked(false);
+            setClick(false);
         }
     }
 
