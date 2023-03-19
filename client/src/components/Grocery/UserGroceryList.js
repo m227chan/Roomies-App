@@ -129,6 +129,9 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
                             (event) => {
                                 setQuantity(event.target.value)
                             }}
+                        error={(quantity < 0) }
+                        helperText={(quantity < 0) ?
+                        "Please enter a positive amount." : ""}
                     />
 
                     <Button onClick={
