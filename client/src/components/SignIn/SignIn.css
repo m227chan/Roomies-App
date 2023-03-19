@@ -1,0 +1,62 @@
+.root {
+    background-color: #000000;
+    opacity: 0.9;
+    overflow: hidden;
+  }
+
+.mainMessage {
+    opacity: 0.9;
+  }
+  
+  .mainContainer{
+    margin: 0;;
+    background-color: var(--color-bg-variant);
+  }
+  
+  .title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0rem;
+    color: var(--color-primary);
+    background-color: var(--color-bg-variant);
+  }
+  
+  .newButton{
+    background-color: var(--color-bg-variant);
+  }
+  .divider{
+    background: var(--color-primary);
+  }
+  .orDivider{
+    font-weight: bold;
+    width: 100%;
+  }
+
+  .orSectionGrid{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .messageBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0rem;
+    width: 100vw;
+    font-weight: bold;
+  }
+
+
+  @media (max-width: 600px) {
+    .mainMessageContainer {
+      margin-left: 4px;
+    }
+  }
+  
+  .paper {
+    overflow: hidden;
+  }
+  

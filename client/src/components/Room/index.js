@@ -98,7 +98,13 @@ const Room = () => {
       <SideNav/>
       <Container class="container">
         <Box sx={{ flexGrow: 1, margin: "50px" }}>
-          <Grid container spacing={2} style={{ margin: "0px" }}>
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="stretch"
+            spacing={2}
+            style={{ margin: "0px" }}
+          >
             <Grid item xs={6} md={7}>
               <WelcomeMessage roomateData={roomateData} user={user} />
               <br />

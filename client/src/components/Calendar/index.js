@@ -12,6 +12,7 @@ const Calendar = () => {
   const [currentEvents, setCurrentEvents] = useState([]);
 
   //update this component by retriving date from the database
+  // View Events
   var initialEvents = {
     events: [
       {
@@ -33,7 +34,7 @@ const Calendar = () => {
 
   const handleDateClick = (selected) => {
     const title = prompt("Please enter a new title for your event");
-    const creator = prompt("Please enter a new title for your event");
+    const creator = prompt("Please enter a new creator for your event");
     const calendarApi = selected.view.calendar;
     calendarApi.unselect();
 
