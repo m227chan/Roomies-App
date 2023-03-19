@@ -578,7 +578,7 @@ app.post("/api/addEvent", (req, res) => {
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
   let addEventSQL = `
-	INSERT INTO zzammit.Calendar (idRoomate, title, startdate, enddate, tag, eventDescription, Consequence) VALUES ((Select id from zzammit.Roomate where firebaseUID = (?)), ?, ?, ?, ?, ?, ?);
+	INSERT INTO zzammit.Calendar (idRoomate, title, startdate, enddate, tag, eventDescription, Consequence, allDay) VALUES ((Select id from zzammit.Roomate where firebaseUID = (?)), ?, ?, ?, ?, ?, ?, ?);
 	`;
   let addEventData = [
     req.body.roomie,
@@ -588,6 +588,7 @@ app.post("/api/addEvent", (req, res) => {
     req.body.tag,
     req.body.description,
     req.body.consequence,
+    req.body.allDay,
   ];
 
   // console.log(req.body);
@@ -630,7 +631,7 @@ app.post("/api/editEvent", (req, res) => {
   //Input: (Expense ID, Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
   let editEventSQL = `
-	UPDATE zzammit.Calendar SET idRoomate = (Select id from zzammit.Roomate where firebaseUID = (?)), title = ?, startdate = ?, enddate = ?, tag = ?, eventDescription = ?, Consequence = ? WHERE id =?;
+	UPDATE zzammit.Calendar SET idRoomate = (Select id from zzammit.Roomate where firebaseUID = (?)), title = ?, startdate = ?, enddate = ?, tag = ?, eventDescription = ?, Consequence = ?, allDay = ? WHERE id =?;
 	`;
   let editEventData = [
     req.body.roomie,
@@ -640,6 +641,7 @@ app.post("/api/editEvent", (req, res) => {
     req.body.tag,
     req.body.description,
     req.body.consequence,
+    req.body.allDay,
     req.body.eventID,
   ];
   // console.log(req.body);
@@ -663,7 +665,7 @@ app.post("/api/viewEvent", (req, res) => {
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
   let viewEventSQL = `
-	SELECT id, CONCAT(firstName, ' ', lastName) as creator, title, startdate, enddate, tag, eventDescription, Consequence 
+	SELECT id, CONCAT(firstName, ' ', lastName) as creator, title, startdate, enddate, tag, eventDescription, Consequence, allDay 
 	FROM zzammit.Calendar left join zzammit.Roomate on Calendar.idRoomate = Roomate.id 
 		WHERE idRoomate IN (SELECT id FROM zzammit.Roomate WHERE idRoom = 
 							(SELECT idRoom FROM zzammit.Roomate WHERE id = ?));
