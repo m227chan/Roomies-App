@@ -21,6 +21,8 @@ const AddGroceryItemDialog = ({ user, setSubmit, open, handleClose }) => {
     const [store, setStore] = useState("");
     const [price, setPrice] = useState("");
 
+    const [click, setClick] = useState(false);
+
     const [submitDialogClicked, setSubmitDialogClicked] = useState(false);
 
     const onClickGroceryItem = async () => {
@@ -115,10 +117,11 @@ const AddGroceryItemDialog = ({ user, setSubmit, open, handleClose }) => {
                     value={price}
                     onChange={(event) => {
                         setPrice(event.target.value)
+                        setClick(true)
                     }}
-                    error={price === "" && submitDialogClicked === true}
-                    helperText={(price === "" && submitDialogClicked === true) ?
-                        "Please enter a price." : ""}
+                    error={price <= 0 && click === true}
+                    helperText={(price <= 0 && click === true) ?
+                        "Please enter a valid price." : ""}
                 />
 
                 <DialogActions>
