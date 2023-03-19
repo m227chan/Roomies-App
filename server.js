@@ -394,7 +394,7 @@ app.post("/api/addExpense", (req, res) => {
 	SET @spender = (Select id from zzammit.Roomate where firebaseUID = (?));
 	SET @debtor = (Select id from zzammit.Roomate where firebaseUID = (?));
 	INSERT INTO zzammit.Expenses (idSpender, idDebtor, amount, tag, comments, tDate) VALUES (@spender, @debtor, @amt, ?, ?, ?);
-	Update zzammit.Roomate set owed = owed + @amt where id = @spendor;
+	Update zzammit.Roomate set owed = owed + @amt where id = @spender;
 	Update zzammit.Roomate set owed = owed - @amt where id = @debtor;
 	`;
   let addExpenseData = [
@@ -429,8 +429,8 @@ app.post("/api/addExpenseGrocery", (req, res) => {
 	SET @spender = (Select id from zzammit.Roomate where firebaseUID = (?));
 	SET @debtor = (?);
 	INSERT INTO zzammit.Expenses (idSpender, idDebtor, amount, tag, comments, tDate) VALUES (@spender, @debtor, @amt, ?, ?, ?);
-	Update zzammit.Roomate set owed = owed + @amt where id = @spendor;
-	Update zzammit.Roomate set owed = owed - @amt where id = @debtor;
+	Update zzammit.Roomate set owed = owed + @amt where id = @spender AND @spender <> @debtor;
+	Update zzammit.Roomate set owed = owed - @amt where id = @debtor AND @spender <> @debtor;
 	`;
   let addExpenseData = [
     req.body.amount,
@@ -771,6 +771,32 @@ app.post("/api/getTopGrocery", (req, res) => {
   )
   ORDER BY g.tDate DESC
   LIMIT 4;
+    `;
+  let data = [req.body.firebaseUID];
+
+  // console.log(req.body);
+
+  connection.query(
+    sql,
+    data,
+    (error, results, fields) => {
+      if (error) {
+        console.log(error.message);
+      }
+
+      let string = JSON.stringify(results);
+      //let obj = JSON.parse(string);
+      res.send({ express: string });
+    }
+  );
+  connection.end();
+});
+
+app.post("/api/getUsername", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: User Firebase ID
+  let sql = `
+  SELECT CONCAT(firstName, ' ', lastName) AS name FROM zzammit.Roomate WHERE firebaseUID = (?);
     `;
   let data = [req.body.firebaseUID];
 

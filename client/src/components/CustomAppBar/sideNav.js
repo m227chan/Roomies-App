@@ -1,5 +1,5 @@
 // Importing react and files
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import "./sideNav.css";
 import history from "../Navigation/history";
 
@@ -25,8 +25,15 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 
+// auth
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../Firebase/firebase";
+
 // Sets the width
 const drawerWidth = 240;
+
+const serverURL = "http://localhost:3000/"; //enable for dev mode
+// const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
 // Sets the theme for the file
 const theme = createTheme({
@@ -39,6 +46,43 @@ const theme = createTheme({
 
 // Component for the top of the Nav
 const NavProfile = () => {
+
+  const [user, setUser] = useState("");
+  const [username, setUsername] = useState("");
+  const [letter, setLetter] = useState("");
+
+  onAuthStateChanged(auth, (currUser) => {
+    setUser(currUser);
+  });
+
+  useEffect(() => {
+    if (user) {
+      callAPIGetUsername().then((res) => {
+        var parsed = JSON.parse(res.express);
+        setUsername(parsed[0].name);
+        setLetter(parsed[0].name[0]);
+      });
+    }
+  }, [user]);
+
+  const callAPIGetUsername = async () => {
+    const url = serverURL + "/api/getUsername";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        firebaseUID: user.uid,
+      }),
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  };
+
   return (
     <Grid item class="navAvatar">
       {" "}
@@ -50,14 +94,13 @@ const NavProfile = () => {
           height: 60,
         }}
       >
-        <Typography variant="h4">Z</Typography>
+        <Typography variant="h4">{letter}</Typography>
       </Avatar>
       <Typography
         style={{ paddingTop: "10%", fontWeight: "bold" }}
         variant="h6"
       >
-        {" "}
-        Zach Zammit
+        {username}
       </Typography>
     </Grid>
   );
@@ -78,7 +121,7 @@ const NavMenu = () => {
       </Grid>
       <List sx={{ margin: "5% 0%" }}>
         {["Room"].map((text, index) => (
-          <ListItem key={text}>
+          <ListItem key={index}>
             <ListItemButton>
               <ListItemIcon style={{ minWidth: "40px" }}>
                 <HomeWorkIcon sx={{ color: "#FFFFFF" }} />
