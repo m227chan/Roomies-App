@@ -550,8 +550,7 @@ app.post("/api/shortExchange", (req, res) => {
   ORDER BY SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END);
 	`;
   let shortExchangeData = [
-    req.body.roommateID,
-    req.body.user,
+    req.body.firebaseUID,
   ];
 
 

@@ -21,16 +21,34 @@ const AddGroceryItemDialog = ({ user, setSubmit, open, handleClose }) => {
     const [store, setStore] = useState("");
     const [price, setPrice] = useState("");
 
+    const [click, setClick] = useState(false);
+
     const [submitDialogClicked, setSubmitDialogClicked] = useState(false);
+
+    React.useEffect(() => {
+        setItem("");
+        setBrand("");
+        setStore("");
+        setPrice("");
+        setSubmitDialogClicked(false);
+        setClick(false);
+    
+      }, [handleClose]);
 
     const onClickGroceryItem = async () => {
         setSubmitDialogClicked(true);
 
-        if (item != "" && brand != "" && store != "" && price != "") {
+        if (item != "" && brand != "" && store != "" && price > 0) {
             console.log(user);
             setSubmit(true);
             callApiAddGroceryItem();
             handleClose();
+            setItem("");
+            setBrand("");
+            setStore("");
+            setPrice("");
+            setSubmitDialogClicked(false);
+            setClick(false);
         }
     }
 
@@ -115,10 +133,11 @@ const AddGroceryItemDialog = ({ user, setSubmit, open, handleClose }) => {
                     value={price}
                     onChange={(event) => {
                         setPrice(event.target.value)
+                        setClick(true)
                     }}
-                    error={price === "" && submitDialogClicked === true}
-                    helperText={(price === "" && submitDialogClicked === true) ?
-                        "Please enter a price." : ""}
+                    error={price <= 0 && click === true}
+                    helperText={(price <= 0 && click === true) ?
+                        "Please enter a valid price." : ""}
                 />
 
                 <DialogActions>
