@@ -576,6 +576,8 @@ app.post("/api/shortExchange", (req, res) => {
   connection.end();
 });
 
+//Calendar APIs
+
 app.post("/api/addEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
@@ -584,7 +586,7 @@ app.post("/api/addEvent", (req, res) => {
 	INSERT INTO zzammit.Calendar (idRoomate, title, startdate, enddate, tag, eventDescription, Consequence, allDay) VALUES ((Select id from zzammit.Roomate where firebaseUID = (?)), ?, ?, ?, ?, ?, ?, ?);
 	`;
   let addEventData = [
-    req.body.roomie,
+    req.body.firebaseUID,
     req.body.title,
     req.body.start,
     req.body.end,
@@ -637,7 +639,7 @@ app.post("/api/editEvent", (req, res) => {
 	UPDATE zzammit.Calendar SET idRoomate = (Select id from zzammit.Roomate where firebaseUID = (?)), title = ?, startdate = ?, enddate = ?, tag = ?, eventDescription = ?, Consequence = ?, allDay = ? WHERE id =?;
 	`;
   let editEventData = [
-    req.body.roomie,
+    req.body.firebaseUID,
     req.body.title,
     req.body.start,
     req.body.end,
@@ -671,11 +673,9 @@ app.post("/api/viewEvent", (req, res) => {
 	SELECT id, CONCAT(firstName, ' ', lastName) as creator, title, startdate, enddate, tag, eventDescription, Consequence, allDay 
 	FROM zzammit.Calendar left join zzammit.Roomate on Calendar.idRoomate = Roomate.id 
 		WHERE idRoomate IN (SELECT id FROM zzammit.Roomate WHERE idRoom = 
-							(SELECT idRoom FROM zzammit.Roomate WHERE id = ?));
+							(SELECT idRoom FROM zzammit.Roomate WHERE firebaseUID = ?));
 	`;
-  let viewEventData = [
-    req.body.roomie,
-  ];
+  let viewEventData = [req.body.firebaseUID];
 
   // console.log(req.body);
 

@@ -1,15 +1,39 @@
-import React, { useState } from "react";
-import { Box, Container, Paper } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Container,
+  Paper,
+} from "@material-ui/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../Firebase/firebase";
+
 import SideNav from "../CustomAppBar/sideNav";
 
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = useState([]);
+  const [creator, setCreator] = useState("");
+  const [title, setTitle] = useState("");
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+  const [tag, setTag] = useState("");
+  const [description, setDescription] = useState("");
+  const [consequence, setConsequence] = useState("");
+  const [allDay, setAllDay] = useState("");
+  const [user, setUser] = useState({});
+
+  onAuthStateChanged(auth, (currUser) => {
+    setUser(currUser);
+  });
+
+  // useEffect(() => {
+  //   callAPIViewEvent();
+  // }, [user]);
 
   //update this component by retriving date from the database
   // View Events
@@ -32,9 +56,15 @@ const Calendar = () => {
     ],
   };
 
+  // const getExpenseReport = () => {
+  //   callAPIGetExpenseReport().then((res) => {
+  //     var parsed = JSON.parse(res.express);
+  //     setExpenses(parsed[4]);
+  //   });
+  // };
+
   const handleDateClick = (selected) => {
     const title = prompt("Please enter a new title for your event");
-    const creator = prompt("Please enter a new creator for your event");
     const calendarApi = selected.view.calendar;
     calendarApi.unselect();
 
@@ -48,6 +78,8 @@ const Calendar = () => {
         creator,
       });
 
+      // callAPIAddEvent();
+
       console.log("Start " + selected.startStr);
       console.log("End " + selected.endStr);
       console.log("All Day" + selected.allDay);
@@ -55,7 +87,6 @@ const Calendar = () => {
   };
 
   const handleHover = (selected) => {
-    const creator = selected.event.extendedProps.creator;
     const title = selected.event.title;
     const tooltip = `Created by ${creator}`;
     selected.el.setAttribute("title", tooltip);
@@ -70,6 +101,97 @@ const Calendar = () => {
       selected.event.remove();
     }
   };
+
+  // const callAPIAddEvent = async () => {
+  //   // console.log("getExpenseReport called");
+  //   const url = serverURL + "/api/addEvent";
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       //authorization: `Bearer ${this.state.token}`
+  //     },
+  //     body: JSON.stringify({
+  //       firebaseUID: user.uid,,
+  //       title,
+  //       start,
+  //       end,
+  //       tag,
+  //       description,
+  //       consequence,
+  //       allDay,
+  //     }),
+  //   });
+  //   const body = await response.json();
+  //   if (response.status !== 200) throw Error(body.message);
+  //   // console.log("User settings: ", body);
+  //   return body;
+  // };
+
+  // const callAPIDeleteEvent = async () => {
+  //   // console.log("getExpenseReport called");
+  //   const url = serverURL + "/api/deleteEvent";
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       //authorization: `Bearer ${this.state.token}`
+  //     },
+  //     body: JSON.stringify({
+  //       eventID: 1,
+  //     }),
+  //   });
+  //   const body = await response.json();
+  //   if (response.status !== 200) throw Error(body.message);
+  //   // console.log("User settings: ", body);
+  //   return body;
+  // };
+
+  // const callAPIEditEvent = async () => {
+  //   // console.log("getExpenseReport called");
+  //   const url = serverURL + "/api/editEvent";
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       //authorization: `Bearer ${this.state.token}`
+  //     },
+  //     body: JSON.stringify({
+  //       firebaseUID: user.uid,,
+  //       title,
+  //       start,
+  //       end,
+  //       tag,
+  //       description,
+  //       consequence,
+  //       allDay,
+  //       eventID,
+  //     }),
+  //   });
+  //   const body = await response.json();
+  //   if (response.status !== 200) throw Error(body.message);
+  //   // console.log("User settings: ", body);
+  //   return body;
+  // };
+
+  // const callAPIViewEvent = async () => {
+  //   // console.log("getExpenseReport called");
+  //   const url = serverURL + "/api/viewEvent";
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       //authorization: `Bearer ${this.state.token}`
+  //     },
+  //     body: JSON.stringify({
+  //       firebaseUID: user.uid,
+  //     }),
+  //   });
+  //   const body = await response.json();
+  //   if (response.status !== 200) throw Error(body.message);
+  //   // console.log("User settings: ", body);
+  //   return body;
+  // };
 
   return (
     <>

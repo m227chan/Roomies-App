@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
@@ -91,6 +91,12 @@ const SignUp = (props) => {
                 email,
                 password
             );
+
+            const name = firstName + " " + lastName;
+
+            await updateProfile(auth.currentUser, {
+                displayName: name
+            });
 
             await signInWithEmailAndPassword(
                 auth,
