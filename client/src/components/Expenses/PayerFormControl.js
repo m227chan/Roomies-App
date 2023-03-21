@@ -19,6 +19,7 @@ const PayerFormControl = ({ payer, setPayer, roomates }) => {
     };
 
     return (
+        <div>
         <FormControl
             required
             error={!payer && changeStatus === true}
@@ -38,6 +39,7 @@ const PayerFormControl = ({ payer, setPayer, roomates }) => {
                 ))}
             </RadioGroup>
         </FormControl>
+        </div>
     );
 };
 
