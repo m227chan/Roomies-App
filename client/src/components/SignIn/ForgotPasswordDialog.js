@@ -7,7 +7,6 @@ import {
     DialogActions,
 } from "@mui/material";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../Firebase/firebase";
 import history from "../Navigation/history";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -23,7 +22,9 @@ import Divider from "@material-ui/core/Divider";
 import "./SignIn.css";
 import {Link} from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
+import { initializeApp } from 'firebase/app';
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../Firebase/firebase";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
@@ -31,19 +32,30 @@ const serverURL = "http://localhost:3000/"; //enable for dev mode
 // ForgotPasswordDialog component
 const ForgotPasswordDialog = ({ open, handleClose }) => {
 
-    const [roomates, setRoomates] = React.useState([]);
-    const [user, setUser] = React.useState({});
+    const firebaseConfig = {
+        apiKey: "AIzaSyBVTZUlpllWu2AaX6gddWn8kUu0L38LkZo",
+        authDomain: "msci245-d3-7a81c.firebaseapp.com",
+        databaseURL: "https://msci245-d3-7a81c-default-rtdb.firebaseio.com",
+        projectId: "msci245-d3-7a81c",
+        storageBucket: "msci245-d3-7a81c.appspot.com",
+        messagingSenderId: "592846380585",
+        appId: "1:592846380585:web:a1b6ee383e2f7cfc0a8638",
+        measurementId: "G-5L2LC1BHQV",
+      };
+      
+    const app = initializeApp(firebaseConfig);
 
     const [errorStatus, setErrorStatus] = useState(false);
     const [submitClicked, setSubmitClicked] = useState(false);
 
     const [email, setEmail] = useState('')
-    const auth = getAuth();
+    const auth = getAuth(app);
 
     const handlePasswordReset = async () => {
         setSubmitClicked(true);
         //await sendPasswordResetEmail(auth, email);
-        sendPasswordResetEmail(auth, email)
+        console.log(email);
+        await sendPasswordResetEmail(auth, email)
             .then(() => {
             // Password reset email sent!
             // ..
@@ -53,7 +65,8 @@ const ForgotPasswordDialog = ({ open, handleClose }) => {
             const errorMessage = error.message;
 
         });
-        console.log("Password reset email sent")
+        console.log("Password reset email sent");
+        handleClose();
     }
 
     const handleCancel = () => {
