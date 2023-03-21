@@ -15,25 +15,31 @@ import { auth } from "../Firebase/firebase";
 
 import SideNav from "../CustomAppBar/sideNav";
 
+const serverURL = "http://localhost:3000/"; //enable for dev mode
+// const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
+
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = useState([]);
   const [creator, setCreator] = useState("");
-  const [title, setTitle] = useState("");
-  const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
-  const [tag, setTag] = useState("");
-  const [description, setDescription] = useState("");
-  const [consequence, setConsequence] = useState("");
-  const [allDay, setAllDay] = useState("");
+  // const [title, setTitle] = useState("");
+  // const [start, setStart] = useState("");
+  // const [end, setEnd] = useState("");
+  // const [tag, setTag] = useState("");
+  // const [description, setDescription] = useState("");
+  // const [consequence, setConsequence] = useState("");
+  // const [allDay, setAllDay] = useState("");
   const [user, setUser] = useState({});
 
   onAuthStateChanged(auth, (currUser) => {
     setUser(currUser);
   });
 
-  // useEffect(() => {
-  //   callAPIViewEvent();
-  // }, [user]);
+  useEffect(() => {
+    if (user) {
+      setCreator(user.displayName);
+    }
+    // callAPIViewEvent();
+  }, [user]);
 
   //update this component by retriving date from the database
   // View Events
@@ -78,7 +84,7 @@ const Calendar = () => {
         creator,
       });
 
-      // callAPIAddEvent();
+      callAPIAddEvent(title, selected.startStr, selected.endStr, selected.allDay);
 
       console.log("Start " + selected.startStr);
       console.log("End " + selected.endStr);
@@ -102,31 +108,31 @@ const Calendar = () => {
     }
   };
 
-  // const callAPIAddEvent = async () => {
-  //   // console.log("getExpenseReport called");
-  //   const url = serverURL + "/api/addEvent";
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       //authorization: `Bearer ${this.state.token}`
-  //     },
-  //     body: JSON.stringify({
-  //       firebaseUID: user.uid,,
-  //       title,
-  //       start,
-  //       end,
-  //       tag,
-  //       description,
-  //       consequence,
-  //       allDay,
-  //     }),
-  //   });
-  //   const body = await response.json();
-  //   if (response.status !== 200) throw Error(body.message);
-  //   // console.log("User settings: ", body);
-  //   return body;
-  // };
+  const callAPIAddEvent = async (title, start, end, allDay) => {
+    // console.log("getExpenseReport called");
+    const url = serverURL + "/api/addEvent";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        firebaseUID: user.uid,
+        title: title,
+        start: start,
+        end: end,
+        tag: "",
+        description: "",
+        consequence: 0,
+        allDay: allDay,
+      }),
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  };
 
   // const callAPIDeleteEvent = async () => {
   //   // console.log("getExpenseReport called");

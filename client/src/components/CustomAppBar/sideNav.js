@@ -48,6 +48,7 @@ const theme = createTheme({
 const NavProfile = () => {
 
   const [user, setUser] = useState("");
+  const [name, setName] = useState("");
   const [letter, setLetter] = useState("");
 
   onAuthStateChanged(auth, (currUser) => {
@@ -56,6 +57,7 @@ const NavProfile = () => {
 
   useEffect(() => {
     if (user) {
+        setName(user.displayName);
         setLetter(user.displayName[0]);
     }
   }, [user]);
@@ -77,7 +79,7 @@ const NavProfile = () => {
         style={{ paddingTop: "10%", fontWeight: "bold" }}
         variant="h6"
       >
-        {user.displayName}
+        {name}
       </Typography>
     </Grid>
   );
