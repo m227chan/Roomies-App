@@ -40,7 +40,6 @@ const Room = () => {
   const [roomTopGrocery, setRoomTopGrocery] = useState([]);
 
   onAuthStateChanged(auth, (currUser) => {
-    console.log(currUser);
     setUser(currUser);
   });
 

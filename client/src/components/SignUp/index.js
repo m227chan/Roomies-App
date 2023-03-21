@@ -81,7 +81,6 @@ const SignUp = (props) => {
     const { classes } = props;
 
     const onSubmit = async () => {
-        // console.log("email: " + email + " | " + "password: " + password);
         setSubmitClicked(true);
         try {
             
