@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Expense.css";
+import "./expense.css";
 import {
   Button,
   Paper,
@@ -9,7 +9,7 @@ import {
   Container,
 } from "@material-ui/core";
 import SideNav from "../CustomAppBar/sideNav";
-import ExpenseTable from "./ExpenseTable.js";
+import ExpenseTable from "./expenseTable.js";
 import ExpenseDialog from "./AddExpenseDialog";
 
 // Expenses component

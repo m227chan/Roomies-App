@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Expense.css";
+import "./expense.css";
 import {
     Dialog,
     DialogTitle,

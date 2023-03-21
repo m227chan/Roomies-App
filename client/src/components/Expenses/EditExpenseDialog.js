@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import "./Expense.css";
+import "./expense.css";
 import {
     Dialog,
     DialogTitle,
