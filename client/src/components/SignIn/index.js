@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
-import history from "../Navigation/history";
+
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -10,14 +10,24 @@ import Paper from "@material-ui/core/Paper";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Divider from "@material-ui/core/Divider";
 import "./SignIn.css";
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#02473B",
+    },
+  },
+  typography: {
+    button: {
+      textTransform: "none",
+    },
+  },
+});
 
 const SignIn = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -45,20 +55,31 @@ const SignIn = ({ history }) => {
     <>
       <Grid className="mainContainer">
         <Grid class="title" item>
-          <Typography variant="h2">Roomies</Typography>
+          <Box
+            sx={{
+              height: "20%",
+              width: "20%",
+            }}
+            component="img"
+            alt="Roomies App Logo"
+            src="/Logo.png"
+          />
         </Grid>
         <Grid class="divider" item>
-          <Divider />
+          {/* <Divider /> */}
         </Grid>
       </Grid>
       <Grid class="messageBox" item>
-        <Typography variant="p">To continue, log in or sign up</Typography>
+        <Typography variant="p">To continue, sign up or log in</Typography>
       </Grid>
       <Box
         sx={{
+          mt: "0",
+          pt: "0",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
         <Box component="form" noValidate sx={{ mt: 1 }}>
@@ -68,11 +89,15 @@ const SignIn = ({ history }) => {
             onClick={() => history.push("/SignUp")}
             fullWidth
             sx={{
-              mt: 3,
               mb: 2,
               bgcolor: "#68B984",
               borderRadius: "50px",
               padding: "0.8rem",
+              "&:hover": {
+                cursor: "pointer",
+                bgcolor: "#448E5E",
+                // color: "#68B984",
+              },
             }}
           >
             <Typography variant="p" sx={{ fontWeight: "bold" }}>
@@ -80,20 +105,21 @@ const SignIn = ({ history }) => {
               Sign Up for Roomies!
             </Typography>
           </Button>
-          <form noValidate onSubmit={onSubmit}>
-            <Grid class="orSectionGrid">
-              <Grid item xs={5}>
-                <Divider flexItem style={{ background: "#000000" }} />
-              </Grid>
-              <Grid item xs={2}>
-                <Typography variant="h5" class="orDivider">
-                  OR
-                </Typography>
-              </Grid>
-              <Grid item xs={5}>
-                <Divider flexItem style={{ background: "#000000" }} />
-              </Grid>
+          <Grid container class="orSectionGrid">
+            <Grid item xs={5}>
+              <Divider style={{ background: "#000000" }} />
             </Grid>
+            <Grid item xs={2}>
+              <Typography variant="h5" class="orDivider">
+                OR
+              </Typography>
+            </Grid>
+            <Grid item xs={5}>
+              <Divider style={{ background: "#000000" }} />
+            </Grid>
+          </Grid>
+
+          <form noValidate onSubmit={onSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -116,6 +142,10 @@ const SignIn = ({ history }) => {
                   ? "Please enter email."
                   : ""
               }
+              style={{
+                color: "#02473B",
+                borderColor: "#02473B",
+              }}
             />
             <TextField
               variant="outlined"
@@ -169,8 +199,15 @@ const SignIn = ({ history }) => {
                   sx={{
                     mt: 3,
                     mb: 2,
-                    bgcolor: "#FB8500",
+                    bgcolor: "#02473B",
                     borderRadius: "50px",
+                    paddingLeft: "15%",
+                    paddingRight: "15%",
+                    "&:hover": {
+                      cursor: "pointer",
+                      bgcolor: "#448E5E",
+                      //   color: "#68B984",
+                    },
                   }}
                 >
                   <Typography variant="p"> Sign In</Typography>
