@@ -173,4 +173,3 @@ const RoomGroceryList = ({ roomGroceryList, setSubmit, user }) => {
 }
 
 export default RoomGroceryList;
-
