@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid } from "@mui/x-data-grid";
 import EditExpenseDialog from "./EditExpenseDialog";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import {
-  Paper,
-  Card,
-  Button,
-} from "@material-ui/core";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Paper, Card, Button } from "@material-ui/core";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
@@ -98,93 +94,79 @@ const ExpenseTable = ({ open }) => {
 
   const columns = [
     {
-      field: 'Spender',
-      headerName: 'Payer',
-      headerAlign: 'left',
-      headerClassName: 'tableHeader',
+      field: "Spender",
+      headerName: "Payer",
+      headerAlign: "left",
+      headerClassName: "tableHeader",
       flex: 1,
       renderCell: (params) => (
-        <div style={{ fontSize: '18px' }}>
-          {params.value}
+        <div style={{ fontSize: "18px" }}>{params.value}</div>
+      ),
+    },
+    {
+      field: "Debtor",
+      headerName: "Payee",
+      headerAlign: "left",
+      headerClassName: "tableHeader",
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: "18px" }}>{params.value}</div>
+      ),
+    },
+    {
+      field: "amount",
+      headerName: "Amount",
+      headerAlign: "left",
+      headerClassName: "tableHeader",
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: "18px" }}>{params.value}</div>
+      ),
+    },
+    {
+      field: "tag",
+      headerName: "Tag",
+      headerAlign: "left",
+      headerClassName: "tableHeader",
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: "18px" }}>{params.value}</div>
+      ),
+    },
+    {
+      field: "comments",
+      headerName: "Description",
+      headerAlign: "left",
+      headerClassName: "tableHeader",
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: "18px" }}>{params.value}</div>
+      ),
+    },
+    {
+      field: "tDate",
+      type: "Date",
+      headerName: "Date",
+      headerAlign: "left",
+      headerClassName: "tableHeader",
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: "18px" }}>
+          {params.value.substring(0, params.value.indexOf("T"))}
         </div>
       ),
     },
     {
-      field: 'Debtor',
-      headerName: 'Payee',
-      headerAlign: 'left',
-      headerClassName: 'tableHeader',
-      flex: 1,
-      renderCell: (params) => (
-        <div style={{ fontSize: '18px' }}>
-          {params.value}
-        </div>
-      ),
-    },
-    {
-      field: 'amount',
-      headerName: 'Amount',
-      headerAlign: 'left',
-      headerClassName: 'tableHeader',
-      flex: 1,
-      renderCell: (params) => (
-        <div style={{ fontSize: '18px' }}>
-          {params.value}
-        </div>
-      ),
-    },
-    {
-      field: 'tag',
-      headerName: 'Tag',
-      headerAlign: 'left',
-      headerClassName: 'tableHeader',
-      flex: 1,
-      renderCell: (params) => (
-        <div style={{ fontSize: '18px' }}>
-          {params.value}
-        </div>
-      ),
-    },
-    {
-      field: 'comments',
-      headerName: 'Description',
-      headerAlign: 'left',
-      headerClassName: 'tableHeader',
-      flex: 1,
-      renderCell: (params) => (
-        <div style={{ fontSize: '18px' }}>
-          {params.value}
-        </div>
-      ),
-    },
-    {
-      field: 'tDate',
-      type: 'Date',
-      headerName: 'Date',
-      headerAlign: 'left',
-      headerClassName: 'tableHeader',
-      flex: 1,
-      renderCell: (params) => (
-        <div style={{ fontSize: '18px' }}>
-          {params.value.substring(0, params.value.indexOf('T'))}
-        </div>
-      ),
-    },
-    {
-      headerName: 'Actions',
-      headerAlign: 'left',
-      headerClassName: 'tableHeader',
+      headerName: "Actions",
+      headerAlign: "left",
+      headerClassName: "tableHeader",
       flex: 1,
       renderCell: (params) => (
         <>
-          <Button
-            onClick={() => handleEditClick(params.row)}
-          >
+          <Button onClick={() => handleEditClick(params.row)}>
             <EditIcon />
           </Button>
-          <Button
-            onClick={() => handleDeleteClick(params.row)}
-          >
+          <Button onClick={() => handleDeleteClick(params.row)}>
             <DeleteIcon />
           </Button>
         </>
@@ -193,13 +175,9 @@ const ExpenseTable = ({ open }) => {
   ];
 
   return (
-    <div style={{ height: 650, width: '100%' }}>
-      <Card class="card" style={{ height: 650, width: '100%' }}>
-        <DataGrid
-          rows={expenses}
-          columns={columns}
-          pageSize={10}
-        />
+    <div style={{ height: 650, width: "100%" }}>
+      <Card class="card" style={{ height: 650, width: "100%" }}>
+        <DataGrid rows={expenses} columns={columns} pageSize={10} />
       </Card>
 
       <EditExpenseDialog
