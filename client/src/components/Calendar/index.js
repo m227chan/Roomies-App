@@ -62,14 +62,14 @@ const Calendar = () => {
         selected.allDay
       );
 
-      console.log("Start " + selected.startStr);
-      console.log("End " + selected.endStr);
-      console.log("All Day" + selected.allDay);
+      // console.log("Start " + selected.startStr);
+      // console.log("End " + selected.endStr);
+      // console.log("All Day" + selected.allDay);
     }
   };
 
   const handleHover = (selected) => {
-    console.log(selected);
+    // console.log(selected);
     const title = selected.event.title;
     const tooltip = `Created by ${selected.event.extendedProps.creator}`;
     selected.el.setAttribute("title", tooltip);
