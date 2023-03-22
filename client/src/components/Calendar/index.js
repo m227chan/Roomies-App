@@ -150,45 +150,38 @@ const Calendar = () => {
 
   return (
     <>
-      <SideNav />
+      <Grid>
+        <SideNav />
+      </Grid>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Container class="container">
           <Box sx={{ flexGrow: 1 }}>
-            <Grid
-              container
-              spacing={3}
-              columns={16}
-              justifyContent="center"
-              style={{ minHeight: "100vh" }}
-              className="mainMessageContainer"
-            >
-              {eventsLoaded && (
-                <FullCalendar
-                  plugins={[
-                    dayGridPlugin,
-                    timeGridPlugin,
-                    interactionPlugin,
-                    listPlugin,
-                  ]}
-                  initialView="dayGridMonth"
-                  editable={true}
-                  selectable={true}
-                  selectMirror={true}
-                  dayMaxEvents={true}
-                  weekends={true}
-                  events={currentEvents}
-                  headerToolbar={{
-                    left: "prev,next today",
-                    center: "title",
-                    right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
-                  }}
-                  select={handleDateClick}
-                  eventClick={handleEventClick}
-                  eventMouseEnter={handleHover}
-                  eventMouseLeave={handleHover}
-                />
-              )}
-            </Grid>
+            {eventsLoaded && (
+              <FullCalendar
+                plugins={[
+                  dayGridPlugin,
+                  timeGridPlugin,
+                  interactionPlugin,
+                  listPlugin,
+                ]}
+                initialView="dayGridMonth"
+                editable={true}
+                selectable={true}
+                selectMirror={true}
+                dayMaxEvents={true}
+                weekends={true}
+                events={currentEvents}
+                headerToolbar={{
+                  left: "prev,next today",
+                  center: "title",
+                  right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+                }}
+                select={handleDateClick}
+                eventClick={handleEventClick}
+                eventMouseEnter={handleHover}
+                eventMouseLeave={handleHover}
+              />
+            )}
           </Box>
         </Container>
       </Box>
