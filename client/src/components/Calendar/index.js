@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   Box,
   Container,
-  Paper,
+  Grid,
 } from "@material-ui/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -129,33 +129,6 @@ const Calendar = () => {
     return body;
   };
 
-  // const callAPIEditEvent = async () => {
-  //   // console.log("getExpenseReport called");
-  //   const url = serverURL + "/api/editEvent";
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       //authorization: `Bearer ${this.state.token}`
-  //     },
-  //     body: JSON.stringify({
-  //       firebaseUID: user.uid,,
-  //       title,
-  //       start,
-  //       end,
-  //       tag,
-  //       description,
-  //       consequence,
-  //       allDay,
-  //       eventID,
-  //     }),
-  //   });
-  //   const body = await response.json();
-  //   if (response.status !== 200) throw Error(body.message);
-  //   // console.log("User settings: ", body);
-  //   return body;
-  // };
-
   const callAPIViewEvent = async () => {
     // console.log("getExpenseReport called");
     const url = serverURL + "/api/viewEvent";
@@ -177,41 +150,41 @@ const Calendar = () => {
 
   return (
     <>
-      <SideNav />
-      <Container class="container">
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <Paper class="paper">
-            <Box sx={{ flexGrow: 1 }}>
-              {eventsLoaded && (
-                <FullCalendar
-                  plugins={[
-                    dayGridPlugin,
-                    timeGridPlugin,
-                    interactionPlugin,
-                    listPlugin,
-                  ]}
-                  initialView="dayGridMonth"
-                  editable={true}
-                  selectable={true}
-                  selectMirror={true}
-                  dayMaxEvents={true}
-                  weekends={true}
-                  events={currentEvents}
-                  headerToolbar={{
-                    left: "prev,next today",
-                    center: "title",
-                    right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
-                  }}
-                  select={handleDateClick}
-                  eventClick={handleEventClick}
-                  eventMouseEnter={handleHover}
-                  eventMouseLeave={handleHover}
-                />
-              )}
-            </Box>
-          </Paper>
-        </Box>
-      </Container>
+      <Grid>
+        <SideNav />
+      </Grid>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Container class="container">
+          <Box sx={{ flexGrow: 1 }}>
+            {eventsLoaded && (
+              <FullCalendar
+                plugins={[
+                  dayGridPlugin,
+                  timeGridPlugin,
+                  interactionPlugin,
+                  listPlugin,
+                ]}
+                initialView="dayGridMonth"
+                editable={true}
+                selectable={true}
+                selectMirror={true}
+                dayMaxEvents={true}
+                weekends={true}
+                events={currentEvents}
+                headerToolbar={{
+                  left: "prev,next today",
+                  center: "title",
+                  right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+                }}
+                select={handleDateClick}
+                eventClick={handleEventClick}
+                eventMouseEnter={handleHover}
+                eventMouseLeave={handleHover}
+              />
+            )}
+          </Box>
+        </Container>
+      </Box>
     </>
   );
 };
