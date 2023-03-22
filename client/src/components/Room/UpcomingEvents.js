@@ -45,24 +45,6 @@ const UpcomingEvents = ({ upcomingEvents }) => {
                                 <Typography variant="h6"><b>{"Upcoming Events>"}</b></Typography>
                             </Button>
 
-                            {/* <Card class="calendar-top-card">
-                                <CardContent>
-                                    <Typography variant={"h5"}>Quiet Hours</Typography>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={6}>
-                                            <Typography variant={"h6"}>
-                                                February 10th
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            {" "}
-                                            <Typography variant={"h6"}>
-                                                3:00PM to 4:00PM
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </CardContent>
-                            </Card> */}
                         </Grid>
                         {upcomingEvents.map((event, index) => (
                             <Grid item xs={12} key={index}>
@@ -76,7 +58,7 @@ const UpcomingEvents = ({ upcomingEvents }) => {
                                                 </Typography>
                                             </Grid>
                                             <Grid item xs={6}>
-                                                <Typography variant={"h6"}>
+                                                <Typography variant={"h6"} align="right">
                                                     {formatDate(event.start, event.end, event.allDay)}
                                                 </Typography>
                                             </Grid>
