@@ -153,8 +153,7 @@ app.post("/api/viewGroupGrocery", (req, res) => {
 
 app.post("/api/deleteGroceryItem", (req, res) => {
   let connection = mysql.createConnection(config);
-  let sql = `DELETE FROM zzammit.GroceryItem
-		WHERE id = ?;`;
+  let sql = `DELETE FROM zzammit.GroceryItem WHERE id = ?;`;
   let data = [req.body.id];
 
   // console.log(req.body);
@@ -614,7 +613,7 @@ app.post("/api/deleteEvent", (req, res) => {
   //Input: Expense Trasaction ID
   //Output: None
   let delEventSQL = `
-	DELETE FROM zzammit.Expenses WHERE id = ?;
+	DELETE FROM zzammit.Calendar WHERE id = ?;
 	`;
   let delEventData = [req.body.eventID];
 
@@ -670,7 +669,7 @@ app.post("/api/viewEvent", (req, res) => {
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
   let viewEventSQL = `
-	SELECT c.title, c.startdate as start, c.enddate as end
+	SELECT c.id, c.title, c.startdate as start, c.enddate as end, CONCAT(r.firstName, ' ', r.lastName) AS creator
   FROM zzammit.Calendar AS c 
   LEFT JOIN zzammit.Roomate AS r ON c.idRoomate = r.id 
   WHERE c.idRoomate IN (

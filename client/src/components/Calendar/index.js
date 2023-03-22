@@ -22,6 +22,7 @@ const Calendar = () => {
   const [currentEvents, setCurrentEvents] = useState([]);
   const [creator, setCreator] = useState("");
   const [user, setUser] = useState({});
+  const [eventsLoaded, setEventsLoaded] = useState(false);
 
   onAuthStateChanged(auth, (currUser) => {
     setUser(currUser);
@@ -34,33 +35,12 @@ const Calendar = () => {
     }
   }, [user]);
 
-  // update this component by retriving date from the database
-  // View Events
-  var initialEvents = {
-    events: [
-      {
-        title: "event1",
-        start: "2023-03-09T05:00:00.000Z",
-      },
-      {
-        title: "event2",
-        start: "2023-03-05",
-        end: "2023-03-07",
-      },
-      {
-        title: "event3",
-        start: "2023-03-09T12:30:00",
-        allDay: false, // will make the time show
-      },
-      {title: 't', start: '2023-03-21T15:00:00.000Z', end: '2023-03-21T19:30:00.000Z'}
-    ],
-  };
-
   const viewEvents = () => {
     callAPIViewEvent().then((res) => {
       var parsed = JSON.parse(res.express);
       console.log(parsed);
       setCurrentEvents(parsed);
+      setEventsLoaded(true);
     });
   };
 
@@ -89,7 +69,7 @@ const Calendar = () => {
 
   const handleHover = (selected) => {
     const title = selected.event.title;
-    const tooltip = `Created by ${creator}`;
+    const tooltip = `Created by ${selected.event.extendedProps.creator}`;
     selected.el.setAttribute("title", tooltip);
   };
 
@@ -99,8 +79,8 @@ const Calendar = () => {
         `Are you sure you want to delete the event '${selected.event.title}'`
       )
     ) {
+      callAPIDeleteEvent(selected.event.id);
       selected.event.remove();
-      // callAPIDeleteEvent(selected.id);
     }
   };
 
@@ -130,24 +110,24 @@ const Calendar = () => {
     return body;
   };
 
-  // const callAPIDeleteEvent = async () => {
-  //   // console.log("getExpenseReport called");
-  //   const url = serverURL + "/api/deleteEvent";
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       //authorization: `Bearer ${this.state.token}`
-  //     },
-  //     body: JSON.stringify({
-  //       eventID: 1,
-  //     }),
-  //   });
-  //   const body = await response.json();
-  //   if (response.status !== 200) throw Error(body.message);
-  //   // console.log("User settings: ", body);
-  //   return body;
-  // };
+  const callAPIDeleteEvent = async (eventID) => {
+    // console.log("getExpenseReport called");
+    const url = serverURL + "/api/deleteEvent";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        eventID: eventID,
+      }),
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  };
 
   // const callAPIEditEvent = async () => {
   //   // console.log("getExpenseReport called");
@@ -202,34 +182,32 @@ const Calendar = () => {
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Paper class="paper">
             <Box sx={{ flexGrow: 1 }}>
-            {user ?  
-            <>
-            <FullCalendar
-                height="85vh"
-                plugins={[
-                  dayGridPlugin,
-                  timeGridPlugin,
-                  interactionPlugin,
-                  listPlugin,
-                ]}
-                headerToolbar={{
-                  left: "prev next today",
-                  center: "title",
-                  right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
-                }}
-                initialView="dayGridMonth"
-                editable={true}
-                selectable={true}
-                selectMirror={true}
-                dayMaxEvents={true}
-                select={handleDateClick}
-                eventClick={handleEventClick}
-                eventsSet={(events) => setCurrentEvents(events)}
-                eventMouseEnter={handleHover}
-                initialEvents={currentEvents}
-              />
-            </>
-            : null}
+              {eventsLoaded && (
+                <FullCalendar
+                  plugins={[
+                    dayGridPlugin,
+                    timeGridPlugin,
+                    interactionPlugin,
+                    listPlugin,
+                  ]}
+                  initialView="dayGridMonth"
+                  editable={true}
+                  selectable={true}
+                  selectMirror={true}
+                  dayMaxEvents={true}
+                  weekends={true}
+                  events={currentEvents}
+                  headerToolbar={{
+                    left: "prev,next today",
+                    center: "title",
+                    right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+                  }}
+                  select={handleDateClick}
+                  eventClick={handleEventClick}
+                  eventMouseEnter={handleHover}
+                  eventMouseLeave={handleHover}
+                />
+              )}
             </Box>
           </Paper>
         </Box>
