@@ -37,7 +37,6 @@ const SignIn = ({ history }) => {
   const [errorStatus, setErrorStatus] = useState(false);
 
   const onSubmit = async () => {
-    console.log("email: " + email + " | " + "password: " + password);
     setSubmitClicked(true);
 
     try {
