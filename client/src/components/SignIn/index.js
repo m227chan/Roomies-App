@@ -42,7 +42,6 @@ const SignIn = ({ history }) => {
     try {
       setErrorStatus(false);
       const user = await signInWithEmailAndPassword(auth, email, password);
-
       history.push("/Room");
     } catch (e) {
       console.log(e.message);
