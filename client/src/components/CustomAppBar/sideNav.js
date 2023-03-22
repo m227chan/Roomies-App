@@ -48,7 +48,7 @@ const theme = createTheme({
 const NavProfile = () => {
 
   const [user, setUser] = useState("");
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [letter, setLetter] = useState("");
 
   onAuthStateChanged(auth, (currUser) => {
@@ -57,31 +57,10 @@ const NavProfile = () => {
 
   useEffect(() => {
     if (user) {
-      callAPIGetUsername().then((res) => {
-        var parsed = JSON.parse(res.express);
-        setUsername(parsed[0].name);
-        setLetter(parsed[0].name[0]);
-      });
+        setName(user.displayName);
+        setLetter(user.displayName[0]);
     }
   }, [user]);
-
-  const callAPIGetUsername = async () => {
-    const url = serverURL + "/api/getUsername";
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //authorization: `Bearer ${this.state.token}`
-      },
-      body: JSON.stringify({
-        firebaseUID: user.uid,
-      }),
-    });
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    // console.log("User settings: ", body);
-    return body;
-  };
 
   return (
     <Grid item class="navAvatar">
@@ -100,7 +79,7 @@ const NavProfile = () => {
         style={{ paddingTop: "10%", fontWeight: "bold" }}
         variant="h6"
       >
-        {username}
+        {name}
       </Typography>
     </Grid>
   );

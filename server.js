@@ -153,8 +153,7 @@ app.post("/api/viewGroupGrocery", (req, res) => {
 
 app.post("/api/deleteGroceryItem", (req, res) => {
   let connection = mysql.createConnection(config);
-  let sql = `DELETE FROM zzammit.GroceryItem
-		WHERE id = ?;`;
+  let sql = `DELETE FROM zzammit.GroceryItem WHERE id = ?;`;
   let data = [req.body.id];
 
   // console.log(req.body);
@@ -537,17 +536,21 @@ app.post("/api/shortExchange", (req, res) => {
   //Input: FireBase ID
   //Output:
   let shortExchangeSQL = `
-	SET @roomie := (Select id from zzammit.Roomate where firebaseUID = (?)); 
-  SELECT CONCAT_WS(' pays ', idDebtor, idSpender, MIN(amount)) AS transaction
-  FROM zzammit.Expenses
-  JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM zzammit.Expenses UNION SELECT idSpender AS id FROM zzammit.Expenses) AS allID JOIN zzammit.Roomate ON allID.id1 = zzammit.Roomate.id) AS debtor ON Expenses.idDebtor = debtor.id1
-  JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM zzammit.Expenses UNION SELECT idSpender AS id FROM zzammit.Expenses) AS allID JOIN zzammit.Roomate ON allID.id1 = zzammit.Roomate.id) AS spender ON Expenses.idSpender = spender.id1
-  WHERE (debtor.id1 != spender.id1) AND debtor.id1 IN 
+  SET @roomie := (Select id from zzammit.Roomate where firebaseUID = (?)); 
+
+	SELECT CONCAT(CONCAT(Rm8.firstName, ' ', Rm8.lastName), ' pays ', CONCAT(Roomate.firstName, ' ', Roomate.lastName), ' $', MIN(amount)) AS transaction
+	FROM zzammit.Expenses
+	LEFT JOIN zzammit.Roomate on Expenses.idSpender = Roomate.id
+    LEFT JOIN zzammit.Roomate AS Rm8 on Expenses.idDebtor = Rm8.id
+    JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM zzammit.Expenses UNION SELECT idSpender AS id FROM zzammit.Expenses) AS allID JOIN zzammit.Roomate ON allID.id1 = zzammit.Roomate.id) AS debtor ON Expenses.idDebtor = debtor.id1
+	JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM zzammit.Expenses UNION SELECT idSpender AS id FROM zzammit.Expenses) AS allID JOIN zzammit.Roomate ON allID.id1 = zzammit.Roomate.id) AS spender ON Expenses.idSpender = spender.id1
+
+	WHERE (debtor.id1 != spender.id1) AND debtor.id1 IN 
   			(SELECT id FROM zzammit.Roomate WHERE idRoom = 
   				(SELECT idRoom FROM zzammit.Roomate WHERE id = @roomie))
-  GROUP BY debtor.id1, spender.id1
-  HAVING SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END) <> 0
-  ORDER BY SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END);
+	GROUP BY debtor.id1, spender.id1, Roomate.firstname, Roomate.lastname, Rm8.firstname, Rm8.lastname
+	HAVING SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END) <> 0
+	ORDER BY SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END);
 	`;
   let shortExchangeData = [
     req.body.firebaseUID,
@@ -572,6 +575,8 @@ app.post("/api/shortExchange", (req, res) => {
   connection.end();
 });
 
+//Calendar APIs
+
 app.post("/api/addEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
@@ -580,7 +585,7 @@ app.post("/api/addEvent", (req, res) => {
 	INSERT INTO zzammit.Calendar (idRoomate, title, startdate, enddate, tag, eventDescription, Consequence, allDay) VALUES ((Select id from zzammit.Roomate where firebaseUID = (?)), ?, ?, ?, ?, ?, ?, ?);
 	`;
   let addEventData = [
-    req.body.roomie,
+    req.body.firebaseUID,
     req.body.title,
     req.body.start,
     req.body.end,
@@ -608,7 +613,7 @@ app.post("/api/deleteEvent", (req, res) => {
   //Input: Expense Trasaction ID
   //Output: None
   let delEventSQL = `
-	DELETE FROM zzammit.Expenses WHERE id = ?;
+	DELETE FROM zzammit.Calendar WHERE id = ?;
 	`;
   let delEventData = [req.body.eventID];
 
@@ -633,7 +638,7 @@ app.post("/api/editEvent", (req, res) => {
 	UPDATE zzammit.Calendar SET idRoomate = (Select id from zzammit.Roomate where firebaseUID = (?)), title = ?, startdate = ?, enddate = ?, tag = ?, eventDescription = ?, Consequence = ?, allDay = ? WHERE id =?;
 	`;
   let editEventData = [
-    req.body.roomie,
+    req.body.firebaseUID,
     req.body.title,
     req.body.start,
     req.body.end,
@@ -664,14 +669,20 @@ app.post("/api/viewEvent", (req, res) => {
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
   let viewEventSQL = `
-	SELECT id, CONCAT(firstName, ' ', lastName) as creator, title, startdate, enddate, tag, eventDescription, Consequence, allDay 
-	FROM zzammit.Calendar left join zzammit.Roomate on Calendar.idRoomate = Roomate.id 
-		WHERE idRoomate IN (SELECT id FROM zzammit.Roomate WHERE idRoom = 
-							(SELECT idRoom FROM zzammit.Roomate WHERE id = ?));
-	`;
-  let viewEventData = [
-    req.body.roomie,
-  ];
+	SELECT c.id, c.title, c.startdate as start, c.enddate as end, CONCAT(r.firstName, ' ', r.lastName) AS creator
+  FROM zzammit.Calendar AS c 
+  LEFT JOIN zzammit.Roomate AS r ON c.idRoomate = r.id 
+  WHERE c.idRoomate IN (
+    SELECT r1.id 
+    FROM zzammit.Roomate AS r1
+    WHERE r1.idRoom = (
+        SELECT r2.idRoom 
+        FROM zzammit.Roomate AS r2 
+        WHERE r2.firebaseUID = (?)
+    )
+  );
+  `;
+  let viewEventData = [req.body.firebaseUID];
 
   // console.log(req.body);
 
@@ -772,32 +783,6 @@ app.post("/api/getTopGrocery", (req, res) => {
   )
   ORDER BY g.tDate DESC
   LIMIT 4;
-    `;
-  let data = [req.body.firebaseUID];
-
-  // console.log(req.body);
-
-  connection.query(
-    sql,
-    data,
-    (error, results, fields) => {
-      if (error) {
-        console.log(error.message);
-      }
-
-      let string = JSON.stringify(results);
-      //let obj = JSON.parse(string);
-      res.send({ express: string });
-    }
-  );
-  connection.end();
-});
-
-app.post("/api/getUsername", (req, res) => {
-  let connection = mysql.createConnection(config);
-  //Input: User Firebase ID
-  let sql = `
-  SELECT CONCAT(firstName, ' ', lastName) AS name FROM zzammit.Roomate WHERE firebaseUID = (?);
     `;
   let data = [req.body.firebaseUID];
 

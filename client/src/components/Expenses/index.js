@@ -29,7 +29,6 @@ const Expenses = () => {
     setUser(currUser);
   });
 
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -114,6 +113,8 @@ const Expenses = () => {
                   </Typography>
                 </Grid>
 
+                <ShortExchange shortExchangeList={shortExchangeList}/>
+
                 <Grid item>
                   <ExpenseTable open={open} expenses={expenses} getExpenseReport={getExpenseReport}/>
                 </Grid>
@@ -124,8 +125,6 @@ const Expenses = () => {
                   </Button>
                   <ExpenseDialog open={open} handleClose={handleClose} />
                 </Grid>
-
-                <ShortExchange shortExchangeList={shortExchangeList}/>
 
               </Grid>
             </Box>
