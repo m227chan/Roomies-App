@@ -9,7 +9,27 @@ import {
 } from "@material-ui/core";
 import history from "../Navigation/history";
 
-const UpcomingEvents = ({ roommateCalendar }) => {
+const UpcomingEvents = ({ upcomingEvents }) => {
+
+    // console.log(upcomingEvents);
+
+    const formatDate = (startDate, endDate, allDay) => {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        if (allDay) {
+            const startMonth = start.toLocaleString('default', { month: 'short' });
+            const endMonth = end.toLocaleString('default', { month: 'short' });
+            const startDateStr = `${startMonth}. ${start.getDate()}th, ${start.getFullYear()}`;
+            const endDateStr = `${endMonth}. ${end.getDate()}th, ${end.getFullYear()}`;
+            return `${startDateStr} - ${endDateStr}`;
+        } else {
+            const startStr = `${start.toLocaleString('default', { month: 'short' })}. ${start.getDate()}th, ${start.getFullYear()}`;
+            const startTimeStr = start.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+            const endTimeStr = end.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+            return `${startStr}; ${startTimeStr} - ${endTimeStr}`;
+        }
+    }
 
     return (
         <div>
@@ -25,7 +45,7 @@ const UpcomingEvents = ({ roommateCalendar }) => {
                                 <Typography variant="h6"><b>{"Upcoming Events>"}</b></Typography>
                             </Button>
 
-                            <Card class="calendar-top-card">
+                            {/* <Card class="calendar-top-card">
                                 <CardContent>
                                     <Typography variant={"h5"}>Quiet Hours</Typography>
                                     <Grid container spacing={2}>
@@ -42,22 +62,22 @@ const UpcomingEvents = ({ roommateCalendar }) => {
                                         </Grid>
                                     </Grid>
                                 </CardContent>
-                            </Card>
+                            </Card> */}
                         </Grid>
-                        {roommateCalendar.map((member, index) => (
+                        {upcomingEvents.map((event, index) => (
                             <Grid item xs={12} key={index}>
                                 <Card class="calendar-card">
                                     <CardContent>
-                                        <Typography variant={"h5"}> {member.name}</Typography>
+                                        <Typography variant={"h5"}><b>{event.title}</b></Typography>
                                         <Grid container spacing={2}>
                                             <Grid item xs={6}>
                                                 <Typography variant={"h6"}>
-                                                    {member.date}
+                                                    {event.creator}
                                                 </Typography>
                                             </Grid>
                                             <Grid item xs={6}>
                                                 <Typography variant={"h6"}>
-                                                    {member.time}
+                                                    {formatDate(event.start, event.end, event.allDay)}
                                                 </Typography>
                                             </Grid>
                                         </Grid>

@@ -38,6 +38,7 @@ const Room = () => {
   const [user, setUser] = useState({});
   const [roomateData, setRoomateData] = useState([]);
   const [roomTopGrocery, setRoomTopGrocery] = useState([]);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
 
   onAuthStateChanged(auth, (currUser) => {
     setUser(currUser);
@@ -54,6 +55,12 @@ const Room = () => {
       var parsed = JSON.parse(res.express);
       // console.log(parsed);
       setRoomTopGrocery(parsed);
+    });
+
+    callGetUpcomingEvents().then((res) => {
+      var parsed = JSON.parse(res.express);
+      // console.log(parsed);
+      setUpcomingEvents(parsed);
     });
   }, [user]);
 
@@ -93,6 +100,24 @@ const Room = () => {
     return body;
   };
 
+  const callGetUpcomingEvents = async () => {
+    const url = serverURL + "/api/getUpcomingEvents";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        firebaseUID: user.uid,
+      }),
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  };
+
   return (
     <>
       <SideNav/>
@@ -108,7 +133,7 @@ const Room = () => {
             <Grid item xs={6} md={7}>
               <WelcomeMessage roomateData={roomateData} user={user} />
               <br />
-              <UpcomingEvents roommateCalendar={roommateCalendar} />
+              <UpcomingEvents upcomingEvents={upcomingEvents} />
             </Grid>
 
             <Grid item xs={6} md={5}>
@@ -116,7 +141,7 @@ const Room = () => {
               <br />
               <Wallet roomateData={roomateData} user={user} />
               <br />
-              <DisplayTopGroceryList roomTopGrocery={roomTopGrocery} />
+              <DisplayTopGroceryList roomTopGrocery={roomTopGrocery}/>
             </Grid>
           </Grid>
         </Box>
