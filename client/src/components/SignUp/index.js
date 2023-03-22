@@ -17,272 +17,279 @@ import Divider from "@material-ui/core/Divider";
 import "./SignUp.css";
 
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    updateProfile,
 } from "firebase/auth";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#02473B",
+    palette: {
+        primary: {
+            main: "#02473B",
+        },
     },
-  },
-  typography: {
-    button: {
-      textTransform: "none",
+    typography: {
+        button: {
+            textTransform: "none",
+        },
     },
-  },
 });
 
 const SignUp = ({ history }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
 
-  const [submitClicked, setSubmitClicked] = useState(false);
-  const [message, setMessage] = useState("");
+    const [submitClicked, setSubmitClicked] = useState(false);
+    const [message, setMessage] = useState("");
 
-  const onSubmit = async () => {
-    // console.log("email: " + email + " | " + "password: " + password);
-    setSubmitClicked(true);
-    try {
-      setMessage("");
-      await createUserWithEmailAndPassword(auth, email, password);
+    const onSubmit = async () => {
+        // console.log("email: " + email + " | " + "password: " + password);
+        setSubmitClicked(true);
+        try {
+            setMessage("");
+            await createUserWithEmailAndPassword(auth, email, password);
 
-      await signInWithEmailAndPassword(auth, email, password);
+            const name = firstName + " " + lastName;
 
-      setMessage("An account has been created.");
-      callApiAddUser();
-      history.push("/JoinCreateRoom");
-    } catch (e) {
-      console.log(e.message);
-      setMessage(e.message.replace("Firebase: ", ""));
-    }
-  };
+            await updateProfile(auth.currentUser, {
+                displayName: name
+            });
 
-  const callApiAddUser = async () => {
-    const user = auth.currentUser;
-    // console.log(user.uid);
+            await signInWithEmailAndPassword(auth, email, password);
 
-    const url = serverURL + "/api/addUser";
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //authorization: `Bearer ${this.state.token}`
-      },
-      body: JSON.stringify({
-        firstName: firstName,
-        lastName: lastName,
-        firebaseUID: user.uid,
-      }),
-    });
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    // console.log("User settings: ", body);
-    return body;
-  };
+            setMessage("An account has been created.");
+            callApiAddUser();
+            history.push("/JoinCreateRoom");
+        } catch (e) {
+            console.log(e.message);
+            setMessage(e.message.replace("Firebase: ", ""));
+        }
+    };
 
-  const mainMessage = (
-    <>
-      <Grid className="mainContainer">
-        <Grid class="title" item>
-          <Box
-            sx={{
-              height: "20%",
-              width: "20%",
-            }}
-            component="img"
-            alt="Roomies App Logo"
-            src="/Logo.png"
-          />
-        </Grid>
-        <Grid class="divider" item>
-          {/* <Divider /> */}
-        </Grid>
-      </Grid>
-      <Grid class="messageBox" item>
-        <Typography variant="p">Hurry your roommates are waiting!</Typography>
-      </Grid>
-      <Box
-        sx={{
-          mt: "0",
-          pt: "0",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Box component="form" noValidate sx={{ mt: 1 }}>
-          <Grid container class="orSectionGrid">
-            <Grid item xs={5}>
-              <Divider style={{ background: "#000000" }} />
+    const callApiAddUser = async () => {
+        const user = auth.currentUser;
+        // console.log(user.uid);
+
+        const url = serverURL + "/api/addUser";
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                //authorization: `Bearer ${this.state.token}`
+            },
+            body: JSON.stringify({
+                firstName: firstName,
+                lastName: lastName,
+                firebaseUID: user.uid,
+            }),
+        });
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        // console.log("User settings: ", body);
+        return body;
+    };
+
+    const mainMessage = (
+        <>
+            <Grid className="mainContainer">
+                <Grid class="title" item>
+                    <Box
+                        sx={{
+                            height: "20%",
+                            width: "20%",
+                        }}
+                        component="img"
+                        alt="Roomies App Logo"
+                        src="/Logo.png"
+                    />
+                </Grid>
+                <Grid class="divider" item>
+                    {/* <Divider /> */}
+                </Grid>
             </Grid>
-            <Grid item xs={2}>
-              <Typography variant="h5" class="orDivider">
-                Create your Account
-              </Typography>
+            <Grid class="messageBox" item>
+                <Typography variant="p">Hurry your roommates are waiting!</Typography>
             </Grid>
-            <Grid item xs={5}>
-              <Divider style={{ background: "#000000" }} />
-            </Grid>
-          </Grid>
-
-          <form noValidate onSubmit={onSubmit}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputProps={{ maxLength: 50 }}
-              required
-              fullWidth
-              id="email"
-              value={email}
-              onChange={(event) => {
-                setEmail(event.target.value);
-              }}
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              InputLabelProps={{ shrink: true }}
-              error={email === "" && submitClicked === true}
-              helperText={
-                email === "" && submitClicked === true
-                  ? "Please enter an email."
-                  : ""
-              }
-            />
-
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputProps={{ maxLength: 50 }}
-              required
-              fullWidth
-              name="password"
-              value={password}
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              InputLabelProps={{ shrink: true }}
-              error={password === "" && submitClicked === true}
-              helperText={
-                password === "" && submitClicked === true
-                  ? "Please enter a password."
-                  : ""
-              }
-            />
-
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputProps={{ maxLength: 20 }}
-              required
-              fullWidth
-              name="firstName"
-              value={firstName}
-              onChange={(event) => {
-                setFirstName(event.target.value);
-              }}
-              label="First Name"
-              type="firstName"
-              id="firstName"
-              autoComplete="firstName"
-              InputLabelProps={{ shrink: true }}
-              error={firstName === "" && submitClicked === true}
-              helperText={
-                firstName === "" && submitClicked === true
-                  ? "Please enter your first name."
-                  : ""
-              }
-            />
-
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputProps={{ maxLength: 20 }}
-              required
-              fullWidth
-              name="lastName"
-              value={lastName}
-              onChange={(event) => {
-                setLastName(event.target.value);
-              }}
-              label="Last Name"
-              type="lastName"
-              id="lastName"
-              autoComplete="lastName"
-              InputLabelProps={{ shrink: true }}
-              error={lastName === "" && submitClicked === true}
-              helperText={
-                lastName === "" && submitClicked === true
-                  ? "Please enter your last name."
-                  : ""
-              }
-            />
-
-            <Button
-              variant="contained"
-              onClick={onSubmit}
-              sx={{
-                mt: 3,
-                mb: 2,
-                bgcolor: "#02473B",
-                borderRadius: "50px",
-                paddingLeft: "15%",
-                paddingRight: "15%",
-                "&:hover": {
-                  cursor: "pointer",
-                  bgcolor: "#448E5E",
-                  //   color: "#68B984",
-                },
-              }}
+            <Box
+                sx={{
+                    mt: "0",
+                    pt: "0",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                }}
             >
-              <Typography>Register</Typography>
-            </Button>
+                <Box component="form" noValidate sx={{ mt: 1 }}>
+                    <Grid container class="orSectionGrid">
+                        <Grid item xs={5}>
+                            <Divider style={{ background: "#000000" }} />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Typography variant="h5" class="orDivider">
+                                Create your Account
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={5}>
+                            <Divider style={{ background: "#000000" }} />
+                        </Grid>
+                    </Grid>
 
-            <Typography>{message !== "" ? message : ""}</Typography>
-            <Button
-              variant="contained"
-              onClick={() => history.push("/SignIn")}
-              sx={{
-                mt: 3,
-                mb: 2,
-                bgcolor: "#02473B",
-                borderRadius: "50px",
-                paddingLeft: "15%",
-                paddingRight: "15%",
-                "&:hover": {
-                  cursor: "pointer",
-                  bgcolor: "#448E5E",
-                  //   color: "#68B984",
-                },
-              }}
-            >
-              <Typography>Sign In</Typography>
-            </Button>
-          </form>
-        </Box>
-      </Box>
-    </>
-  );
+                    <form noValidate onSubmit={onSubmit}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            inputProps={{ maxLength: 50 }}
+                            required
+                            fullWidth
+                            id="email"
+                            value={email}
+                            onChange={(event) => {
+                                setEmail(event.target.value);
+                            }}
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            InputLabelProps={{ shrink: true }}
+                            error={email === "" && submitClicked === true}
+                            helperText={
+                                email === "" && submitClicked === true
+                                    ? "Please enter an email."
+                                    : ""
+                            }
+                        />
 
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Paper className="paper">{mainMessage}</Paper>
-    </ThemeProvider>
-  );
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            inputProps={{ maxLength: 50 }}
+                            required
+                            fullWidth
+                            name="password"
+                            value={password}
+                            onChange={(event) => {
+                                setPassword(event.target.value);
+                            }}
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            InputLabelProps={{ shrink: true }}
+                            error={password === "" && submitClicked === true}
+                            helperText={
+                                password === "" && submitClicked === true
+                                    ? "Please enter a password."
+                                    : ""
+                            }
+                        />
+
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            inputProps={{ maxLength: 20 }}
+                            required
+                            fullWidth
+                            name="firstName"
+                            value={firstName}
+                            onChange={(event) => {
+                                setFirstName(event.target.value);
+                            }}
+                            label="First Name"
+                            type="firstName"
+                            id="firstName"
+                            autoComplete="firstName"
+                            InputLabelProps={{ shrink: true }}
+                            error={firstName === "" && submitClicked === true}
+                            helperText={
+                                firstName === "" && submitClicked === true
+                                    ? "Please enter your first name."
+                                    : ""
+                            }
+                        />
+
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            inputProps={{ maxLength: 20 }}
+                            required
+                            fullWidth
+                            name="lastName"
+                            value={lastName}
+                            onChange={(event) => {
+                                setLastName(event.target.value);
+                            }}
+                            label="Last Name"
+                            type="lastName"
+                            id="lastName"
+                            autoComplete="lastName"
+                            InputLabelProps={{ shrink: true }}
+                            error={lastName === "" && submitClicked === true}
+                            helperText={
+                                lastName === "" && submitClicked === true
+                                    ? "Please enter your last name."
+                                    : ""
+                            }
+                        />
+
+                        <Button
+                            variant="contained"
+                            onClick={onSubmit}
+                            sx={{
+                                mt: 3,
+                                mb: 2,
+                                bgcolor: "#02473B",
+                                borderRadius: "50px",
+                                paddingLeft: "15%",
+                                paddingRight: "15%",
+                                "&:hover": {
+                                    cursor: "pointer",
+                                    bgcolor: "#448E5E",
+                                    //   color: "#68B984",
+                                },
+                            }}
+                        >
+                            <Typography>Register</Typography>
+                        </Button>
+
+                        <Typography>{message !== "" ? message : ""}</Typography>
+                        <Button
+                            variant="contained"
+                            onClick={() => history.push("/SignIn")}
+                            sx={{
+                                mt: 3,
+                                mb: 2,
+                                bgcolor: "#02473B",
+                                borderRadius: "50px",
+                                paddingLeft: "15%",
+                                paddingRight: "15%",
+                                "&:hover": {
+                                    cursor: "pointer",
+                                    bgcolor: "#448E5E",
+                                    //   color: "#68B984",
+                                },
+                            }}
+                        >
+                            <Typography>Sign In</Typography>
+                        </Button>
+                    </form>
+                </Box>
+            </Box>
+        </>
+    );
+
+    return (
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Paper className="paper">{mainMessage}</Paper>
+        </ThemeProvider>
+    );
 };
 
 export default SignUp;

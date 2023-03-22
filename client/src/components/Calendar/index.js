@@ -28,13 +28,17 @@ const Calendar = () => {
     if (user) {
       setCreator(user.displayName);
       viewEvents();
+    } else {
+      onAuthStateChanged(auth, (currUser) => {
+        setUser(currUser);
+      });
     }
   }, [user]);
 
   const viewEvents = () => {
     callAPIViewEvent().then((res) => {
       var parsed = JSON.parse(res.express);
-      console.log(parsed);
+      // console.log(parsed);
       setCurrentEvents(parsed);
       setEventsLoaded(true);
     });
@@ -62,13 +66,14 @@ const Calendar = () => {
         selected.allDay
       );
 
-      console.log("Start " + selected.startStr);
-      console.log("End " + selected.endStr);
-      console.log("All Day" + selected.allDay);
+      // console.log("Start " + selected.startStr);
+      // console.log("End " + selected.endStr);
+      // console.log("All Day" + selected.allDay);
     }
   };
 
   const handleHover = (selected) => {
+    // console.log(selected);
     const title = selected.event.title;
     const tooltip = `Created by ${selected.event.extendedProps.creator}`;
     selected.el.setAttribute("title", tooltip);
@@ -97,7 +102,11 @@ const Calendar = () => {
       body: JSON.stringify({
         firebaseUID: user.uid,
         title: title,
+        allDay: allDay,
         start: start,
+        start: start,
+        allDay: allDay,
+        end: end,
         end: end,
         tag: "",
         description: "",
