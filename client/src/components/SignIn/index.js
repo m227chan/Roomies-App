@@ -141,10 +141,6 @@ const SignIn = ({ history }) => {
                   ? "Please enter email."
                   : ""
               }
-              style={{
-                color: "#02473B",
-                borderColor: "#02473B",
-              }}
             />
             <TextField
               variant="outlined"

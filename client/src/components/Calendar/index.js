@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Container,
-  Grid,
-} from "@material-ui/core";
+import { Box, Container, Grid } from "@material-ui/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -59,7 +55,12 @@ const Calendar = () => {
         creator,
       });
 
-      callAPIAddEvent(title, selected.startStr, selected.endStr, selected.allDay);
+      callAPIAddEvent(
+        title,
+        selected.startStr,
+        selected.endStr,
+        selected.allDay
+      );
 
       console.log("Start " + selected.startStr);
       console.log("End " + selected.endStr);
