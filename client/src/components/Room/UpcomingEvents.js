@@ -54,7 +54,7 @@ const UpcomingEvents = ({ upcomingEvents }) => {
                                         <Grid container spacing={2}>
                                             <Grid item xs={6}>
                                                 <Typography variant={"h6"}>
-                                                    {event.creator}
+                                                    For: {event.creator}
                                                 </Typography>
                                             </Grid>
                                             <Grid item xs={6}>
