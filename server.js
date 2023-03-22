@@ -670,11 +670,19 @@ app.post("/api/viewEvent", (req, res) => {
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
   let viewEventSQL = `
-	SELECT id, CONCAT(firstName, ' ', lastName) as creator, title, startdate, enddate, tag, eventDescription, Consequence, allDay 
-	FROM zzammit.Calendar left join zzammit.Roomate on Calendar.idRoomate = Roomate.id 
-		WHERE idRoomate IN (SELECT id FROM zzammit.Roomate WHERE idRoom = 
-							(SELECT idRoom FROM zzammit.Roomate WHERE firebaseUID = ?));
-	`;
+	SELECT c.title, c.startdate as start, c.enddate as end
+  FROM zzammit.Calendar AS c 
+  LEFT JOIN zzammit.Roomate AS r ON c.idRoomate = r.id 
+  WHERE c.idRoomate IN (
+    SELECT r1.id 
+    FROM zzammit.Roomate AS r1
+    WHERE r1.idRoom = (
+        SELECT r2.idRoom 
+        FROM zzammit.Roomate AS r2 
+        WHERE r2.firebaseUID = (?)
+    )
+  );
+  `;
   let viewEventData = [req.body.firebaseUID];
 
   // console.log(req.body);

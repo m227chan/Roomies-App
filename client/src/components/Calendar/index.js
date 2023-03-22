@@ -21,13 +21,6 @@ const serverURL = "http://localhost:3000/"; //enable for dev mode
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = useState([]);
   const [creator, setCreator] = useState("");
-  // const [title, setTitle] = useState("");
-  // const [start, setStart] = useState("");
-  // const [end, setEnd] = useState("");
-  // const [tag, setTag] = useState("");
-  // const [description, setDescription] = useState("");
-  // const [consequence, setConsequence] = useState("");
-  // const [allDay, setAllDay] = useState("");
   const [user, setUser] = useState({});
 
   onAuthStateChanged(auth, (currUser) => {
@@ -37,17 +30,17 @@ const Calendar = () => {
   useEffect(() => {
     if (user) {
       setCreator(user.displayName);
+      viewEvents();
     }
-    // callAPIViewEvent();
   }, [user]);
 
-  //update this component by retriving date from the database
+  // update this component by retriving date from the database
   // View Events
   var initialEvents = {
     events: [
       {
         title: "event1",
-        start: "2023-03-01",
+        start: "2023-03-09T05:00:00.000Z",
       },
       {
         title: "event2",
@@ -59,24 +52,26 @@ const Calendar = () => {
         start: "2023-03-09T12:30:00",
         allDay: false, // will make the time show
       },
+      {title: 't', start: '2023-03-21T15:00:00.000Z', end: '2023-03-21T19:30:00.000Z'}
     ],
   };
 
-  // const getExpenseReport = () => {
-  //   callAPIGetExpenseReport().then((res) => {
-  //     var parsed = JSON.parse(res.express);
-  //     setExpenses(parsed[4]);
-  //   });
-  // };
+  const viewEvents = () => {
+    callAPIViewEvent().then((res) => {
+      var parsed = JSON.parse(res.express);
+      console.log(parsed);
+      setCurrentEvents(parsed);
+    });
+  };
 
   const handleDateClick = (selected) => {
     const title = prompt("Please enter a new title for your event");
     const calendarApi = selected.view.calendar;
     calendarApi.unselect();
-
+    console.log(selected);
     if (title) {
       calendarApi.addEvent({
-        id: `${selected.dateStr}-${title}`,
+        id: `${selected.dateStr}-${title}-${user.uid}`,
         title,
         start: selected.startStr,
         end: selected.endStr,
@@ -105,6 +100,7 @@ const Calendar = () => {
       )
     ) {
       selected.event.remove();
+      // callAPIDeleteEvent(selected.id);
     }
   };
 
@@ -180,24 +176,24 @@ const Calendar = () => {
   //   return body;
   // };
 
-  // const callAPIViewEvent = async () => {
-  //   // console.log("getExpenseReport called");
-  //   const url = serverURL + "/api/viewEvent";
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       //authorization: `Bearer ${this.state.token}`
-  //     },
-  //     body: JSON.stringify({
-  //       firebaseUID: user.uid,
-  //     }),
-  //   });
-  //   const body = await response.json();
-  //   if (response.status !== 200) throw Error(body.message);
-  //   // console.log("User settings: ", body);
-  //   return body;
-  // };
+  const callAPIViewEvent = async () => {
+    // console.log("getExpenseReport called");
+    const url = serverURL + "/api/viewEvent";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        firebaseUID: user.uid,
+      }),
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  };
 
   return (
     <>
@@ -206,7 +202,9 @@ const Calendar = () => {
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Paper class="paper">
             <Box sx={{ flexGrow: 1 }}>
-              <FullCalendar
+            {user ?  
+            <>
+            <FullCalendar
                 height="85vh"
                 plugins={[
                   dayGridPlugin,
@@ -228,8 +226,10 @@ const Calendar = () => {
                 eventClick={handleEventClick}
                 eventsSet={(events) => setCurrentEvents(events)}
                 eventMouseEnter={handleHover}
-                initialEvents={initialEvents}
+                initialEvents={currentEvents}
               />
+            </>
+            : null}
             </Box>
           </Paper>
         </Box>
