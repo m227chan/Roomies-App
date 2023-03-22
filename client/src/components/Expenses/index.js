@@ -38,8 +38,14 @@ const Expenses = () => {
   };
 
   useEffect(() => {
+    if (user) {
     getExpenseReport();
     getShortExchange();
+    } else {
+      onAuthStateChanged(auth, (currUser) => {
+        setUser(currUser);
+      });
+    }
   }, [open, user]);
 
   const getExpenseReport = () => {

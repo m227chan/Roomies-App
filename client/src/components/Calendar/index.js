@@ -28,6 +28,10 @@ const Calendar = () => {
     if (user) {
       setCreator(user.displayName);
       viewEvents();
+    } else {
+      onAuthStateChanged(auth, (currUser) => {
+        setUser(currUser);
+      });
     }
   }, [user]);
 
