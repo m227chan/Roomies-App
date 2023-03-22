@@ -27,23 +27,29 @@ const Room = () => {
   });
 
   useEffect(() => {
-    callApiGetRoomPageInfo().then((res) => {
-      var parsed = JSON.parse(res.express);
-      // console.log(parsed);
-      setRoomateData(parsed);
-    });
+    if (user) {
+      callApiGetRoomPageInfo().then((res) => {
+        var parsed = JSON.parse(res.express);
+        // console.log(parsed);
+        setRoomateData(parsed);
+      });
 
-    callGetTopGrocery().then((res) => {
-      var parsed = JSON.parse(res.express);
-      // console.log(parsed);
-      setRoomTopGrocery(parsed);
-    });
+      callGetTopGrocery().then((res) => {
+        var parsed = JSON.parse(res.express);
+        // console.log(parsed);
+        setRoomTopGrocery(parsed);
+      });
 
-    callGetUpcomingEvents().then((res) => {
-      var parsed = JSON.parse(res.express);
-      // console.log(parsed);
-      setUpcomingEvents(parsed);
-    });
+      callGetUpcomingEvents().then((res) => {
+        var parsed = JSON.parse(res.express);
+        // console.log(parsed);
+        setUpcomingEvents(parsed);
+      });
+    } else {
+      onAuthStateChanged(auth, (currUser) => {
+        setUser(currUser);
+      });
+    }
   }, [user]);
 
   const callApiGetRoomPageInfo = async () => {
@@ -102,7 +108,7 @@ const Room = () => {
 
   return (
     <>
-      <SideNav/>
+      <SideNav />
       <Container class="container">
         <Box sx={{ flexGrow: 1, margin: "50px" }}>
           <Grid
@@ -119,11 +125,11 @@ const Room = () => {
             </Grid>
 
             <Grid item xs={6} md={5}>
-              <DisplayRoomates roomateData={roomateData} user={user}/>
+              <DisplayRoomates roomateData={roomateData} user={user} />
               <br />
               <Wallet roomateData={roomateData} user={user} />
               <br />
-              <DisplayTopGroceryList roomTopGrocery={roomTopGrocery}/>
+              <DisplayTopGroceryList roomTopGrocery={roomTopGrocery} />
             </Grid>
           </Grid>
         </Box>
