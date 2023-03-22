@@ -100,7 +100,11 @@ const Calendar = () => {
                 eventClick={handleEventClick}
                 eventsSet={(events) => setCurrentEvents(events)}
                 eventMouseEnter={handleHover}
-                initialEvents={initialEvents}
+                eventSources={[
+                  {
+                    initialEvents,
+                  },
+                ]}
               />
             </Box>
           </Paper>
