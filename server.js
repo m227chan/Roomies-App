@@ -763,7 +763,7 @@ app.post("/api/getUpcomingEvents", (req, res) => {
     )
   )
   AND (
-    c.startdate > NOW() 
+    c.startdate >= CONVERT_TZ(NOW() , "+0:00", "-4:00") 
     OR (c.allDay = 1 AND c.startdate <= CURDATE() AND c.enddate >= CURDATE())
   )
   ORDER BY ABS(TIMESTAMPDIFF(SECOND, c.startdate, NOW())) ASC 

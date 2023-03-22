@@ -27,6 +27,7 @@ const Room = () => {
   });
 
   useEffect(() => {
+    // console.log("yes");
     if (user) {
       callApiGetRoomPageInfo().then((res) => {
         var parsed = JSON.parse(res.express);
@@ -46,9 +47,11 @@ const Room = () => {
         setUpcomingEvents(parsed);
       });
     } else {
-      onAuthStateChanged(auth, (currUser) => {
-        setUser(currUser);
-      });
+      setTimeout(() => {
+        onAuthStateChanged(auth, (currUser) => {
+          setUser(currUser);
+        });
+      }, 500);
     }
   }, [user]);
 
