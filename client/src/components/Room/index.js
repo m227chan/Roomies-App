@@ -47,11 +47,9 @@ const Room = () => {
         setUpcomingEvents(parsed);
       });
     } else {
-      setTimeout(() => {
-        onAuthStateChanged(auth, (currUser) => {
-          setUser(currUser);
-        });
-      }, 500);
+      onAuthStateChanged(auth, (currUser) => {
+        setUser(currUser);
+      });
     }
   }, [user]);
 

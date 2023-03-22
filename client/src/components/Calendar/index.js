@@ -29,11 +29,9 @@ const Calendar = () => {
       setCreator(user.displayName);
       viewEvents();
     } else {
-      setTimeout(() => {
-        onAuthStateChanged(auth, (currUser) => {
-          setUser(currUser);
-        });
-      }, 500);
+      onAuthStateChanged(auth, (currUser) => {
+        setUser(currUser);
+      });
     }
   }, [user]);
 
