@@ -82,6 +82,10 @@ const AddExpenseDialog = ({ open, handleClose }) => {
     };
 
     const handleCancel = () => {
+        setComments("");
+        setAmount("");
+        setDate("");
+        setTag("");
         setPayeeList([]);
         setPayer("");
         handleClose();
