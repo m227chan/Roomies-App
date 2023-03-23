@@ -72,16 +72,25 @@ const AddExpenseDialog = ({ open, handleClose }) => {
             }
 
             //clear the dialog after new expense made
+            setComments("");
+            setAmount("");
+            setDate("");
+            setTag("");
             setPayeeList([]);
             setPayer("");
 
             setErrorStatus(false);
+            setSubmitClicked(false);
 
             handleClose();
         }
     };
 
     const handleCancel = () => {
+        setComments("");
+        setAmount("");
+        setDate("");
+        setTag("");
         setPayeeList([]);
         setPayer("");
         handleClose();
