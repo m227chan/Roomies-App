@@ -93,6 +93,8 @@ const AddExpenseDialog = ({ open, handleClose }) => {
         setTag("");
         setPayeeList([]);
         setPayer("");
+        setErrorStatus(false);
+        setSubmitClicked(false);
         handleClose();
     };
 
