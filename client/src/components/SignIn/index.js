@@ -16,6 +16,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Divider from "@material-ui/core/Divider";
 import "./SignIn.css";
 
+import ForgotPasswordDialog from "./ForgotMyPasswordDialog";
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -47,6 +49,17 @@ const SignIn = ({ history }) => {
       console.log(e.message);
       setErrorStatus(true);
     }
+  };
+
+  
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const mainMessage = (
@@ -175,9 +188,10 @@ const SignIn = ({ history }) => {
               alignItems="center"
             >
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="#" variant="body2" onClick={handleClickOpen}>
                   Forgot password?
                 </Link>
+                <ForgotPasswordDialog open={open} handleClose={handleClose}/>
               </Grid>
               <Grid
                 item
