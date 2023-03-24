@@ -10,7 +10,6 @@ const serverURL = "http://localhost:3000/"; //enable for dev mode
 
 const ExpenseTable = ({ open, expenses, getExpenseReport }) => {
   const [currExpense, setCurrExpense] = useState({});
-
   const [openEdit, setOpenEdit] = useState(false);
 
   const handleCloseEdit = () => {

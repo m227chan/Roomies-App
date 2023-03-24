@@ -153,8 +153,7 @@ app.post("/api/viewGroupGrocery", (req, res) => {
 
 app.post("/api/deleteGroceryItem", (req, res) => {
   let connection = mysql.createConnection(config);
-  let sql = `DELETE FROM zzammit.GroceryItem
-		WHERE id = ?;`;
+  let sql = `DELETE FROM zzammit.GroceryItem WHERE id = ?;`;
   let data = [req.body.id];
 
   // console.log(req.body);
@@ -576,17 +575,33 @@ app.post("/api/shortExchange", (req, res) => {
   connection.end();
 });
 
+//Calendar APIs
+
 app.post("/api/addEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
   let addEventSQL = `
-	INSERT INTO zzammit.Calendar (idRoomate, title, startdate, enddate, tag, eventDescription, Consequence, allDay) VALUES ((Select id from zzammit.Roomate where firebaseUID = (?)), ?, ?, ?, ?, ?, ?, ?);
+	INSERT INTO zzammit.Calendar (idRoomate, title, startdate, enddate, tag, eventDescription, Consequence, allDay) 
+  VALUES (
+    (SELECT id FROM zzammit.Roomate WHERE firebaseUID = ?), 
+    ?, 
+    CASE WHEN ? = 1 THEN ? ELSE CONVERT_TZ(?, "+0:00", "-4:00") END, 
+    CASE WHEN ? = 1 THEN ? ELSE CONVERT_TZ(?, "+0:00", "-4:00") END, 
+    ?, 
+    ?, 
+    ?, 
+    ?
+  );
 	`;
   let addEventData = [
-    req.body.roomie,
+    req.body.firebaseUID,
     req.body.title,
+    req.body.allDay,
     req.body.start,
+    req.body.start,
+    req.body.allDay,
+    req.body.end,
     req.body.end,
     req.body.tag,
     req.body.description,
@@ -612,7 +627,7 @@ app.post("/api/deleteEvent", (req, res) => {
   //Input: Expense Trasaction ID
   //Output: None
   let delEventSQL = `
-	DELETE FROM zzammit.Expenses WHERE id = ?;
+	DELETE FROM zzammit.Calendar WHERE id = ?;
 	`;
   let delEventData = [req.body.eventID];
 
@@ -637,7 +652,7 @@ app.post("/api/editEvent", (req, res) => {
 	UPDATE zzammit.Calendar SET idRoomate = (Select id from zzammit.Roomate where firebaseUID = (?)), title = ?, startdate = ?, enddate = ?, tag = ?, eventDescription = ?, Consequence = ?, allDay = ? WHERE id =?;
 	`;
   let editEventData = [
-    req.body.roomie,
+    req.body.firebaseUID,
     req.body.title,
     req.body.start,
     req.body.end,
@@ -663,19 +678,26 @@ app.post("/api/editEvent", (req, res) => {
   );
   connection.end();
 });
+
 app.post("/api/viewEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
   let viewEventSQL = `
-	SELECT id, CONCAT(firstName, ' ', lastName) as creator, title, startdate, enddate, tag, eventDescription, Consequence, allDay 
-	FROM zzammit.Calendar left join zzammit.Roomate on Calendar.idRoomate = Roomate.id 
-		WHERE idRoomate IN (SELECT id FROM zzammit.Roomate WHERE idRoom = 
-							(SELECT idRoom FROM zzammit.Roomate WHERE id = ?));
-	`;
-  let viewEventData = [
-    req.body.roomie,
-  ];
+	SELECT c.id, c.title, c.startdate as start, c.enddate as end, CONCAT(r.firstName, ' ', r.lastName) AS creator
+  FROM zzammit.Calendar AS c 
+  LEFT JOIN zzammit.Roomate AS r ON c.idRoomate = r.id 
+  WHERE c.idRoomate IN (
+    SELECT r1.id 
+    FROM zzammit.Roomate AS r1
+    WHERE r1.idRoom = (
+        SELECT r2.idRoom 
+        FROM zzammit.Roomate AS r2 
+        WHERE r2.firebaseUID = (?)
+    )
+  );
+  `;
+  let viewEventData = [req.body.firebaseUID];
 
   // console.log(req.body);
 
@@ -690,6 +712,77 @@ app.post("/api/viewEvent", (req, res) => {
   connection.end();
 });
 
+app.post("/api/viewEvent", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
+  //Output: None
+  let viewEventSQL = `
+	SELECT c.id, c.title, c.startdate as start, c.enddate as end, CONCAT(r.firstName, ' ', r.lastName) AS creator
+  FROM zzammit.Calendar AS c 
+  LEFT JOIN zzammit.Roomate AS r ON c.idRoomate = r.id 
+  WHERE c.idRoomate IN (
+    SELECT r1.id 
+    FROM zzammit.Roomate AS r1
+    WHERE r1.idRoom = (
+        SELECT r2.idRoom 
+        FROM zzammit.Roomate AS r2 
+        WHERE r2.firebaseUID = (?)
+    )
+  );
+  `;
+  let viewEventData = [req.body.firebaseUID];
+
+  // console.log(req.body);
+
+  connection.query(viewEventSQL, viewEventData, (error, results, fields) => {
+    if (error) {
+      console.log(error.message);
+    }
+    let string = JSON.stringify(results);
+    //let obj = JSON.parse(string);
+    res.send({ express: string });
+  });
+  connection.end();
+});
+
+app.post("/api/getUpcomingEvents", (req, res) => {
+  let connection = mysql.createConnection(config);
+  //Input: (firebase ID)
+  //Output: None
+  let viewEventSQL = `
+	SELECT c.title, c.startdate as start, c.enddate as end, CONCAT(r.firstName, ' ', r.lastName) AS creator, c.allDay
+  FROM zzammit.Calendar AS c 
+  LEFT JOIN zzammit.Roomate AS r ON c.idRoomate = r.id 
+  WHERE c.idRoomate IN (
+    SELECT r1.id 
+    FROM zzammit.Roomate AS r1
+    WHERE r1.idRoom = (
+      SELECT r2.idRoom 
+      FROM zzammit.Roomate AS r2 
+      WHERE r2.firebaseUID = (?)
+    )
+  )
+  AND (
+    c.startdate >= CONVERT_TZ(NOW() , "+0:00", "-4:00") 
+    OR (c.allDay = 1 AND c.startdate <= CURDATE() AND c.enddate >= CURDATE())
+  )
+  ORDER BY ABS(TIMESTAMPDIFF(SECOND, c.startdate, NOW())) ASC 
+  LIMIT 4;
+  `;
+  let viewEventData = [req.body.firebaseUID];
+
+  // console.log(req.body);
+
+  connection.query(viewEventSQL, viewEventData, (error, results, fields) => {
+    if (error) {
+      console.log(error.message);
+    }
+    let string = JSON.stringify(results);
+    //let obj = JSON.parse(string);
+    res.send({ express: string });
+  });
+  connection.end();
+});
 
 //Basic Use APIs
 
@@ -776,32 +869,6 @@ app.post("/api/getTopGrocery", (req, res) => {
   )
   ORDER BY g.tDate DESC
   LIMIT 4;
-    `;
-  let data = [req.body.firebaseUID];
-
-  // console.log(req.body);
-
-  connection.query(
-    sql,
-    data,
-    (error, results, fields) => {
-      if (error) {
-        console.log(error.message);
-      }
-
-      let string = JSON.stringify(results);
-      //let obj = JSON.parse(string);
-      res.send({ express: string });
-    }
-  );
-  connection.end();
-});
-
-app.post("/api/getUsername", (req, res) => {
-  let connection = mysql.createConnection(config);
-  //Input: User Firebase ID
-  let sql = `
-  SELECT CONCAT(firstName, ' ', lastName) AS name FROM zzammit.Roomate WHERE firebaseUID = (?);
     `;
   let data = [req.body.firebaseUID];
 

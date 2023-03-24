@@ -15,7 +15,8 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Divider from "@material-ui/core/Divider";
 import "./SignIn.css";
-import ForgotPasswordDialog from "./ForgotPasswordDialog";
+
+import ForgotPasswordDialog from "./ForgotMyPasswordDialog";
 
 const theme = createTheme({
   palette: {
@@ -32,6 +33,26 @@ const theme = createTheme({
 
 const SignIn = ({ history }) => {
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const [errorStatus, setErrorStatus] = useState(false);
+
+  const onSubmit = async () => {
+    setSubmitClicked(true);
+
+    try {
+      setErrorStatus(false);
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      history.push("/Room");
+    } catch (e) {
+      console.log(e.message);
+      setErrorStatus(true);
+    }
+  };
+
+  
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -40,27 +61,6 @@ const SignIn = ({ history }) => {
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [submitClicked, setSubmitClicked] = useState(false);
-  const [errorStatus, setErrorStatus] = useState(false);
-
-  const onSubmit = async () => {
-    console.log("email: " + email + " | " + "password: " + password);
-    setSubmitClicked(true);
-
-    try {
-      setErrorStatus(false);
-      const user = await signInWithEmailAndPassword(auth, email, password);
-
-      history.push("/Room");
-    } catch (e) {
-      console.log(e.message);
-      setErrorStatus(true);
-    }
   };
 
   const mainMessage = (
@@ -154,10 +154,6 @@ const SignIn = ({ history }) => {
                   ? "Please enter email."
                   : ""
               }
-              style={{
-                color: "#02473B",
-                borderColor: "#02473B",
-              }}
             />
             <TextField
               variant="outlined"
@@ -196,7 +192,7 @@ const SignIn = ({ history }) => {
                 <Link href="#" variant="body2" onClick={handleClickOpen}>
                   Forgot password?
                 </Link>
-                <ForgotPasswordDialog open={open} handleClose={handleClose} />
+                <ForgotPasswordDialog open={open} handleClose={handleClose}/>
               </Grid>
               <Grid
                 item

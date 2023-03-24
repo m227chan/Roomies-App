@@ -31,17 +31,23 @@ const Grocery = () => {
   });
 
   useEffect(() => {
-    callViewGrocery().then((res) => {
-      var parsed = JSON.parse(res.express);
-      setUserGroceryList(parsed);
-      setSubmit(false);
-    });
+    if (user) {
+      callViewGrocery().then((res) => {
+        var parsed = JSON.parse(res.express);
+        setUserGroceryList(parsed);
+        setSubmit(false);
+      });
 
-    callViewGroupGrocery().then((res) => {
-      var parsed = JSON.parse(res.express);
-      setRoomGroceryList(parsed);
-      setSubmit(false);
-    });
+      callViewGroupGrocery().then((res) => {
+        var parsed = JSON.parse(res.express);
+        setRoomGroceryList(parsed);
+        setSubmit(false);
+      });
+    } else {
+      onAuthStateChanged(auth, (currUser) => {
+        setUser(currUser);
+      });
+    }
   }, [submit, user]);
 
   const callViewGrocery = async () => {
