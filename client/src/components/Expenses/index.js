@@ -9,7 +9,7 @@ import {
   Container,
 } from "@material-ui/core";
 import SideNav from "../CustomAppBar/sideNav";
-import ExpenseTable from "./expenseTable.js";
+import ExpenseTable from "./ExpenseTable.js";
 import ExpenseDialog from "./AddExpenseDialog";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase"; 
