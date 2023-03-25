@@ -10,11 +10,13 @@ import Paper from "@material-ui/core/Paper";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Divider from "@material-ui/core/Divider";
 import "./SignIn.css";
+import { ElevatorOutlined } from "@mui/icons-material";
 
 const theme = createTheme({
   palette: {
@@ -68,157 +70,159 @@ const SignIn = ({ history }) => {
           {/* <Divider /> */}
         </Grid>
       </Grid>
-      <Grid class="messageBox" item>
-        <Typography variant="p">To continue, sign up or log in</Typography>
-      </Grid>
-      <Box
-        sx={{
-          mt: "0",
-          pt: "0",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Box component="form" noValidate sx={{ mt: 1 }}>
-          <Button
-            className="newButton"
-            variant="contained"
-            onClick={() => history.push("/SignUp")}
-            fullWidth
-            sx={{
-              mb: 2,
-              bgcolor: "#68B984",
-              borderRadius: "50px",
-              padding: "0.8rem",
-              "&:hover": {
-                cursor: "pointer",
-                bgcolor: "#448E5E",
-                // color: "#68B984",
-              },
-            }}
-          >
-            <Typography variant="p" sx={{ fontWeight: "bold" }}>
-              {" "}
-              Sign Up for Roomies!
-            </Typography>
-          </Button>
-          <Grid container class="orSectionGrid">
-            <Grid item xs={5}>
-              <Divider style={{ background: "#000000" }} />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="h5" class="orDivider">
-                OR
-              </Typography>
-            </Grid>
-            <Grid item xs={5}>
-              <Divider style={{ background: "#000000" }} />
-            </Grid>
-          </Grid>
-
-          <form noValidate onSubmit={onSubmit}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputProps={{ maxLength: 50 }}
-              required
+      <Container component="main" maxWidth="sm">
+        <Grid class="messageBox" item>
+          <Typography variant="p">To continue, sign up or log in</Typography>
+        </Grid>
+        <Box
+          sx={{
+            mt: "0",
+            pt: "0",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box component="form" noValidate>
+            <Button
+              className="newButton"
+              variant="contained"
+              onClick={() => history.push("/SignUp")}
               fullWidth
-              id="email"
-              value={email}
-              onChange={(event) => {
-                setEmail(event.target.value);
+              sx={{
+                mb: 2,
+                bgcolor: "#68B984",
+                borderRadius: "50px",
+                padding: "0.8rem",
+                "&:hover": {
+                  cursor: "pointer",
+                  bgcolor: "#448E5E",
+                  // color: "#68B984",
+                },
               }}
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              InputLabelProps={{ shrink: true }}
-              error={email === "" && submitClicked === true}
-              helperText={
-                email === "" && submitClicked === true
-                  ? "Please enter email."
-                  : ""
-              }
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputProps={{ maxLength: 50 }}
-              required
-              fullWidth
-              name="password"
-              value={password}
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              InputLabelProps={{ shrink: true }}
-              error={password === "" && submitClicked === true}
-              helperText={
-                password === "" && submitClicked === true
-                  ? "Please enter password."
-                  : ""
-              }
-            />
-
-            <Typography>
-              {errorStatus === true ? "Invalid email or password." : ""}
-            </Typography>
-            <Grid
-              container
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
             >
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
+              <Typography variant="p" sx={{ fontWeight: "bold" }}>
+                {" "}
+                Sign Up for Roomies!
+              </Typography>
+            </Button>
+            <Grid container class="orSectionGrid">
+              <Grid item xs={5}>
+                <Divider style={{ background: "#000000" }} />
               </Grid>
+              <Grid item xs={2}>
+                <Typography variant="h5" class="orDivider">
+                  OR
+                </Typography>
+              </Grid>
+              <Grid item xs={5}>
+                <Divider style={{ background: "#000000" }} />
+              </Grid>
+            </Grid>
+
+            <form noValidate onSubmit={onSubmit}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                inputProps={{ maxLength: 50 }}
+                required
+                fullWidth
+                id="email"
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                }}
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                InputLabelProps={{ shrink: true }}
+                error={email === "" && submitClicked === true}
+                helperText={
+                  email === "" && submitClicked === true
+                    ? "Please enter email."
+                    : ""
+                }
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                inputProps={{ maxLength: 50 }}
+                required
+                fullWidth
+                name="password"
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                InputLabelProps={{ shrink: true }}
+                error={password === "" && submitClicked === true}
+                helperText={
+                  password === "" && submitClicked === true
+                    ? "Please enter password."
+                    : ""
+                }
+              />
+
+              <Typography>
+                {errorStatus === true ? "Invalid email or password." : ""}
+              </Typography>
               <Grid
-                item
                 container
                 direction="row"
-                justifyContent="flex-end"
+                justifyContent="space-between"
                 alignItems="center"
-                xs
               >
-                <Button
-                  variant="contained"
-                  onClick={onSubmit}
-                  sx={{
-                    mt: 3,
-                    mb: 2,
-                    bgcolor: "#02473B",
-                    borderRadius: "50px",
-                    paddingLeft: "15%",
-                    paddingRight: "15%",
-                    "&:hover": {
-                      cursor: "pointer",
-                      bgcolor: "#448E5E",
-                      //   color: "#68B984",
-                    },
-                  }}
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid
+                  item
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="center"
+                  xs
                 >
-                  <Typography variant="p"> Sign In</Typography>
-                </Button>
+                  <Button
+                    variant="contained"
+                    onClick={onSubmit}
+                    sx={{
+                      mt: 3,
+                      mb: 2,
+                      bgcolor: "#02473B",
+                      borderRadius: "50px",
+                      paddingLeft: "15%",
+                      paddingRight: "15%",
+                      "&:hover": {
+                        cursor: "pointer",
+                        bgcolor: "#448E5E",
+                        //   color: "#68B984",
+                      },
+                    }}
+                  >
+                    <Typography variant="p"> Sign In</Typography>
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
+            </form>
+          </Box>
         </Box>
-      </Box>
+      </Container>
     </>
   );
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Paper className="paper">{mainMessage}</Paper>
+      <Paper class="paper">{mainMessage}</Paper>
     </ThemeProvider>
   );
 };

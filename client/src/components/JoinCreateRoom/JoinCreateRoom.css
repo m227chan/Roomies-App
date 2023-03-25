@@ -28,17 +28,17 @@
   .divider{
     background: var(--color-primary);
   }
-  .orDivider{
+  .newDivider{
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
     width: 100%;
-    padding: 0.5rem 0.2rem;
+
     color: #02473B;
   }
 
-  .orSectionGrid{
+  .sectionGrid{
     display: flex;
     justify-content: center;
     align-items: center;

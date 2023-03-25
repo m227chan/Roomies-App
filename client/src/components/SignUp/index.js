@@ -10,6 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -106,181 +107,210 @@ const SignUp = ({ history }) => {
           {/* <Divider /> */}
         </Grid>
       </Grid>
-      <Grid class="messageBox" item>
-        <Typography variant="p">Hurry your roommates are waiting!</Typography>
-      </Grid>
-      <Box
-        sx={{
-          mt: "0",
-          pt: "0",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Box component="form" noValidate sx={{ mt: 1 }}>
-          <Grid container class="orSectionGrid">
-            <Grid item xs={5}>
-              <Divider style={{ background: "#000000" }} />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography variant="h5" class="orDivider">
-                Create your Account
-              </Typography>
-            </Grid>
-            <Grid item xs={5}>
-              <Divider style={{ background: "#000000" }} />
-            </Grid>
-          </Grid>
-
-          <form noValidate onSubmit={onSubmit}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputProps={{ maxLength: 50 }}
-              required
-              fullWidth
-              id="email"
-              value={email}
-              onChange={(event) => {
-                setEmail(event.target.value);
-              }}
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              InputLabelProps={{ shrink: true }}
-              error={email === "" && submitClicked === true}
-              helperText={
-                email === "" && submitClicked === true
-                  ? "Please enter an email."
-                  : ""
-              }
-            />
-
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputProps={{ maxLength: 50 }}
-              required
-              fullWidth
-              name="password"
-              value={password}
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              InputLabelProps={{ shrink: true }}
-              error={password === "" && submitClicked === true}
-              helperText={
-                password === "" && submitClicked === true
-                  ? "Please enter a password."
-                  : ""
-              }
-            />
-
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputProps={{ maxLength: 20 }}
-              required
-              fullWidth
-              name="firstName"
-              value={firstName}
-              onChange={(event) => {
-                setFirstName(event.target.value);
-              }}
-              label="First Name"
-              type="firstName"
-              id="firstName"
-              autoComplete="firstName"
-              InputLabelProps={{ shrink: true }}
-              error={firstName === "" && submitClicked === true}
-              helperText={
-                firstName === "" && submitClicked === true
-                  ? "Please enter your first name."
-                  : ""
-              }
-            />
-
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputProps={{ maxLength: 20 }}
-              required
-              fullWidth
-              name="lastName"
-              value={lastName}
-              onChange={(event) => {
-                setLastName(event.target.value);
-              }}
-              label="Last Name"
-              type="lastName"
-              id="lastName"
-              autoComplete="lastName"
-              InputLabelProps={{ shrink: true }}
-              error={lastName === "" && submitClicked === true}
-              helperText={
-                lastName === "" && submitClicked === true
-                  ? "Please enter your last name."
-                  : ""
-              }
-            />
-
-            <Button
-              variant="contained"
-              onClick={onSubmit}
-              sx={{
-                mt: 3,
-                mb: 2,
-                bgcolor: "#02473B",
-                borderRadius: "50px",
-                paddingLeft: "15%",
-                paddingRight: "15%",
-                "&:hover": {
-                  cursor: "pointer",
-                  bgcolor: "#448E5E",
-                  //   color: "#68B984",
-                },
-              }}
-            >
-              <Typography>Register</Typography>
-            </Button>
-
-            <Typography>{message !== "" ? message : ""}</Typography>
+      <Container component="main" maxWidth="sm">
+        <Grid class="messageBox" item>
+          <Typography variant="p">Hurry your roommates are waiting!</Typography>
+        </Grid>
+        <Box
+          sx={{
+            mt: "0",
+            pt: "0",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box component="form" noValidate>
             <Button
               variant="contained"
               onClick={() => history.push("/SignIn")}
+              fullWidth
               sx={{
-                mt: 3,
                 mb: 2,
-                bgcolor: "#02473B",
+                bgcolor: "#68B984",
                 borderRadius: "50px",
-                paddingLeft: "15%",
-                paddingRight: "15%",
+                padding: "0.8rem",
                 "&:hover": {
                   cursor: "pointer",
                   bgcolor: "#448E5E",
-                  //   color: "#68B984",
+                  // color: "#68B984",
                 },
               }}
             >
-              <Typography>Sign In</Typography>
+              <Typography variant="p" sx={{ fontWeight: "bold" }}>
+                {" "}
+                Sign in to your Account
+              </Typography>
             </Button>
-          </form>
+            <Grid container class="orSectionGrid">
+              <Grid item xs={4}>
+                <Divider style={{ background: "#000000" }} />
+              </Grid>
+              <Grid item xs={5}>
+                <Typography variant="h5" class="orDivider">
+                  Create your Account
+                </Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Divider style={{ background: "#000000" }} />
+              </Grid>
+            </Grid>
+
+            <form noValidate onSubmit={onSubmit}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                inputProps={{ maxLength: 20 }}
+                required
+                fullWidth
+                name="firstName"
+                value={firstName}
+                onChange={(event) => {
+                  setFirstName(event.target.value);
+                }}
+                label="First Name"
+                type="firstName"
+                id="firstName"
+                autoComplete="firstName"
+                InputLabelProps={{ shrink: true }}
+                error={firstName === "" && submitClicked === true}
+                helperText={
+                  firstName === "" && submitClicked === true
+                    ? "Please enter your first name."
+                    : ""
+                }
+              />
+
+              <TextField
+                variant="outlined"
+                margin="normal"
+                inputProps={{ maxLength: 20 }}
+                required
+                fullWidth
+                name="lastName"
+                value={lastName}
+                onChange={(event) => {
+                  setLastName(event.target.value);
+                }}
+                label="Last Name"
+                type="lastName"
+                id="lastName"
+                autoComplete="lastName"
+                InputLabelProps={{ shrink: true }}
+                error={lastName === "" && submitClicked === true}
+                helperText={
+                  lastName === "" && submitClicked === true
+                    ? "Please enter your last name."
+                    : ""
+                }
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                inputProps={{ maxLength: 50 }}
+                required
+                fullWidth
+                id="email"
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                }}
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                InputLabelProps={{ shrink: true }}
+                error={email === "" && submitClicked === true}
+                helperText={
+                  email === "" && submitClicked === true
+                    ? "Please enter an email."
+                    : ""
+                }
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                inputProps={{ maxLength: 50 }}
+                required
+                fullWidth
+                name="password"
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                InputLabelProps={{ shrink: true }}
+                error={password === "" && submitClicked === true}
+                helperText={
+                  password === "" && submitClicked === true
+                    ? "Please enter a password."
+                    : ""
+                }
+              />
+
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+              >
+                {/* <Button
+                  variant="contained"
+                  onClick={onSubmit}
+                  sx={{
+                    mt: 3,
+                    mb: 2,
+                    bgcolor: "#02473B",
+                    borderRadius: "50px",
+                    paddingLeft: "10%",
+                    paddingRight: "10%",
+                    "&:hover": {
+                      cursor: "pointer",
+                      bgcolor: "#448E5E",
+                      //   color: "#68B984",
+                    },
+                  }}
+                >
+                  <Typography>Register</Typography>
+                </Button> */}
+
+                <Typography>{message !== "" ? message : ""}</Typography>
+
+                <Button
+                  variant="contained"
+                  onClick={onSubmit}
+                  sx={{
+                    mt: 3,
+                    mb: 2,
+                    bgcolor: "#02473B",
+                    borderRadius: "50px",
+                    paddingLeft: "10%",
+                    paddingRight: "10%",
+                    "&:hover": {
+                      cursor: "pointer",
+                      bgcolor: "#448E5E",
+                      //   color: "#68B984",
+                    },
+                  }}
+                >
+                  <Typography>Register</Typography>
+                </Button>
+              </Grid>
+            </form>
+          </Box>
         </Box>
-      </Box>
+      </Container>
     </>
   );
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Paper className="paper">{mainMessage}</Paper>
+      <Paper class="paper">{mainMessage}</Paper>
     </ThemeProvider>
   );
 };
