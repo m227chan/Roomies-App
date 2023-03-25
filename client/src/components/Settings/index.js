@@ -32,24 +32,11 @@ const Settings = (props) => {
     history.push("/SignIn");
   };
 
-  // const handleDelete = async () => {
-  //   // REQUIRES ADMIN ACCESS - TO BE FIXED
-  //   console.log(user.uid);
-  //   getAuth()
-  //     .deleteUser(user.uid)
-  //     .then(() => {
-  //       console.log('Account deleted');
-  //     })
-  //     .catch((e) => {
-  //       console.log(e.message);
-  //     });
-
-  //   history.push('/SignIn');
-  // }
-
   return (
     <>
-      <SideNav />
+      <Grid>
+        <SideNav />
+      </Grid>
       <Container class="container">
         <Paper class="paper">
           <Box sx={{ flexGrow: 1 }}>

@@ -160,7 +160,9 @@ const Calendar = () => {
 
   return (
     <>
-      <SideNav />
+      <Grid>
+        <SideNav />
+      </Grid>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Container class="container">
           <Box sx={{ flexGrow: 1 }}>

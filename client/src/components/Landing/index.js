@@ -85,10 +85,10 @@ const SignUp = ({ history }) => {
             <Typography variant="h2">All-in-one Roommate App!</Typography>
             <br />
             <Typography variant="p">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+              Roomies is the ultimate solution for busy students and roommates! 
+              Manage expenses, groceries, and scheduling all in one place. 
+              Simplify your life, save time, and eliminate coordination issues 
+              with Roomies.
             </Typography>
             <Grid
               container
