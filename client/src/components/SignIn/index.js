@@ -52,7 +52,7 @@ const SignIn = ({ history }) => {
     }
   };
 
-  
+
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -192,7 +192,7 @@ const SignIn = ({ history }) => {
                 <Link href="#" variant="body2" onClick={handleClickOpen}>
                   Forgot password?
                 </Link>
-                <ForgotPasswordDialog open={open} handleClose={handleClose}/>
+                <ForgotPasswordDialog open={open} handleClose={handleClose} />
               </Grid>
               <Grid
                 item
@@ -202,25 +202,22 @@ const SignIn = ({ history }) => {
                 alignItems="center"
                 xs
               >
-                <Button
-                  variant="contained"
-                  onClick={onSubmit}
-                  sx={{
-                    mt: 3,
-                    mb: 2,
-                    bgcolor: "#02473B",
-                    borderRadius: "50px",
-                    paddingLeft: "15%",
-                    paddingRight: "15%",
-                    "&:hover": {
-                      cursor: "pointer",
-                      bgcolor: "#448E5E",
-                      //   color: "#68B984",
-                    },
-                  }}
+                <Grid item xs>
+                  <Link href="#" variant="body2" onClick={handleClickOpen}>
+                    Forgot password?
+                  </Link>
+                  <ForgotPasswordDialog open={open} handleClose={handleClose} />
+                </Grid>
+                <Grid
+                  item
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="center"
+                  xs
                 >
                   <Typography variant="p"> Sign In</Typography>
-                </Button>
+                </Grid>
               </Grid>
             </Grid>
           </form>
