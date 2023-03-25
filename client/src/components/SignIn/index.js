@@ -18,6 +18,8 @@ import Divider from "@material-ui/core/Divider";
 import "./SignIn.css";
 import { ElevatorOutlined } from "@mui/icons-material";
 
+import ForgotPasswordDialog from "./ForgotMyPasswordDialog";
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -44,12 +46,21 @@ const SignIn = ({ history }) => {
     try {
       setErrorStatus(false);
       const user = await signInWithEmailAndPassword(auth, email, password);
-
       history.push("/Room");
     } catch (e) {
       console.log(e.message);
       setErrorStatus(true);
     }
+  };
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const mainMessage = (

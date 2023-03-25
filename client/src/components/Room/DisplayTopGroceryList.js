@@ -43,7 +43,7 @@ const DisplayTopGroceryList = ({ roomTopGrocery }) => {
                                                 </Typography>
                                             </Grid>
                                             <Grid item xs={4}>
-                                                <Typography key={index} variant={"body1"}>
+                                                <Typography key={index} variant={"body1"} align="right">
                                                     ${grocery.price}
                                                 </Typography>
                                             </Grid>

@@ -20,6 +20,7 @@ import "./SignUp.css";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
@@ -54,6 +55,12 @@ const SignUp = ({ history }) => {
     try {
       setMessage("");
       await createUserWithEmailAndPassword(auth, email, password);
+
+      const name = firstName + " " + lastName;
+
+      await updateProfile(auth.currentUser, {
+        displayName: name,
+      });
 
       await signInWithEmailAndPassword(auth, email, password);
 
