@@ -1,13 +1,12 @@
 import React from "react";
-import "./index.css";
 import {
     Typography,
     Card,
     Grid,
     CardContent,
     Box,
+    Avatar,
 } from "@material-ui/core";
-import Avatar from "@mui/material/Avatar";
 
 const DisplayRoomates = ({ roomateData, user }) => {
 

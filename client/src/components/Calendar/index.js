@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Container, Grid } from "@material-ui/core";
+import SideNav from "../CustomAppBar/sideNav";
+
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -8,8 +10,6 @@ import listPlugin from "@fullcalendar/list";
 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
-
-import SideNav from "../CustomAppBar/sideNav";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
@@ -160,9 +160,7 @@ const Calendar = () => {
 
   return (
     <>
-      <Grid>
-        <SideNav />
-      </Grid>
+      <SideNav />
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Container class="container">
           <Box sx={{ flexGrow: 1 }}>
