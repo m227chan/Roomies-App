@@ -11,6 +11,9 @@ import listPlugin from "@fullcalendar/list";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
 
+import DeleteEventDialog from "./DeleteEventDialog"
+import AddEventDialog from "./AddEventDialog"
+
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
@@ -19,6 +22,11 @@ const Calendar = () => {
   const [creator, setCreator] = useState("");
   const [user, setUser] = useState({});
   const [eventsLoaded, setEventsLoaded] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openAdd, setOpenAdd] = useState(false);
+  const [eventDelete, setEventDelete] = useState({});
+  const [selectedAdd, setSelectedAdd] = useState({});
+  const [title, setTitle] = useState("");
 
   onAuthStateChanged(auth, (currUser) => {
     setUser(currUser);
@@ -38,38 +46,14 @@ const Calendar = () => {
   const viewEvents = () => {
     callAPIViewEvent().then((res) => {
       var parsed = JSON.parse(res.express);
-      // console.log(parsed);
       setCurrentEvents(parsed);
       setEventsLoaded(true);
     });
   };
 
   const handleDateClick = (selected) => {
-    const title = prompt("Please enter a new title for your event");
-    const calendarApi = selected.view.calendar;
-    calendarApi.unselect();
-    console.log(selected);
-    if (title) {
-      calendarApi.addEvent({
-        id: `${selected.dateStr}-${title}-${user.uid}`,
-        title,
-        start: selected.startStr,
-        end: selected.endStr,
-        allDay: selected.allDay,
-        creator,
-      });
-
-      callAPIAddEvent(
-        title,
-        selected.startStr,
-        selected.endStr,
-        selected.allDay
-      );
-
-      // console.log("Start " + selected.startStr);
-      // console.log("End " + selected.endStr);
-      // console.log("All Day" + selected.allDay);
-    }
+    setSelectedAdd(selected);
+    setOpenAdd(true);
   };
 
   const handleHover = (selected) => {
@@ -80,63 +64,17 @@ const Calendar = () => {
   };
 
   const handleEventClick = (selected) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete the event '${selected.event.title}'`
-      )
-    ) {
-      callAPIDeleteEvent(selected.event.id);
-      selected.event.remove();
-    }
+    setTitle(selected.event.title);
+    setEventDelete(selected.event);
+    setOpenDelete(true);
   };
 
-  const callAPIAddEvent = async (title, start, end, allDay) => {
-    // console.log("getExpenseReport called");
-    const url = serverURL + "/api/addEvent";
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //authorization: `Bearer ${this.state.token}`
-      },
-      body: JSON.stringify({
-        firebaseUID: user.uid,
-        title: title,
-        allDay: allDay,
-        start: start,
-        start: start,
-        allDay: allDay,
-        end: end,
-        end: end,
-        tag: "",
-        description: "",
-        consequence: 0,
-        allDay: allDay,
-      }),
-    });
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    // console.log("User settings: ", body);
-    return body;
+  const handleCloseDeleteDialog = () => {
+    setOpenDelete(false);
   };
 
-  const callAPIDeleteEvent = async (eventID) => {
-    // console.log("getExpenseReport called");
-    const url = serverURL + "/api/deleteEvent";
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //authorization: `Bearer ${this.state.token}`
-      },
-      body: JSON.stringify({
-        eventID: eventID,
-      }),
-    });
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    // console.log("User settings: ", body);
-    return body;
+  const handleCloseAddDialog = () => {
+    setOpenAdd(false);
   };
 
   const callAPIViewEvent = async () => {
@@ -195,6 +133,21 @@ const Calendar = () => {
           </Box>
         </Container>
       </Box>
+
+      <DeleteEventDialog
+        open={openDelete}
+        handleClose={handleCloseDeleteDialog}
+        event={eventDelete}
+        title={title}
+      />
+
+      <AddEventDialog
+        open={openAdd}
+        handleClose={handleCloseAddDialog}
+        selected={selectedAdd}
+        user={user}
+        creator={creator}
+      />
     </>
   );
 };

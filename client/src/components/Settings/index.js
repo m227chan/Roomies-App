@@ -58,55 +58,12 @@ const Settings = (props) => {
 
                 <br />
 
-                {/* <Button>
-<Link
-onClick={() => history.push('/SignIn')}
->
-<Typography variant="h6">
-Change Password *not implemented*
-</Typography>
-</Link>
-</Button> */}
-
-                <br />
-
                 <Button>
                   <Link onClick={onClickLogOut}>
                     <Typography variant="h6">Sign Out</Typography>
                   </Link>
                 </Button>
 
-                <br />
-
-                {/* <Button>
-<Link
-onClick={() => { setOpen(true) }}
->
-<Typography variant="h6">
-Delete Account *not implemented*
-</Typography>
-</Link>
-</Button> */}
-
-                {/* <Dialog
-open={open}
-onClose={() => { setOpen(false) }}
-aria-labelledby="alert-dialog-title"
-aria-describedby="alert-dialog-description"
->
-<DialogTitle id="alert-dialog-title">
-{"Are you sure you want to delete your account?"}
-</DialogTitle>
-<DialogContent>
-<DialogContentText id="alert-dialog-description">
-Deleting will permanently remove your account and all of its data from Roomies App.
-</DialogContentText>
-</DialogContent>
-<DialogActions>
-<Button onClick={() => { setOpen(false) }}>No</Button>
-<Button onClick={handleDelete}>Yes</Button>
-</DialogActions>
-</Dialog> */}
               </Grid>
             </Grid>
           </Box>
