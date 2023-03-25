@@ -12,7 +12,7 @@ import SideNav from "../CustomAppBar/sideNav";
 import ExpenseTable from "./ExpenseTable.js";
 import ExpenseDialog from "./AddExpenseDialog";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../Firebase/firebase"; 
+import { auth } from "../Firebase/firebase";
 import ShortExchange from "./ShortExchange";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
@@ -39,8 +39,8 @@ const Expenses = () => {
 
   useEffect(() => {
     if (user) {
-    getExpenseReport();
-    getShortExchange();
+      getExpenseReport();
+      getShortExchange();
     } else {
       onAuthStateChanged(auth, (currUser) => {
         setUser(currUser);
@@ -102,7 +102,9 @@ const Expenses = () => {
 
   return (
     <>
-      <SideNav />
+      <Grid>
+        <SideNav />
+      </Grid>
       <Container class="container">
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Paper class="paper">
@@ -119,10 +121,10 @@ const Expenses = () => {
                   </Typography>
                 </Grid>
 
-                <ShortExchange shortExchangeList={shortExchangeList}/>
+                <ShortExchange shortExchangeList={shortExchangeList} />
 
                 <Grid item>
-                  <ExpenseTable open={open} expenses={expenses} getExpenseReport={getExpenseReport}/>
+                  <ExpenseTable open={open} expenses={expenses} getExpenseReport={getExpenseReport} />
                 </Grid>
 
                 <Grid item>

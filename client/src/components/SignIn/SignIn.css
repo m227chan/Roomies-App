@@ -1,69 +1,70 @@
 .root {
-    background-color: #000000;
-    opacity: 0.9;
-    overflow: hidden;
-  }
+  background-color: #000000;
+  opacity: 0.9;
+  overflow: hidden;
+}
 
 .mainMessage {
-    opacity: 0.9;
-  }
-  
-  .mainContainer{
-    margin: 0;
-    background-color: var(--color-bg-variant);
-  }
-  
-  .title{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1.5rem 0rem;
-    color: var(--color-primary);
-    background-color: var(--color-bg-variant);
-  }
-  
-  .newButton{
-    background-color: var(--color-bg-variant);
-  }
-  .divider{
-    background: var(--color-primary);
-  }
-  .orDivider{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    width: 100%;
-    padding: 0.5rem 0.2rem;
-    color: #02473B;
-  }
+  opacity: 0.9;
+}
 
-  .orSectionGrid{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-     margin: .5rem;
-  }
+.mainContainer {
+  margin: 0;
+  background-color: var(--color-bg-variant);
+}
 
-  .messageBox{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 0rem;
-    width: auto;
-    font-weight: bold;
-    color: #02473B;
-  }
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 0rem;
+  color: var(--color-primary);
+  background-color: var(--color-bg-variant);
+}
+
+.newButton {
+  background-color: var(--color-bg-variant);
+}
+
+.divider {
+  background: var(--color-primary);
+}
+
+.orDivider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  width: 100%;
+  padding: 0.5rem 0.2rem;
+  color: #02473B;
+}
+
+.orSectionGrid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: .5rem;
+}
+
+.messageBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0rem;
+  width: auto;
+  font-weight: bold;
+  color: #02473B;
+}
 
 
-  @media (max-width: 600px) {
-    .mainMessageContainer {
-      margin-left: 4px;
-    }
+@media (max-width: 600px) {
+  .mainMessageContainer {
+    margin-left: 4px;
   }
-  
-  .paper {
-    overflow: hidden;
-    box-shadow: none;
-  }
-  
+}
+
+.paper {
+  overflow: hidden;
+  box-shadow: none;
+}
