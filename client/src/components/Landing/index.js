@@ -1,141 +1,188 @@
-import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
-import history from "../Navigation/history";
-import { withStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Container from "@material-ui/core/Container";
+import * as React from "react";
+import { useState } from "react";
 
-const opacityValue = 0.9;
+import { auth } from "../Firebase/firebase";
+
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Paper from "@material-ui/core/Paper";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+
+import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Divider from "@material-ui/core/Divider";
+import "./landing.css";
+
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+
+const serverURL = "http://localhost:3000/"; //enable for dev mode
+// const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
 const theme = createTheme({
   palette: {
-    type: "light",
-    background: {
-      default: "#000000",
-    },
     primary: {
-      main: "#7a1a06",
+      main: "#02473B",
     },
-    secondary: {
-      main: "#ffcb52",
+  },
+  typography: {
+    button: {
+      textTransform: "none",
+    },
+    h2: {
+      fontWeight: "bold",
     },
   },
 });
 
-const styles = (theme) => ({
-  root: {
-    body: {
-      backgroundColor: "#000000",
-      opacity: opacityValue,
-      overflow: "hidden",
-    },
-  },
-  mainMessage: {
-    opacity: opacityValue,
-  },
-
-  mainMessageContainer: {
-    marginTop: "15vh",
-    marginLeft: theme.spacing(20),
-    [theme.breakpoints.down("xs")]: {
-      marginLeft: theme.spacing(4),
-    },
-  },
-  paper: {
-    overflow: "hidden",
-  },
-  message: {
-    opacity: opacityValue,
-    maxWidth: 250,
-    paddingBottom: theme.spacing(2),
-  },
-});
-
-function Landing(props) {
-  const { classes } = props;
-
+const SignUp = ({ history }) => {
   const mainMessage = (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="flex-start"
-        style={{ minHeight: "100vh" }}
-        className={classes.mainMessageContainer}
-      >
-        <Grid item>
-          <Container maxWidth="xs">
-            <Typography variant="h4" color="primary">
-              Welcome to the Roomies App!
-            </Typography>
-            <br />
-            <Button color="inherit" variant="contained">
-              <Link
-                color="inherit"
-                style={{ cursor: "pointer" }}
-                onClick={() => history.push("/SignIn")}
-              >
-                <Typography>Sign In</Typography>
-              </Link>
-            </Button>
-            <br />
-            <br />
-            <Button color="inherit" variant="contained">
-              <Link
-                color="inherit"
-                style={{ cursor: "pointer" }}
-                onClick={() => history.push("/SignUp")}
-              >
-                <Typography>Sign Up</Typography>
-              </Link>
-            </Button>
-            <Box
-              component="img"
-              direction="column"
-              alignItems="center"
-              justify="center"
-              sx={{
-                height: 400,
-                width: 700,
-              }}
-              alt="image goes here"
-              src="../Roomates.png"
-            />
-            <br />
-            <Typography variant="h6" color="inherit" noWrap>
-              Image Source:
-              <a
-                href={
-                  "https://liv.rent/blog/2020/02/roommate-living-keeping-it-real-feat-happy-roommates/"
-                }
-              >
-                {
-                  "https://liv.rent/blog/2020/02/roommate-living-keeping-it-real-feat-happy-roommates/"
-                }
-              </a>
-            </Typography>
-          </Container>
+    <>
+      <Grid>
+        <Grid class="title" item>
+          <Box
+            sx={{
+              height: "20%",
+              width: "20%",
+            }}
+            component="img"
+            alt="Roomies App Logo"
+            src="/Logo.png"
+          />
+        </Grid>
+        <Grid class="divider" item>
+          {/* <Divider /> */}
         </Grid>
       </Grid>
-    </Box>
+      <Container maxWidth="lg">
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            item
+            xs={5}
+            sx={{
+              padding: "2rem 0rem",
+              width: "auto",
+              fontWeight: "bold",
+              color: "#02473B",
+            }}
+          >
+            <Typography variant="h2">All-in-one Roommate App!</Typography>
+            <br />
+            <Typography variant="p">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </Typography>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+              sx={{
+                mt: "0",
+                pt: "0",
+              }}
+            >
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="center"
+                mt={3}
+              >
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    onClick={() => history.push("/SignIn")}
+                    sx={{
+                      mr: 2,
+                      bgcolor: "#68B984",
+                      borderRadius: "50px",
+                      padding: "0.8rem 2rem",
+                      "&:hover": {
+                        cursor: "pointer",
+                        bgcolor: "#448E5E",
+                        // color: "#68B984",
+                      },
+                    }}
+                  >
+                    <Typography variant="p" sx={{ fontWeight: "bold" }}>
+                      {" "}
+                      Sign In
+                    </Typography>
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    onClick={() => history.push("/SignUp")}
+                    sx={{
+                      mr: 2,
+                      bgcolor: "#02473B",
+                      borderRadius: "50px",
+                      padding: "0.8rem 2rem",
+                      "&:hover": {
+                        cursor: "pointer",
+                        bgcolor: "#448E5E",
+                        // color: "#68B984",
+                      },
+                    }}
+                  >
+                    <Typography variant="p" sx={{ fontWeight: "bold" }}>
+                      {" "}
+                      Sign Up
+                    </Typography>
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            item
+            xs={7}
+          >
+            <img
+              style={{
+                height: "90%",
+                width: "90%",
+                margin: "auto",
+              }}
+              alt="Roomies App Logo"
+              src="/Hero.png"
+            />
+          </Grid>
+        </Grid>
+      </Container>
+    </>
   );
 
   return (
-    <MuiThemeProvider theme={theme}>
-      <div className={classes.root}>
-        <CssBaseline />
-        <Paper className={classes.paper}>{mainMessage}</Paper>
-      </div>
-    </MuiThemeProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Paper class="paper">{mainMessage}</Paper>
+    </ThemeProvider>
   );
-}
+};
 
-export default withStyles(styles)(Landing);
+export default SignUp;

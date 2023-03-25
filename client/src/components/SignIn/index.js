@@ -190,9 +190,10 @@ const SignIn = ({ history }) => {
                 alignItems="center"
               >
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link href="#" variant="body2" onClick={handleClickOpen}>
                     Forgot password?
                   </Link>
+                  <ForgotPasswordDialog open={open} handleClose={handleClose} />
                 </Grid>
                 <Grid
                   item
