@@ -62,6 +62,10 @@
     "automock": false,
     "setupFiles": [
       "./setupJest.js"
-    ]
+    ],
+    "transform": {
+        "^.+\\.js$": "babel-jest"
+      }
+    
   }
 }
