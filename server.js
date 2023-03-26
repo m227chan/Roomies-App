@@ -361,10 +361,7 @@ app.post("/api/getExpenseReport", (req, res) => {
 	
 	DROP TABLE IF EXISTS zzammit.ExpLog;
 	`;
-  let getExpensesData = [
-    req.body.firebaseUID,
-    req.body.justUser,
-  ];
+  let getExpensesData = [req.body.firebaseUID, req.body.justUser];
 
   // console.log(req.body);
 
@@ -538,7 +535,7 @@ app.post("/api/shortExchange", (req, res) => {
   let shortExchangeSQL = `
   SET @roomie := (Select id from zzammit.Roomate where firebaseUID = (?)); 
 
-	SELECT CONCAT(CONCAT(Rm8.firstName, ' ', Rm8.lastName), ' pays ', CONCAT(Roomate.firstName, ' ', Roomate.lastName), ' $', MIN(amount)) AS transaction
+	SELECT Rm8.id, CONCAT(CONCAT(Rm8.firstName, ' ', Rm8.lastName), ' pays ', CONCAT(Roomate.firstName, ' ', Roomate.lastName), ' $', MIN(amount)) AS transaction
 	FROM zzammit.Expenses
 	LEFT JOIN zzammit.Roomate on Expenses.idSpender = Roomate.id
     LEFT JOIN zzammit.Roomate AS Rm8 on Expenses.idDebtor = Rm8.id
@@ -552,10 +549,7 @@ app.post("/api/shortExchange", (req, res) => {
 	HAVING SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END) <> 0
 	ORDER BY SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END);
 	`;
-  let shortExchangeData = [
-    req.body.firebaseUID,
-  ];
-
+  let shortExchangeData = [req.body.firebaseUID];
 
   // console.log(req.body);
 
@@ -664,18 +658,14 @@ app.post("/api/editEvent", (req, res) => {
   ];
   // console.log(req.body);
 
-  connection.query(
-    editEventSQL,
-    editEventData,
-    (error, results, fields) => {
-      if (error) {
-        console.log(error.message);
-      }
-      let string = JSON.stringify(results);
-      //let obj = JSON.parse(string);
-      res.send({ express: string });
+  connection.query(editEventSQL, editEventData, (error, results, fields) => {
+    if (error) {
+      console.log(error.message);
     }
-  );
+    let string = JSON.stringify(results);
+    //let obj = JSON.parse(string);
+    res.send({ express: string });
+  });
   connection.end();
 });
 
@@ -818,7 +808,7 @@ app.post("/api/getRoomPageInfo", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: User Firebase ID
   let sql = `
-  SELECT r.firstName, r.lastName, r.idRoom, r.owed * -1 AS owed, rm.roomName, r.firebaseUID 
+  SELECT r.id, r.firstName, r.lastName, r.idRoom, r.owed * -1 AS owed, rm.roomName, r.firebaseUID 
   FROM zzammit.Roomate r 
   INNER JOIN zzammit.Room rm ON r.idRoom = rm.id 
   WHERE r.idRoom = (SELECT idRoom FROM zzammit.Roomate WHERE firebaseUID = (?))
@@ -827,19 +817,15 @@ app.post("/api/getRoomPageInfo", (req, res) => {
 
   // console.log(req.body);
 
-  connection.query(
-    sql,
-    data,
-    (error, results, fields) => {
-      if (error) {
-        console.log(error.message);
-      }
-
-      let string = JSON.stringify(results);
-      //let obj = JSON.parse(string);
-      res.send({ express: string });
+  connection.query(sql, data, (error, results, fields) => {
+    if (error) {
+      console.log(error.message);
     }
-  );
+
+    let string = JSON.stringify(results);
+    //let obj = JSON.parse(string);
+    res.send({ express: string });
+  });
   connection.end();
 });
 
@@ -874,19 +860,15 @@ app.post("/api/getTopGrocery", (req, res) => {
 
   // console.log(req.body);
 
-  connection.query(
-    sql,
-    data,
-    (error, results, fields) => {
-      if (error) {
-        console.log(error.message);
-      }
-
-      let string = JSON.stringify(results);
-      //let obj = JSON.parse(string);
-      res.send({ express: string });
+  connection.query(sql, data, (error, results, fields) => {
+    if (error) {
+      console.log(error.message);
     }
-  );
+
+    let string = JSON.stringify(results);
+    //let obj = JSON.parse(string);
+    res.send({ express: string });
+  });
   connection.end();
 });
 
