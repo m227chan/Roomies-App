@@ -147,8 +147,8 @@ const Expenses = () => {
                     Expenses
                   </Typography>
                 </Grid>
-                <DisplayRoomates roomateData={roomateData} user={user} />
-                <ShortExchange shortExchangeList={shortExchangeList} />
+
+                <ShortExchange />
 
                 <Grid item>
                   <ExpenseTable
