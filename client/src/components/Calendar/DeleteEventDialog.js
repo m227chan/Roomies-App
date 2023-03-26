@@ -13,8 +13,6 @@ const serverURL = "http://localhost:3000/"; //enable for dev mode
 
 const DeleteEventDialog = ({open, handleClose, event, title}) => {
 
-    console.log(event);
-
     const handleDelete = () => {
         callAPIDeleteEvent(event.id);
         event.remove();
