@@ -29,4 +29,17 @@
     max-width: 250px;
     padding-bottom: 8px;
   }
+
+  .leave-room-btn {
+    background-color: #02473B;
+    border-radius: 50px;
+    color: #FFFFFF;
+    padding: 1rem 3rem;
+    
+  }
+  
+  .leave-room-btn:hover {
+    background-color: #448E5E;
+    cursor: pointer;
+  }
   

@@ -14,6 +14,7 @@ import ExpenseDialog from "./AddExpenseDialog";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
 import ShortExchange from "./ShortExchange";
+import DisplayRoomates from "../Room/DisplayRoomates";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
@@ -24,7 +25,7 @@ const Expenses = () => {
   const [open, setOpen] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [shortExchangeList, setShortExchangeList] = useState([]);
-
+  const [roomateData, setRoomateData] = useState([]);
   onAuthStateChanged(auth, (currUser) => {
     setUser(currUser);
   });
@@ -36,7 +37,33 @@ const Expenses = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  useEffect(() => {
+    if (user) {
+      callApiGetRoomPageInfo().then((res) => {
+        var parsed = JSON.parse(res.express);
+        // console.log(parsed);
+        setRoomateData(parsed);
+      });
+    }
+  }, [user]);
 
+  const callApiGetRoomPageInfo = async () => {
+    const url = serverURL + "/api/getRoomPageInfo";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        firebaseUID: user.uid,
+      }),
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  };
   useEffect(() => {
     if (user) {
       getExpenseReport();
@@ -120,11 +147,15 @@ const Expenses = () => {
                     Expenses
                   </Typography>
                 </Grid>
-
+                <DisplayRoomates roomateData={roomateData} user={user} />
                 <ShortExchange shortExchangeList={shortExchangeList} />
 
                 <Grid item>
-                  <ExpenseTable open={open} expenses={expenses} getExpenseReport={getExpenseReport} />
+                  <ExpenseTable
+                    open={open}
+                    expenses={expenses}
+                    getExpenseReport={getExpenseReport}
+                  />
                 </Grid>
 
                 <Grid item>
@@ -133,7 +164,6 @@ const Expenses = () => {
                   </Button>
                   <ExpenseDialog open={open} handleClose={handleClose} />
                 </Grid>
-
               </Grid>
             </Box>
           </Paper>

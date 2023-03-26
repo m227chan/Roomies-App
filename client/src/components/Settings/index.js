@@ -10,12 +10,25 @@ import {
   Container,
   Link,
 } from "@material-ui/core";
-
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import history from "../Navigation/history";
 import SideNav from "../CustomAppBar/sideNav";
 
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase/firebase";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#02473B",
+    },
+  },
+  typography: {
+    button: {
+      textTransform: "none",
+    },
+  },
+});
 
 const Settings = (props) => {
   const [user, setUser] = useState({});
@@ -37,38 +50,46 @@ const Settings = (props) => {
       <Grid>
         <SideNav />
       </Grid>
-      <Container class="container">
-        <Paper class="paper">
+      <ThemeProvider theme={theme}>
+        <Container class="container">
           <Box sx={{ flexGrow: 1 }}>
             <Grid
               container
-              spacing={0}
               direction="column"
-              style={{ minHeight: "100vh" }}
-              class="mainMessageContainer"
+              justifyContent="space-evenly"
+              alignItems="stretch"
+              spacing={3}
+              style={{
+                marginTop: "10%",
+                marginLeft: "5%",
+                marginRight: "10%",
+              }}
             >
               <Grid item>
                 <Typography variant={"h3"}>Settings</Typography>
-
-                <Button>
-                  <Link onClick={() => history.push("/JoinCreateRoom")}>
-                    <Typography variant="h6">Leave Room</Typography>
-                  </Link>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  onClick={() => history.push("/JoinCreateRoom")}
+                  class="leave-room-btn"
+                >
+                  <Typography variant="p">Leave Room</Typography>
                 </Button>
-
-                <br />
-
-                <Button>
-                  <Link onClick={onClickLogOut}>
-                    <Typography variant="h6">Sign Out</Typography>
-                  </Link>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  onClick={onClickLogOut}
+                  class="leave-room-btn"
+                >
+                  <Typography variant="p"> Sign Out</Typography>
                 </Button>
-
               </Grid>
             </Grid>
           </Box>
-        </Paper>
-      </Container>
+        </Container>
+      </ThemeProvider>
     </>
   );
 };
