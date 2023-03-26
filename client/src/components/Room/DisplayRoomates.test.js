@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import DisplayRoomates from "./DisplayRoomates";
 import "@testing-library/jest-dom";
 
-describe("DisplayRoomates", () => {
+describe("Testing if display roommates works", () => {
   const roomateData = [
     {
       firstName: "Sun",
