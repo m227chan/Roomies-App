@@ -71,7 +71,7 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
             headerName: 'Item',
             headerAlign: 'left',
             headerClassName: 'tableHeader',
-            flex: 1,
+            flex: 2,
             renderCell: (params) => (
                 <div style={{ fontSize: '18px' }}>
                     {params.value}
@@ -83,7 +83,7 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
             headerName: 'Brand',
             headerAlign: 'left',
             headerClassName: 'tableHeader',
-            flex: 1,
+            flex: 2,
             renderCell: (params) => (
                 <div style={{ fontSize: '18px' }}>
                     {params.value}
@@ -95,7 +95,7 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
             headerName: 'Store',
             headerAlign: 'left',
             headerClassName: 'tableHeader',
-            flex: 1,
+            flex: 2,
             renderCell: (params) => (
                 <div style={{ fontSize: '18px' }}>
                     {params.value}
@@ -118,7 +118,7 @@ const UserGroceryList = ({ userGroceryList, setSubmit }) => {
             headerName: 'Actions',
             headerAlign: 'left',
             headerClassName: 'tableHeader',
-            flex: 2,
+            flex: 3,
             renderCell: (params) => (
                 <>
                     <TextField

@@ -52,6 +52,19 @@ const ExpenseTable = ({ open, expenses, getExpenseReport }) => {
 
   const columns = [
     {
+      field: "tDate",
+      type: "Date",
+      headerName: "Date",
+      headerAlign: "left",
+      headerClassName: "tableHeader",
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ fontSize: "18px" }}>
+          {params.value.substring(0, params.value.indexOf("T"))}
+        </div>
+      ),
+    },
+    {
       field: "Spender",
       headerName: "Payer",
       headerAlign: "left",
@@ -96,22 +109,9 @@ const ExpenseTable = ({ open, expenses, getExpenseReport }) => {
       headerName: "Description",
       headerAlign: "left",
       headerClassName: "tableHeader",
-      flex: 1,
+      flex: 2,
       renderCell: (params) => (
         <div style={{ fontSize: "18px" }}>{params.value}</div>
-      ),
-    },
-    {
-      field: "tDate",
-      type: "Date",
-      headerName: "Date",
-      headerAlign: "left",
-      headerClassName: "tableHeader",
-      flex: 1,
-      renderCell: (params) => (
-        <div style={{ fontSize: "18px" }}>
-          {params.value.substring(0, params.value.indexOf("T"))}
-        </div>
       ),
     },
     {
