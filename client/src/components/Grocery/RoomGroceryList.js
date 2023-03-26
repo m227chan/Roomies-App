@@ -86,7 +86,7 @@ const RoomGroceryList = ({ roomGroceryList, setSubmit, user }) => {
             headerName: 'Item',
             headerAlign: 'left',
             headerClassName: 'tableHeader',
-            flex: 1,
+            flex: 1.5,
             renderCell: (params) => (
                 <div style={{ fontSize: '18px' }}>
                     {params.value}
@@ -98,7 +98,7 @@ const RoomGroceryList = ({ roomGroceryList, setSubmit, user }) => {
             headerName: 'Brand',
             headerAlign: 'left',
             headerClassName: 'tableHeader',
-            flex: 1,
+            flex: 1.5,
             renderCell: (params) => (
                 <div style={{ fontSize: '18px' }}>
                     {params.value}
@@ -108,6 +108,18 @@ const RoomGroceryList = ({ roomGroceryList, setSubmit, user }) => {
         {
             field: 'store',
             headerName: 'Store',
+            headerAlign: 'left',
+            headerClassName: 'tableHeader',
+            flex: 1.5,
+            renderCell: (params) => (
+                <div style={{ fontSize: '18px' }}>
+                    {params.value}
+                </div>
+            ),
+        },
+        {
+            field: 'Quantity',
+            headerName: 'Quantity',
             headerAlign: 'left',
             headerClassName: 'tableHeader',
             flex: 1,
@@ -130,22 +142,10 @@ const RoomGroceryList = ({ roomGroceryList, setSubmit, user }) => {
             ),
         },
         {
-            field: 'Quantity',
-            headerName: 'Quantity',
-            headerAlign: 'left',
-            headerClassName: 'tableHeader',
-            flex: 1,
-            renderCell: (params) => (
-                <div style={{ fontSize: '18px' }}>
-                    {params.value}
-                </div>
-            ),
-        },
-        {
             headerName: 'Actions',
             headerAlign: 'left',
             headerClassName: 'tableHeader',
-            flex: 1,
+            flex: 1.5,
             renderCell: (params) => (
                 <>
                     <Button onClick={() => { onClickPurchase(params.row) }}>Purchase</Button>
