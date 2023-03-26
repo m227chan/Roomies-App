@@ -179,8 +179,8 @@ const NavMenu = () => {
 // Component for the bottom of the Nav
 const NavBottom = () => {
   const onClickLogOut = async () => {
-    await signOut(auth);
     history.push("/SignIn");
+    await signOut(auth);
   };
 
   return (
