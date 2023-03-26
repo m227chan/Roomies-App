@@ -43,7 +43,6 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/user-event": "14.4.3",
-    "babel-jest": "^29.5.0",
     "concurrently": "^4.0.1",
     "cypress": "10.9.0",
     "identity-obj-proxy": "^3.0.0"

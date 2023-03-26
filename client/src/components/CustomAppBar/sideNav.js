@@ -26,9 +26,9 @@ import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 
 // auth
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../Firebase/firebase";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 
+import { auth } from "../Firebase/firebase";
 // Sets the width
 const drawerWidth = 240;
 
@@ -46,7 +46,6 @@ const theme = createTheme({
 
 // Component for the top of the Nav
 const NavProfile = () => {
-
   const [user, setUser] = useState("");
   const [name, setName] = useState("");
   const [letter, setLetter] = useState("");
@@ -57,8 +56,8 @@ const NavProfile = () => {
 
   useEffect(() => {
     if (user) {
-        setName(user.displayName);
-        setLetter(user.displayName[0]);
+      setName(user.displayName);
+      setLetter(user.displayName[0]);
     }
   }, [user]);
 
@@ -179,6 +178,11 @@ const NavMenu = () => {
 };
 // Component for the bottom of the Nav
 const NavBottom = () => {
+  const onClickLogOut = async () => {
+    await signOut(auth);
+    history.push("/SignIn");
+  };
+
   return (
     <Grid item class="navBottom">
       <SettingsIcon
@@ -192,7 +196,7 @@ const NavBottom = () => {
       />
       <Typography sx={{ fontWeight: "bold" }}>|</Typography>
       <LogoutIcon
-        onClick={() => history.push("/Settings")}
+        onClick={onClickLogOut}
         sx={{
           "&:hover": {
             cursor: "pointer",
