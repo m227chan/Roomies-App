@@ -13,17 +13,12 @@ const ShortExchange = ({ roomateData, shortExchangeList }) => {
   const [onHoverAvatar, setOnHoverAvatar] = useState(null);
   const [isHovering, setIsHovering] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
   const avatarStyle = {
     backgroundColor: "#FF8700",
     justifyContent: "center",
     alignItems: "center",
   };
-
-  // const calculateTotal = (roomateID) => {
-  //   return shortExchangeList
-  //   .filter((expense) => expense.id === roomateID)
-  //   .reduce((accumulator, expense) => accumulator + expense.amount, 0);
-  // }
 
   const owedMessage = (amount) => {
     if (amount >= 0) {
