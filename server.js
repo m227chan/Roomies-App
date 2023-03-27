@@ -674,7 +674,7 @@ app.post("/api/viewEvent", (req, res) => {
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
   let viewEventSQL = `
-	SELECT c.id, c.title, c.startdate as start, c.enddate as end, CONCAT(r.firstName, ' ', r.lastName) AS creator
+	SELECT c.id, c.title, c.startdate as start, c.enddate as end, CONCAT(r.firstName, ' ', r.lastName) AS creator, c.allDay
   FROM zzammit.Calendar AS c 
   LEFT JOIN zzammit.Roomate AS r ON c.idRoomate = r.id 
   WHERE c.idRoomate IN (
