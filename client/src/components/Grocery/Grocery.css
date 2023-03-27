@@ -9,9 +9,9 @@
   }
   
   .mainMessageContainer {
-    margin-top: 15vh;
-    margin-left: 10vh;
-    margin-right: 10vh;
+    margin-top: 5vh;
+    margin-left: 5vh;
+    
   }
   
   @media (max-width: 600px) {
@@ -30,3 +30,14 @@
     padding-bottom: 8px;
   }
   
+  .leave-room-btn{
+    background-color: #02473B;
+    border-radius: 50px;
+    color: #FFFFFF;
+    padding: 1rem 3rem;
+  }
+
+  .leave-room-btn:hover {
+    background-color: #448E5E;
+    cursor: pointer;
+  }

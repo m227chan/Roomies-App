@@ -142,27 +142,46 @@ const Expenses = () => {
                 style={{ minHeight: "100vh" }}
                 class="mainMessageContainer"
               >
-                <Grid item>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  item
+                >
                   <Typography variant={"h4"} align="left">
                     Expenses
                   </Typography>
+                  <Button
+                    variant="contained"
+                    onClick={handleClickOpen}
+                    class="leave-room-btn"
+                  >
+                    <Typography variant="p">Add an expense</Typography>
+                  </Button>
                 </Grid>
-
+                <br />
                 <ShortExchange />
-
+                <br />
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="center"
+                  item
+                >
+                  {/* <Button variant="contained" onClick={handleClickOpen}>
+                    Add Expense
+                  </Button> */}
+                  <ExpenseDialog open={open} handleClose={handleClose} />
+                </Grid>
+                <br />
                 <Grid item>
                   <ExpenseTable
                     open={open}
                     expenses={expenses}
                     getExpenseReport={getExpenseReport}
                   />
-                </Grid>
-
-                <Grid item>
-                  <Button variant="contained" onClick={handleClickOpen}>
-                    Add Expense
-                  </Button>
-                  <ExpenseDialog open={open} handleClose={handleClose} />
                 </Grid>
               </Grid>
             </Box>

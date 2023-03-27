@@ -98,35 +98,41 @@ const ShortExchange = () => {
           }}
         >
           <Grid container alignItems="center" justifyContent="space-between">
-            <Grid item>
-              <Box width="100%" p={1}>
-                <Typography variant={"h6"}>
-                  <b>ROOMMATES</b>
-                </Typography>
-              </Box>
-            </Grid>
-          </Grid>
-          <Grid container alignItems="center" justifyContent="space-between">
             {roomateData.map((roomate, index) => (
-              <Grid item key={index}>
+              <Grid key={index}>
                 <Box width="100%" p={2}>
-                  <Avatar
-                    style={avatarStyle}
-                    onMouseEnter={() => {
-                      setIsHovering(true);
-                      setOnHoverAvatar(roomate.id);
-                    }}
-                    onMouseLeave={() => {
-                      setIsHovering(false);
-                      setOnHoverAvatar(null);
-                    }}
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    item
                   >
-                    {roomate.firstName[0]}
-                  </Avatar>
-
-                  <Typography variant={"body1"} align="center">
-                    <b>{roomate.firstName + " " + roomate.lastName}</b>
-                  </Typography>
+                    <Avatar
+                      style={avatarStyle}
+                      onMouseEnter={() => {
+                        setIsHovering(true);
+                        setOnHoverAvatar(roomate.id);
+                      }}
+                      onMouseLeave={() => {
+                        setIsHovering(false);
+                        setOnHoverAvatar(null);
+                      }}
+                    >
+                      {roomate.firstName[0]}
+                    </Avatar>
+                  </Grid>
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    item
+                  >
+                    <Typography variant={"body1"} align="center">
+                      <b>{roomate.firstName + " " + roomate.lastName}</b>
+                    </Typography>
+                  </Grid>
                 </Box>
               </Grid>
             ))}
