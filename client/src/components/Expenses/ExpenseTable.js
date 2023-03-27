@@ -8,14 +8,18 @@ import { Paper, Card, Button } from "@material-ui/core";
 const serverURL = "http://localhost:3000/"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
-const ExpenseTable = ({ open, expenses, getExpenseReport }) => {
+const ExpenseTable = ({ open, expenses, getExpenseReport, getShortExchange, getRoomPageInfo }) => {
   const [currExpense, setCurrExpense] = useState({});
   const [openEdit, setOpenEdit] = useState(false);
+
+  // console.log(currExpense);
 
   const handleCloseEdit = () => {
     setOpenEdit(false);
     setTimeout(() => {
       getExpenseReport();
+      getShortExchange();
+      getRoomPageInfo();
     }, 500);
   };
 
@@ -28,6 +32,8 @@ const ExpenseTable = ({ open, expenses, getExpenseReport }) => {
     callAPIDeleteExpense(expense.id);
     setTimeout(() => {
       getExpenseReport();
+      getShortExchange();
+      getRoomPageInfo();
     }, 500);
   };
 
