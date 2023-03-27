@@ -28,31 +28,43 @@ const DisplayRoomates = ({ roomateData, user }) => {
 
   return (
     <div>
-      <Card class="card">
+      <Card class="roommates-display">
         <CardContent>
           <Grid container alignItems="center" justifyContent="space-between">
             <Grid item>
               <Box width="100%" p={1}>
                 <Typography variant={"h6"}>
-                  <b>ROOMMATES</b>
+                  <b>Roommates</b>
                 </Typography>
               </Box>
             </Grid>
-          </Grid>
-          <Grid container alignItems="center" justifyContent="space-between">
-            {roomateData
-              .filter((roomate) => roomate !== row)
-              .map((roomate, index) => (
-                <Grid item key={index}>
-                  <Box width="100%" p={2}>
-                    <Avatar style={avatarStyle}>{roomate.firstName[0]}</Avatar>
+            <Grid
+              item
+              container
+              alignItems="center"
+              justifyContent="space-between"
+              style={{
+                backgroundColor: "#EAEAEA",
+                borderRadius: "10px",
+                padding: "1rem",
+              }}
+            >
+              {roomateData
+                .filter((roomate) => roomate !== row)
+                .map((roomate, index) => (
+                  <Grid item key={index}>
+                    <Box width="100%" p={2}>
+                      <Avatar style={avatarStyle}>
+                        {roomate.firstName[0]}
+                      </Avatar>
 
-                    <Typography variant={"body1"} align="center">
-                      <b>{roomate.firstName + " " + roomate.lastName}</b>
-                    </Typography>
-                  </Box>
-                </Grid>
-              ))}
+                      <Typography variant={"body1"} align="center">
+                        <b>{roomate.firstName + " " + roomate.lastName}</b>
+                      </Typography>
+                    </Box>
+                  </Grid>
+                ))}
+            </Grid>
           </Grid>
         </CardContent>
       </Card>

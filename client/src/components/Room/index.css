@@ -19,7 +19,8 @@
 }
 
 .card {
-  background-color: var(--color-bg-variant);
+  background-color: #EAEAEA;
+  color: var(--color-primary);
   border-radius: 10px;
 }
 
@@ -34,17 +35,28 @@
 }
 
 .calendar-card {
-  background-color: var(--color-bg);
+  background-color: var(--color-bg-variant);
   border-radius: 10px;
 }
 
 .grocery-card {
-  background-color: var(--color-bg);
+  background-color: var(--color-bg-variant);
   border-radius: 10px;
+  
 }
 
 .wallet-card {
-  background-color: var(--color-bg);
+  background-color: var(--color-bg-variant);
+  color: var(--color-primary);
+  border-radius: 10px;
+}
+.roommates-display{
+  color: var(--color-primary);
+  border-radius: 10px;
+}
+.avatar-card{
+  background-color: #EAEAEA;
+  color: var(--color-primary);
   border-radius: 10px;
 }
 
