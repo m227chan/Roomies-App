@@ -49,7 +49,7 @@ describe('WelcomeMessage', () => {
             'Hello, Bob Boberson!'
         )).toBeInTheDocument();
         expect(screen.getByText(
-            'Welcome to test!'
+            'Welcome to test'
         )).toBeInTheDocument();
         expect(screen.getByText(
             'The Room ID for test is 10.'

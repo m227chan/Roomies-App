@@ -34,7 +34,7 @@ describe("Testing if display roommates works", () => {
 
   it("displays roommates except for the current user", () => {
     renderComponent();
-    expect(screen.getByText("ROOMMATES")).toBeInTheDocument();
+    expect(screen.getByText("Roommates")).toBeInTheDocument();
     expect(screen.getByText("Matt Chan")).toBeInTheDocument();
     expect(screen.getByText("Max Horbik")).toBeInTheDocument();
     expect(screen.queryByText("Sun Thapa")).not.toBeInTheDocument();
