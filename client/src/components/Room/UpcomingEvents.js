@@ -13,7 +13,7 @@ const UpcomingEvents = ({ upcomingEvents }) => {
       const startMonth = start.toLocaleString("default", { month: "short" });
       const endMonth = end.toLocaleString("default", { month: "short" });
       const startDateStr = `${startMonth}. ${start.getDate()}th, ${start.getFullYear()}`;
-      const endDateStr = `${endMonth}. ${end.getDate()}th, ${end.getFullYear()}`;
+      const endDateStr = `${endMonth}. ${end.getDate()-1}th, ${end.getFullYear()}`;
       return `${startDateStr} - ${endDateStr}`;
     } else {
       const startStr = `${start.toLocaleString("default", {

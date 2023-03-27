@@ -24,8 +24,6 @@ const DisplayRoomates = ({ roomateData, user }) => {
     row = roomateData[index];
   }
 
-  console.log(roomateData);
-
   return (
     <div>
       <Card class="roommates-display">

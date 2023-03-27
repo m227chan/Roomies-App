@@ -30,6 +30,8 @@ const AddEventDialog = ({ open, handleClose, selected, user, creator }) => {
                 creator,
             });
 
+            console.log(selected.endStr);
+
             callAPIAddEvent(
                 title,
                 selected.startStr,
