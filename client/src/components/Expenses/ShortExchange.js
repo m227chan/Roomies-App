@@ -21,7 +21,6 @@ const ShortExchange = () => {
   const [onHoverAvatar, setOnHoverAvatar] = useState(null);
   const [isHovering, setIsHovering] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const sumArray = [];
   const avatarStyle = {
     backgroundColor: "#FF8700",
     justifyContent: "center",
