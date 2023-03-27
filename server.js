@@ -535,19 +535,19 @@ app.post("/api/shortExchange", (req, res) => {
   let shortExchangeSQL = `
   SET @roomie := (Select id from zzammit.Roomate where firebaseUID = (?)); 
 
-	SELECT Rm8.id, CONCAT(CONCAT(Rm8.firstName, ' ', Rm8.lastName), ' pays ', CONCAT(Roomate.firstName, ' ', Roomate.lastName), ' $', MIN(amount)) AS transaction
-	FROM zzammit.Expenses
-	LEFT JOIN zzammit.Roomate on Expenses.idSpender = Roomate.id
-    LEFT JOIN zzammit.Roomate AS Rm8 on Expenses.idDebtor = Rm8.id
-    JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM zzammit.Expenses UNION SELECT idSpender AS id FROM zzammit.Expenses) AS allID JOIN zzammit.Roomate ON allID.id1 = zzammit.Roomate.id) AS debtor ON Expenses.idDebtor = debtor.id1
-	JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM zzammit.Expenses UNION SELECT idSpender AS id FROM zzammit.Expenses) AS allID JOIN zzammit.Roomate ON allID.id1 = zzammit.Roomate.id) AS spender ON Expenses.idSpender = spender.id1
+  SELECT Rm8.id, SUM(amount) as amount, CONCAT(CONCAT(Rm8.firstName, ' ', Rm8.lastName), ' pays ', CONCAT(Roomate.firstName, ' ', Roomate.lastName), ' $', SUM(amount)) AS transaction
+  FROM zzammit.Expenses
+  LEFT JOIN zzammit.Roomate on Expenses.idSpender = Roomate.id
+  LEFT JOIN zzammit.Roomate AS Rm8 on Expenses.idDebtor = Rm8.id
+  JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM zzammit.Expenses UNION SELECT idSpender AS id FROM zzammit.Expenses) AS allID JOIN zzammit.Roomate ON allID.id1 = zzammit.Roomate.id) AS debtor ON Expenses.idDebtor = debtor.id1
+  JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM zzammit.Expenses UNION SELECT idSpender AS id FROM zzammit.Expenses) AS allID JOIN zzammit.Roomate ON allID.id1 = zzammit.Roomate.id) AS spender ON Expenses.idSpender = spender.id1
 
-	WHERE (debtor.id1 != spender.id1) AND debtor.id1 IN 
-  			(SELECT id FROM zzammit.Roomate WHERE idRoom = 
-  				(SELECT idRoom FROM zzammit.Roomate WHERE id = @roomie))
-	GROUP BY debtor.id1, spender.id1, Roomate.firstname, Roomate.lastname, Rm8.firstname, Rm8.lastname
-	HAVING SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END) <> 0
-	ORDER BY SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END);
+  WHERE (debtor.id1 != spender.id1) AND debtor.id1 IN 
+            (SELECT id FROM zzammit.Roomate WHERE idRoom = 
+                (SELECT idRoom FROM zzammit.Roomate WHERE id = @roomie))
+  GROUP BY debtor.id1, spender.id1, Roomate.firstname, Roomate.lastname, Rm8.firstname, Rm8.lastname
+  HAVING SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END) <> 0
+  ORDER BY SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END);
 	`;
   let shortExchangeData = [req.body.firebaseUID];
 

@@ -26,6 +26,7 @@ const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
   const [shortExchangeList, setShortExchangeList] = useState([]);
   const [roomateData, setRoomateData] = useState([]);
+
   onAuthStateChanged(auth, (currUser) => {
     setUser(currUser);
   });
@@ -37,37 +38,12 @@ const Expenses = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  useEffect(() => {
-    if (user) {
-      callApiGetRoomPageInfo().then((res) => {
-        var parsed = JSON.parse(res.express);
-        // console.log(parsed);
-        setRoomateData(parsed);
-      });
-    }
-  }, [user]);
 
-  const callApiGetRoomPageInfo = async () => {
-    const url = serverURL + "/api/getRoomPageInfo";
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        //authorization: `Bearer ${this.state.token}`
-      },
-      body: JSON.stringify({
-        firebaseUID: user.uid,
-      }),
-    });
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    // console.log("User settings: ", body);
-    return body;
-  };
   useEffect(() => {
     if (user) {
       getExpenseReport();
       getShortExchange();
+      getRoomPageInfo();
     } else {
       onAuthStateChanged(auth, (currUser) => {
         setUser(currUser);
@@ -85,7 +61,15 @@ const Expenses = () => {
   const getShortExchange = () => {
     callAPIShortExchange().then((res) => {
       var parsed = JSON.parse(res.express);
+      console.log(parsed[1]);
       setShortExchangeList(parsed[1]);
+    });
+  };
+
+  const getRoomPageInfo = () => {
+    callApiGetRoomPageInfo().then((res) => {
+      var parsed = JSON.parse(res.express);
+      setRoomateData(parsed);
     });
   };
 
@@ -127,6 +111,24 @@ const Expenses = () => {
     return body;
   };
 
+  const callApiGetRoomPageInfo = async () => {
+    const url = serverURL + "/api/getRoomPageInfo";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        firebaseUID: user.uid,
+      }),
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    // console.log("User settings: ", body);
+    return body;
+  };
+
   return (
     <>
       <Grid>
@@ -148,13 +150,18 @@ const Expenses = () => {
                   </Typography>
                 </Grid>
 
-                <ShortExchange />
+                <ShortExchange
+                  roomateData={roomateData}
+                  shortExchangeList={shortExchangeList}
+                />
 
                 <Grid item>
                   <ExpenseTable
                     open={open}
                     expenses={expenses}
                     getExpenseReport={getExpenseReport}
+                    getShortExchange={getShortExchange}
+                    getRoomPageInfo={getRoomPageInfo}
                   />
                 </Grid>
 
