@@ -29,11 +29,4 @@
     max-width: 250px;
     padding-bottom: 8px;
   }
-
-  .avatar {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
   
