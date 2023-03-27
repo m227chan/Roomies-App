@@ -106,23 +106,35 @@ const Grocery = () => {
           <Box sx={{ flexGrow: 1 }}>
             <Grid
               container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
               spacing={3}
               columns={16}
-              justifyContent="center"
-              style={{ minHeight: "100vh" }}
-              className="mainMessageContainer"
+              style={{ minHeight: "100vh", marginTop: "10vh" }}
             >
               <Grid item xs={6} md={7.5}>
-                <Typography variant={"h3"}>My Grocery Items</Typography>
-
+                <Grid
+                  item
+                  container
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Typography variant={"h4"}>My Grocery Items</Typography>
+                  <Button
+                    variant="contained"
+                    onClick={handleClickOpen}
+                    class="leave-room-btn"
+                  >
+                    <Typography variant="p">Add grocery item</Typography>
+                  </Button>
+                </Grid>
+                <br />
                 <UserGroceryList
                   userGroceryList={userGroceryList}
                   setSubmit={setSubmit}
                 />
-
-                <Button variant="contained" onClick={handleClickOpen}>
-                  Add Grocery Item
-                </Button>
 
                 <AddGroceryItemDialog
                   user={user}
@@ -133,8 +145,8 @@ const Grocery = () => {
               </Grid>
 
               <Grid item xs={6} md={7.5}>
-                <Typography variant={"h3"}>Room Grocery List</Typography>
-
+                <Typography variant={"h4"}>Room Grocery List</Typography>
+                <br />
                 <RoomGroceryList
                   user={user}
                   roomGroceryList={roomGroceryList}

@@ -54,13 +54,28 @@ const DisplayRoomates = ({ roomateData, user }) => {
                 .map((roomate, index) => (
                   <Grid item key={index}>
                     <Box width="100%" p={2}>
-                      <Avatar style={avatarStyle}>
-                        {roomate.firstName[0]}
-                      </Avatar>
-
-                      <Typography variant={"body1"} align="center">
-                        <b>{roomate.firstName + " " + roomate.lastName}</b>
-                      </Typography>
+                      <Grid
+                        item
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Avatar style={avatarStyle}>
+                          {roomate.firstName[0]}
+                        </Avatar>
+                      </Grid>
+                      <Grid
+                        item
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Typography variant={"body1"} align="center">
+                          <b>{roomate.firstName + " " + roomate.lastName}</b>
+                        </Typography>
+                      </Grid>
                     </Box>
                   </Grid>
                 ))}

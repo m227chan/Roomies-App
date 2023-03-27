@@ -13,7 +13,7 @@ const ShortExchange = ({ roomateData, shortExchangeList }) => {
   const [onHoverAvatar, setOnHoverAvatar] = useState(null);
   const [isHovering, setIsHovering] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
+
   const avatarStyle = {
     backgroundColor: "#FF8700",
     justifyContent: "center",
@@ -26,7 +26,7 @@ const ShortExchange = ({ roomateData, shortExchangeList }) => {
     } else {
       return "is owed a cum. total of $" + amount * -1;
     }
-  }
+  };
 
   return (
     <div>
@@ -37,37 +37,43 @@ const ShortExchange = ({ roomateData, shortExchangeList }) => {
           }}
         >
           <Grid container alignItems="center" justifyContent="space-between">
-            <Grid item>
-              <Box width="100%" p={1}>
-                <Typography variant={"h6"}>
-                  <b>ROOMMATES</b>
-                </Typography>
-              </Box>
-            </Grid>
-          </Grid>
-          <Grid container alignItems="center" justifyContent="space-between">
             {roomateData.map((roomate, index) => (
-              <Grid item key={index}>
+              <Grid key={index}>
                 <Box width="100%" p={2}>
-                  <Avatar
-                    style={avatarStyle}
-                    onMouseEnter={() => {
-                      setIsHovering(true);
-                      setOnHoverAvatar(roomate.id);
-                    }}
-                    onMouseLeave={() => {
-                      setIsHovering(false);
-                      setOnHoverAvatar(null);
-                    }}
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    item
                   >
-                    {roomate.firstName[0]}
-                  </Avatar>
+                    <Avatar
+                      style={avatarStyle}
+                      onMouseEnter={() => {
+                        setIsHovering(true);
+                        setOnHoverAvatar(roomate.id);
+                      }}
+                      onMouseLeave={() => {
+                        setIsHovering(false);
+                        setOnHoverAvatar(null);
+                      }}
+                    >
+                      {roomate.firstName[0]}
+                    </Avatar>
+                  </Grid>
+                  <Grid
+                    container
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    item
+                  >
+                    <Typography variant={"body1"} align="center">
+                      <b>{roomate.firstName + " " + roomate.lastName}</b>
+                    </Typography>
 
-                  <Typography variant={"body1"} align="center">
-                    <b>{roomate.firstName + " " + roomate.lastName}</b>
-                  </Typography>
-
-                  <Typography>{owedMessage(roomate.owed)}</Typography>
+                    <Typography>{owedMessage(roomate.owed)}</Typography>
+                  </Grid>
                 </Box>
               </Grid>
             ))}
