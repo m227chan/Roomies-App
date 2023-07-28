@@ -1,9 +1,8 @@
-
 let config = {
-  host    : 'ec2-18-216-101-119.us-east-2.compute.amazonaws.com',
-  user    : 'm227chan',
-  password: 'u472h46a',
-  database: 'zzammit',
+  host    : process.env.DB_HOST,
+  user    : process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
   multipleStatements: true
 };
 
