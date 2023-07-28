@@ -11,6 +11,7 @@ const firebaseConfig = {
   appId: process.env.FB_APPID,
   measurementId: process.env.FB_MEASUREMENTID,
 };
+// test
 
 const app = initializeApp(firebaseConfig);
 
