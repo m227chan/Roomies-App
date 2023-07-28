@@ -8,7 +8,7 @@ import {
     TextField,
 } from "@mui/material";
 
-const serverURL = "http://localhost:3000/"; //enable for dev mode
+const serverURL = "https://roomies-app.netlify.app/"; //enable for dev mode
 
 const AddEventDialog = ({ open, handleClose, selected, user, creator }) => {
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { ProSidebarProvider } from "react-pro-sidebar";
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Route, Link } from "react-router-dom";
 
 import Landing from "../Landing";
 import PrivateRoute from "../Navigation/PrivateRoute.js";

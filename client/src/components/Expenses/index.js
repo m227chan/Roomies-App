@@ -16,7 +16,7 @@ import { auth } from "../Firebase/firebase";
 import ShortExchange from "./ShortExchange";
 import DisplayRoomates from "../Room/DisplayRoomates";
 
-const serverURL = "http://localhost:3000/"; //enable for dev mode
+const serverURL = "https://roomies-app.netlify.app/"; //enable for dev mode
 
 // Expenses component
 const Expenses = () => {

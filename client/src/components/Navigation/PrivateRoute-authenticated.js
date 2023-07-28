@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, Switch, Route } from "react-router-dom";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import SignInForm from '../SignIn';
 import SignUpPage from '../SignUp';
 import LandingPage from '../Landing';
