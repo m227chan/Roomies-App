@@ -5,5 +5,5 @@ let config = {
   database: process.env.DB_DATABASE,
   multipleStatements: true
 };
-
+//test
 module.exports = config;
