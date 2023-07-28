@@ -6,4 +6,4 @@ let config = {
   multipleStatements: true
 };
 
-\module.exports = config;
+module.exports = config;
