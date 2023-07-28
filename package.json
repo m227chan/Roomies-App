@@ -5,7 +5,8 @@
     "client": "cd client && yarn start",
     "server": "nodemon server.js",
     "cypress": "cypress open",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "buildClient": "cd client && npm install && npm run build"
   },
   "dependencies": {
     "@devexpress/dx-react-chart": "^4.0.3",
