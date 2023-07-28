@@ -17,7 +17,6 @@ import ShortExchange from "./ShortExchange";
 import DisplayRoomates from "../Room/DisplayRoomates";
 
 const serverURL = "http://localhost:3000/"; //enable for dev mode
-// const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
 // Expenses component
 const Expenses = () => {
