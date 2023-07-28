@@ -5,33 +5,78 @@ import history from "../Navigation/history";
 const UpcomingEvents = ({ upcomingEvents }) => {
   // console.log(upcomingEvents);
 
+  // const formatDate = (startDate, endDate, allDay) => {
+  //   const start = new Date(startDate);
+  //   const end = new Date(endDate);
+
+  //   if (allDay) {
+  //     const startMonth = start.toLocaleString("default", { month: "short" });
+  //     const endMonth = end.toLocaleString("default", { month: "short" });
+  //     const startDateStr = `${startMonth}. ${start.getDate()}th, ${start.getFullYear()}`;
+  //     const endDateStr = `${endMonth}. ${end.getDate() - 1}th, ${end.getFullYear()}`;
+  //     return `${startDateStr} - ${endDateStr}`;
+  //   } else {
+  //     const startStr = `${start.toLocaleString("default", {
+  //       month: "short",
+  //     })}. ${start.getDate()}th, ${start.getFullYear()}`;
+  //     const startTimeStr = start.toLocaleString("en-US", {
+  //       hour: "numeric",
+  //       minute: "numeric",
+  //       hour12: true,
+  //     });
+  //     const endTimeStr = end.toLocaleString("en-US", {
+  //       hour: "numeric",
+  //       minute: "numeric",
+  //       hour12: true,
+  //     });
+  //     return `${startStr}; ${startTimeStr} - ${endTimeStr}`;
+  //   }
+  // };
+
   const formatDate = (startDate, endDate, allDay) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
     if (allDay) {
+      const endAdjusted = new Date(end);
+      endAdjusted.setDate(endAdjusted.getDate() - 1);
+
+      if (endAdjusted.getDate() === 0) {
+        endAdjusted.setMonth(endAdjusted.getMonth() - 1);
+        const month = endAdjusted.toLocaleString("default", { month: "short" });
+        const day = new Date(endAdjusted.getFullYear(), endAdjusted.getMonth() + 1, 0).getDate();
+        const year = endAdjusted.getFullYear();
+        return `${start.toLocaleString("default", { month: "short" })}. ${start.getDate()}th, ${start.getFullYear()} - ${month}. ${day}th, ${year}`;
+      }
+
       const startMonth = start.toLocaleString("default", { month: "short" });
-      const endMonth = end.toLocaleString("default", { month: "short" });
+      const endMonth = endAdjusted.toLocaleString("default", { month: "short" });
       const startDateStr = `${startMonth}. ${start.getDate()}th, ${start.getFullYear()}`;
-      const endDateStr = `${endMonth}. ${end.getDate()-1}th, ${end.getFullYear()}`;
+      const endDateStr = `${endMonth}. ${endAdjusted.getDate()}th, ${endAdjusted.getFullYear()}`;
+
       return `${startDateStr} - ${endDateStr}`;
     } else {
+
       const startStr = `${start.toLocaleString("default", {
         month: "short",
       })}. ${start.getDate()}th, ${start.getFullYear()}`;
+
       const startTimeStr = start.toLocaleString("en-US", {
         hour: "numeric",
         minute: "numeric",
         hour12: true,
       });
+
       const endTimeStr = end.toLocaleString("en-US", {
         hour: "numeric",
         minute: "numeric",
         hour12: true,
       });
+
       return `${startStr}; ${startTimeStr} - ${endTimeStr}`;
     }
   };
+
 
   return (
     <div>

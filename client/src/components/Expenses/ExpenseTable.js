@@ -71,8 +71,8 @@ const ExpenseTable = ({ open, expenses, getExpenseReport, getShortExchange, getR
       ),
     },
     {
-      field: "Spender",
-      headerName: "Payer",
+      field: "Debtor",
+      headerName: "Payee",
       headerAlign: "left",
       headerClassName: "tableHeader",
       flex: 1,
@@ -81,8 +81,8 @@ const ExpenseTable = ({ open, expenses, getExpenseReport, getShortExchange, getR
       ),
     },
     {
-      field: "Debtor",
-      headerName: "Payee",
+      field: "Spender",
+      headerName: "Payer",
       headerAlign: "left",
       headerClassName: "tableHeader",
       flex: 1,

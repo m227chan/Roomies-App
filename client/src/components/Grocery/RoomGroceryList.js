@@ -134,7 +134,7 @@ const RoomGroceryList = ({ roomGroceryList, setSubmit, user }) => {
             headerName: 'Price Per Item',
             headerAlign: 'left',
             headerClassName: 'tableHeader',
-            flex: 1,
+            flex: 1.2,
             renderCell: (params) => (
                 <div style={{ fontSize: '18px' }}>
                     {params.value}
