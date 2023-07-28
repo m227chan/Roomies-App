@@ -39,7 +39,7 @@ const AddGroceryItemDialog = ({ user, setSubmit, open, handleClose }) => {
         setSubmitDialogClicked(true);
 
         if (item != "" && brand != "" && store != "" && price > 0) {
-            console.log(user);
+            // console.log(user);
             setSubmit(true);
             callApiAddGroceryItem();
             handleClose();
@@ -135,8 +135,8 @@ const AddGroceryItemDialog = ({ user, setSubmit, open, handleClose }) => {
                         setPrice(event.target.value)
                         setClick(true)
                     }}
-                    error={price <= 0 && click === true}
-                    helperText={(price <= 0 && click === true) ?
+                    error={price <= 0 && submitDialogClicked === true}
+                    helperText={(price <= 0 && submitDialogClicked === true) ?
                         "Please enter a valid price." : ""}
                 />
 
