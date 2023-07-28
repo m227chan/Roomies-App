@@ -3,14 +3,14 @@ import { getAuth } from "firebase/auth";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: `${process.env.FB_APIKEY}`,
-  authDomain: `${process.env.FB_AUTHDOMAIN}`,
-  databaseURL: `${process.env.FB_DATABASEURL}`,
-  projectId: `${process.env.FB_PROJECTID}`,
-  storageBucket: `${process.env.FB_STORAGEBUCKET}`,
-  messagingSenderId: `${process.env.FB_MESSAGINGSENDERID}`,
-  appId: `${process.env.FB_APPID}`,
-  measurementId: `${process.env.FB_MEASUREMENTID}`,
+  apiKey: `${process.env.REACT_APP_FB_APIKEY}`,
+  authDomain: `${process.env.REACT_APP_FB_AUTHDOMAIN}`,
+  databaseURL: `${process.env.REACT_APP_FB_DATABASEURL}`,
+  projectId: `${process.env.REACT_APP_FB_PROJECTID}`,
+  storageBucket: `${process.env.REACT_APP_FB_STORAGEBUCKET}`,
+  messagingSenderId: `${process.env.REACT_APP_FB_MESSAGINGSENDERID}`,
+  appId: `${process.env.REACT_APP_FB_APPID}`,
+  measurementId: `${process.env.REACT_APP_FB_MEASUREMENTID}`,
 };
 
 console.log(firebaseConfig.apiKey)
