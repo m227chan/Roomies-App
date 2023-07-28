@@ -3,14 +3,17 @@ import { getAuth } from "firebase/auth";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCHLDSAi7OsHcpGfJ_uU_RZgZK_-1352XU",
-  authDomain: "roomiesapp-fb750.firebaseapp.com",
-  projectId: "roomiesapp-fb750",
-  storageBucket: "roomiesapp-fb750.appspot.com",
-  messagingSenderId: "721855547947",
-  appId: "1:721855547947:web:5f9e61fe07a4417332f86e",
-  measurementId: "G-R373J2JX0D"
+  apiKey: `${process.env.REACT_APP_FB_APIKEY}`,
+  authDomain: `${process.env.REACT_APP_FB_AUTHDOMAIN}`,
+  databaseURL: `${process.env.REACT_APP_FB_DATABASEURL}`,
+  projectId: `${process.env.REACT_APP_FB_PROJECTID}`,
+  storageBucket: `${process.env.REACT_APP_FB_STORAGEBUCKET}`,
+  messagingSenderId: `${process.env.REACT_APP_FB_MESSAGINGSENDERID}`,
+  appId: `${process.env.REACT_APP_FB_APPID}`,
+  measurementId: `${process.env.REACT_APP_FB_MEASUREMENTID}`,
 };
+
+console.log(firebaseConfig.apiKey)
 
 const app = initializeApp(firebaseConfig);
 
