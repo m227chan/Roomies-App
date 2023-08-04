@@ -3,10 +3,14 @@ const fetch = require("node-fetch");
 const express = require("express");
 const cors = require("cors");
 const serverless = require('serverless-http')
+const bodyParser = require("body-parser");
 const { response } = require("express");
 const app = express();
 const router = express.Router();
 router.use(cors());
+
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 let config = {
   host    : `${process.env.DB_HOST}`,
