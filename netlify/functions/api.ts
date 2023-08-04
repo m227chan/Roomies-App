@@ -240,7 +240,7 @@ router.post("/addUser", (req, res) => {
     req.body.firebaseUID,
   ];
 
-  // console.log(req.body);
+  console.log(req.body);
 
   connection.query(addUserSQL, addUserData, (error, results, fields) => {
     if (error) {
