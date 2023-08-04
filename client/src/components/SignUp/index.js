@@ -48,7 +48,6 @@ const SignUp = ({ history }) => {
   const [message, setMessage] = useState("");
 
   const onSubmit = async () => {
-    // console.log("email: " + email + " | " + "password: " + password);
     setSubmitClicked(true);
     try {
       setMessage("");
