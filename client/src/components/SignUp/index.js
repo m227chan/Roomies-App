@@ -22,7 +22,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 
-const serverURL = "https://roomies-app.netlify.app/"; //enable for dev mode
+const serverURL = "https://roomies-app.netlify.app"; //enable for dev mode
 
 const theme = createTheme({
   palette: {
