@@ -5,17 +5,18 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const bodyParser = require("body-parser");
-
+const serverless = require('serverless-http')
 const { response } = require("express");
-const app = express.Router();
+const app = express;
+const router = express.Router();
 const port = process.env.PORT || 5000;
-app.use(cors());
-app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+router.use(cors());
+// app.use(bodyParser.json({ limit: "50mb" }));
+// app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
-app.use('/', express.static(path.join(__dirname, "client/build/")));
+// app.use('/', express.static(path.join(__dirname, "client/build/")));
 
-app.post("/api/loadUserSettings", (req, res) => {
+router.post("/api/loadUserSettings", (req, res) => {
   let connection = mysql.createConnection(config);
   let userID = req.body.userID;
 
@@ -36,7 +37,7 @@ app.post("/api/loadUserSettings", (req, res) => {
   connection.end();
 });
 
-app.post("/api/addRoom", (req, res) => {
+router.post("/api/addRoom", (req, res) => {
   let connection = mysql.createConnection(config);
   let addRoomSQL = `INSERT INTO roomies_db.Room (roomName) VALUES (?)`;
   let addRoomData = [req.body.roomName];
@@ -55,7 +56,7 @@ app.post("/api/addRoom", (req, res) => {
   connection.end();
 });
 
-app.post("/api/addGroceryItem", (req, res) => {
+router.post("/api/addGroceryItem", (req, res) => {
   let connection = mysql.createConnection(config);
   let sql = `INSERT INTO roomies_db.GroceryItem (item, brand, store, price, idRoomate) VALUES (?,?,?,?,(SELECT id from roomies_db.Roomate WHERE firebaseUID = ?));`;
   let data = [
@@ -80,7 +81,7 @@ app.post("/api/addGroceryItem", (req, res) => {
   connection.end();
 });
 
-app.post("/api/addGrocery", (req, res) => {
+router.post("/api/addGrocery", (req, res) => {
   let connection = mysql.createConnection(config);
   let sql = `INSERT INTO roomies_db.Grocery (idRoomate, idGroceryItem, Quantity, tDate) VALUES (?,?,?,NOW())`;
   let data = [req.body.idRoomate, req.body.idGroceryItem, req.body.Quantity];
@@ -99,7 +100,7 @@ app.post("/api/addGrocery", (req, res) => {
   connection.end();
 });
 
-app.post("/api/viewGrocery", (req, res) => {
+router.post("/api/viewGrocery", (req, res) => {
   let connection = mysql.createConnection(config);
   let sql = `
 		SELECT id, item, brand, store, price, idRoomate
@@ -121,7 +122,7 @@ app.post("/api/viewGrocery", (req, res) => {
   connection.end();
 });
 
-app.post("/api/viewGroupGrocery", (req, res) => {
+router.post("/api/viewGroupGrocery", (req, res) => {
   let connection = mysql.createConnection(config);
   let sql = `
 		SELECT Grocery.id, GroceryItem.item, GroceryItem.brand, GroceryItem.store, GroceryItem.price, GroceryItem.idRoomate, Grocery.Quantity
@@ -153,7 +154,7 @@ app.post("/api/viewGroupGrocery", (req, res) => {
   connection.end();
 });
 
-app.post("/api/deleteGroceryItem", (req, res) => {
+router.post("/api/deleteGroceryItem", (req, res) => {
   let connection = mysql.createConnection(config);
   let sql = `DELETE FROM roomies_db.GroceryItem WHERE id = ?;`;
   let data = [req.body.id];
@@ -172,7 +173,7 @@ app.post("/api/deleteGroceryItem", (req, res) => {
   connection.end();
 });
 
-app.post("/api/deleteGrocery", (req, res) => {
+router.post("/api/deleteGrocery", (req, res) => {
   let connection = mysql.createConnection(config);
   let sql = `Delete from roomies_db.Grocery 
 		where id = ?; `;
@@ -192,7 +193,7 @@ app.post("/api/deleteGrocery", (req, res) => {
   connection.end();
 });
 
-app.post("/api/addUserToNewRoom", (req, res) => {
+router.post("/api/addUserToNewRoom", (req, res) => {
   let connection = mysql.createConnection(config);
   let addRoomSQL = `UPDATE roomies_db.Roomate SET idRoom = (SELECT MAX(id) FROM roomies_db.Room) WHERE firebaseUID = (?)`;
   let addRoomData = [req.body.firebaseUID];
@@ -211,7 +212,7 @@ app.post("/api/addUserToNewRoom", (req, res) => {
   connection.end();
 });
 
-app.post("/api/addUserToExistingRoom", (req, res) => {
+router.post("/api/addUserToExistingRoom", (req, res) => {
   let connection = mysql.createConnection(config);
   let addRoomSQL = `UPDATE roomies_db.Roomate SET idRoom = (?) WHERE firebaseUID = (?)`;
   let iaddRoomData = [req.body.idRoom, req.body.firebaseUID];
@@ -230,7 +231,7 @@ app.post("/api/addUserToExistingRoom", (req, res) => {
   connection.end();
 });
 
-app.post("/api/addUser", (req, res) => {
+router.post("/api/addUser", (req, res) => {
   let connection = mysql.createConnection(config);
   let addUserSQL = `INSERT INTO roomies_db.Roomate (idRoom, firstName, lastName, firebaseUID, owed) VALUES (-1, ?, ?, ?, 0)`;
   let addUserData = [
@@ -253,7 +254,7 @@ app.post("/api/addUser", (req, res) => {
   connection.end();
 });
 
-app.post("/api/checkIfRoomExists", (req, res) => {
+router.post("/api/checkIfRoomExists", (req, res) => {
   let connection = mysql.createConnection(config);
   let checkIfRoomExistsSQL = `SELECT CAST((EXISTS (SELECT id FROM roomies_db.Room WHERE id = ? AND (SELECT COUNT(idRoom) FROM roomies_db.Roomate WHERE idRoom = ?) < 5)) AS UNSIGNED) AS value`;
   let checkIfRoomExistsData = [req.body.idRoom, req.body.idRoom];
@@ -278,7 +279,7 @@ app.post("/api/checkIfRoomExists", (req, res) => {
 
 //Expenses APIs
 
-app.post("/api/getOwedSummary", (req, res) => {
+router.post("/api/getOwedSummary", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: Firebase ID
   //Output: Total amount user is owed
@@ -303,7 +304,7 @@ app.post("/api/getOwedSummary", (req, res) => {
   connection.end();
 });
 
-app.post("/api/getOwedByPerson", (req, res) => {
+router.post("/api/getOwedByPerson", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: Firebase ID
   //Output: Table of summarized expenses
@@ -341,7 +342,7 @@ app.post("/api/getOwedByPerson", (req, res) => {
   connection.end();
 });
 
-app.post("/api/getExpenseReport", (req, res) => {
+router.post("/api/getExpenseReport", (req, res) => {
   let connection = mysql.createConnection(config);
   //8 Inputs: (Firebase ID,
   //			Whether or not you only want to look at the user's tracactions(Boolean: True = just user, False = everything))
@@ -383,7 +384,7 @@ app.post("/api/getExpenseReport", (req, res) => {
   connection.end();
 });
 
-app.post("/api/addExpense", (req, res) => {
+router.post("/api/addExpense", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
@@ -418,7 +419,7 @@ app.post("/api/addExpense", (req, res) => {
   connection.end();
 });
 
-app.post("/api/addExpenseGrocery", (req, res) => {
+router.post("/api/addExpenseGrocery", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
@@ -453,7 +454,7 @@ app.post("/api/addExpenseGrocery", (req, res) => {
   connection.end();
 });
 
-app.post("/api/deleteExpense", (req, res) => {
+router.post("/api/deleteExpense", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: Expense Trasaction ID
   //Output: None
@@ -483,7 +484,7 @@ app.post("/api/deleteExpense", (req, res) => {
   connection.end();
 });
 
-app.post("/api/editExpense", (req, res) => {
+router.post("/api/editExpense", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Expense ID, Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
@@ -530,7 +531,7 @@ app.post("/api/editExpense", (req, res) => {
   connection.end();
 });
 
-app.post("/api/shortExchange", (req, res) => {
+router.post("/api/shortExchange", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: FireBase ID
   //Output:
@@ -573,7 +574,7 @@ app.post("/api/shortExchange", (req, res) => {
 
 //Calendar APIs
 
-app.post("/api/addEvent", (req, res) => {
+router.post("/api/addEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
@@ -618,7 +619,7 @@ app.post("/api/addEvent", (req, res) => {
   connection.end();
 });
 
-app.post("/api/deleteEvent", (req, res) => {
+router.post("/api/deleteEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: Expense Trasaction ID
   //Output: None
@@ -640,7 +641,7 @@ app.post("/api/deleteEvent", (req, res) => {
   connection.end();
 });
 
-app.post("/api/editEvent", (req, res) => {
+router.post("/api/editEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Expense ID, Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
@@ -671,7 +672,7 @@ app.post("/api/editEvent", (req, res) => {
   connection.end();
 });
 
-app.post("/api/viewEvent", (req, res) => {
+router.post("/api/viewEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
@@ -704,7 +705,7 @@ app.post("/api/viewEvent", (req, res) => {
   connection.end();
 });
 
-app.post("/api/viewEvent", (req, res) => {
+router.post("/api/viewEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
@@ -737,7 +738,7 @@ app.post("/api/viewEvent", (req, res) => {
   connection.end();
 });
 
-app.post("/api/getUpcomingEvents", (req, res) => {
+router.post("/api/getUpcomingEvents", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (firebase ID)
   //Output: None
@@ -778,7 +779,7 @@ app.post("/api/getUpcomingEvents", (req, res) => {
 
 //Basic Use APIs
 
-app.post("/api/getRoomates", (req, res) => {
+router.post("/api/getRoomates", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: User Firebase ID
   //Output: Names and Firebase IDs of roomates (for use in Dropdowns and such)
@@ -806,7 +807,7 @@ app.post("/api/getRoomates", (req, res) => {
 });
 
 //Room Page APIs
-app.post("/api/getRoomPageInfo", (req, res) => {
+router.post("/api/getRoomPageInfo", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: User Firebase ID
   let sql = `
@@ -831,7 +832,7 @@ app.post("/api/getRoomPageInfo", (req, res) => {
   connection.end();
 });
 
-app.post("/api/getTopGrocery", (req, res) => {
+router.post("/api/getTopGrocery", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: User Firebase ID
   let sql = `
@@ -874,5 +875,8 @@ app.post("/api/getTopGrocery", (req, res) => {
   connection.end();
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
+app.use('/', router);
+
+//app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
 //app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server
+export const handler = serverless(api); // for netlify
