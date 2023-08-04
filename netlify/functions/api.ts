@@ -39,7 +39,7 @@ router.post("/loadUserSettings", (req, res) => {
 
 router.post("/addRoom", (req, res) => {
   let connection = mysql.createConnection(config);
-  let addRoomSQL = `INSERT INTO roomies_db.Room (roomName) VALUES (?)`;
+  let addRoomSQL = `INSERT INTO roomies_db.room (roomName) VALUES (?)`;
   let addRoomData = [req.body.roomName];
 
   // console.log(req.body);
@@ -58,7 +58,7 @@ router.post("/addRoom", (req, res) => {
 
 router.post("/addGroceryItem", (req, res) => {
   let connection = mysql.createConnection(config);
-  let sql = `INSERT INTO roomies_db.GroceryItem (item, brand, store, price, idRoomate) VALUES (?,?,?,?,(SELECT id from roomies_db.Roomate WHERE firebaseUID = ?));`;
+  let sql = `INSERT INTO roomies_db.groceryitem (item, brand, store, price, idRoomate) VALUES (?,?,?,?,(SELECT id from roomies_db.roomate WHERE firebaseUID = ?));`;
   let data = [
     req.body.item,
     req.body.brand,
@@ -83,7 +83,7 @@ router.post("/addGroceryItem", (req, res) => {
 
 router.post("/addGrocery", (req, res) => {
   let connection = mysql.createConnection(config);
-  let sql = `INSERT INTO roomies_db.Grocery (idRoomate, idGroceryItem, Quantity, tDate) VALUES (?,?,?,NOW())`;
+  let sql = `INSERT INTO roomies_db.grocery (idRoomate, idGroceryItem, Quantity, tDate) VALUES (?,?,?,NOW())`;
   let data = [req.body.idRoomate, req.body.idGroceryItem, req.body.Quantity];
 
   // console.log(req.body);
@@ -104,8 +104,8 @@ router.post("/viewGrocery", (req, res) => {
   let connection = mysql.createConnection(config);
   let sql = `
 		SELECT id, item, brand, store, price, idRoomate
-		FROM roomies_db.GroceryItem
-		WHERE idRoomate = (SELECT id from roomies_db.Roomate WHERE firebaseUID = ?)`;
+		FROM roomies_db.groceryitem
+		WHERE idRoomate = (SELECT id from roomies_db.roomate WHERE firebaseUID = ?)`;
   let data = [req.body.idRoomate];
 
   // console.log(req.body);
@@ -125,19 +125,19 @@ router.post("/viewGrocery", (req, res) => {
 router.post("/viewGroupGrocery", (req, res) => {
   let connection = mysql.createConnection(config);
   let sql = `
-		SELECT Grocery.id, GroceryItem.item, GroceryItem.brand, GroceryItem.store, GroceryItem.price, GroceryItem.idRoomate, Grocery.Quantity
-		From roomies_db.GroceryItem, roomies_db.Grocery
-		Where GroceryItem.id in (
+		SELECT grocery.id, groceryitem.item, groceryitem.brand, groceryitem.store, groceryitem.price, groceryitem.idRoomate, grocery.Quantity
+		From roomies_db.groceryitem, roomies_db.grocery
+		Where groceryitem.id in (
 			Select idGroceryItem 
-			From roomies_db.Grocery
+			From roomies_db.grocery
 			WHERE idRoomate in (
-				Select Roomate.id
-				From roomies_db.Roomate
+				Select roomate.id
+				From roomies_db.roomate
 				WHERE idRoom = (
 					SELECT idRoom 
-					FROM roomies_db.Roomate
-					WHERE Roomate.id = (SELECT id from roomies_db.Roomate WHERE firebaseUID = ?))))
-		And GroceryItem.id = Grocery.idGroceryItem;`;
+					FROM roomies_db.roomate
+					WHERE roomate.id = (SELECT id from roomies_db.roomate WHERE firebaseUID = ?))))
+		And groceryitem.id = grocery.idGroceryItem;`;
   let data = [req.body.idRoomate];
 
   // console.log(req.body);
@@ -156,7 +156,7 @@ router.post("/viewGroupGrocery", (req, res) => {
 
 router.post("/deleteGroceryItem", (req, res) => {
   let connection = mysql.createConnection(config);
-  let sql = `DELETE FROM roomies_db.GroceryItem WHERE id = ?;`;
+  let sql = `DELETE FROM roomies_db.groceryitem WHERE id = ?;`;
   let data = [req.body.id];
 
   // console.log(req.body);
@@ -175,7 +175,7 @@ router.post("/deleteGroceryItem", (req, res) => {
 
 router.post("/deleteGrocery", (req, res) => {
   let connection = mysql.createConnection(config);
-  let sql = `Delete from roomies_db.Grocery 
+  let sql = `Delete from roomies_db.grocery 
 		where id = ?; `;
   let data = [req.body.id];
 
@@ -195,7 +195,7 @@ router.post("/deleteGrocery", (req, res) => {
 
 router.post("/addUserToNewRoom", (req, res) => {
   let connection = mysql.createConnection(config);
-  let addRoomSQL = `UPDATE roomies_db.Roomate SET idRoom = (SELECT MAX(id) FROM roomies_db.Room) WHERE firebaseUID = (?)`;
+  let addRoomSQL = `UPDATE roomies_db.roomate SET idRoom = (SELECT MAX(id) FROM roomies_db.room) WHERE firebaseUID = (?)`;
   let addRoomData = [req.body.firebaseUID];
 
   // console.log(req.body);
@@ -214,7 +214,7 @@ router.post("/addUserToNewRoom", (req, res) => {
 
 router.post("/addUserToExistingRoom", (req, res) => {
   let connection = mysql.createConnection(config);
-  let addRoomSQL = `UPDATE roomies_db.Roomate SET idRoom = (?) WHERE firebaseUID = (?)`;
+  let addRoomSQL = `UPDATE roomies_db.roomate SET idRoom = (?) WHERE firebaseUID = (?)`;
   let iaddRoomData = [req.body.idRoom, req.body.firebaseUID];
 
   // console.log(req.body);
@@ -233,7 +233,7 @@ router.post("/addUserToExistingRoom", (req, res) => {
 
 router.post("/addUser", (req, res) => {
   let connection = mysql.createConnection(config);
-  let addUserSQL = `INSERT INTO roomies_db.Roomate (idRoom, firstName, lastName, firebaseUID, owed) VALUES (-1, ?, ?, ?, 0)`;
+  let addUserSQL = `INSERT INTO roomies_db.roomate (idRoom, firstName, lastName, firebaseUID, owed) VALUES (-1, ?, ?, ?, 0)`;
   let addUserData = [
     req.body.firstName,
     req.body.lastName,
@@ -256,7 +256,7 @@ router.post("/addUser", (req, res) => {
 
 router.post("/checkIfRoomExists", (req, res) => {
   let connection = mysql.createConnection(config);
-  let checkIfRoomExistsSQL = `SELECT CAST((EXISTS (SELECT id FROM roomies_db.Room WHERE id = ? AND (SELECT COUNT(idRoom) FROM roomies_db.Roomate WHERE idRoom = ?) < 5)) AS UNSIGNED) AS value`;
+  let checkIfRoomExistsSQL = `SELECT CAST((EXISTS (SELECT id FROM roomies_db.room WHERE id = ? AND (SELECT COUNT(idRoom) FROM roomies_db.roomate WHERE idRoom = ?) < 5)) AS UNSIGNED) AS value`;
   let checkIfRoomExistsData = [req.body.idRoom, req.body.idRoom];
 
   // console.log(req.body);
@@ -277,13 +277,13 @@ router.post("/checkIfRoomExists", (req, res) => {
   connection.end();
 });
 
-//Expenses APIs
+//expenses APIs
 
 router.post("/getOwedSummary", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: Firebase ID
   //Output: Total amount user is owed
-  let getOwedSummarySQL = `SELECT firstName, lastName, owed FROM roomies_db.Roomate WHERE firebaseUID = (?)`;
+  let getOwedSummarySQL = `SELECT firstName, lastName, owed FROM roomies_db.roomate WHERE firebaseUID = (?)`;
   let getOwedSummary = [req.body.user];
 
   // console.log(req.body);
@@ -309,15 +309,15 @@ router.post("/getOwedByPerson", (req, res) => {
   //Input: Firebase ID
   //Output: Table of summarized expenses
   let getOwedPersonSQL = `
-	SET @roomie := (Select id from roomies_db.Roomate where firebaseUID = (?));
+	SET @roomie := (Select id from roomies_db.roomate where firebaseUID = (?));
 
 	DROP TABLE IF EXISTS roomies_db.ExpSummary;
 
 	CREATE TEMPORARY TABLE roomies_db.ExpSummary Select  CONCAT(firstName, ' ', lastName) as otherPerson, IF(idDebtor = @roomie, idDebtor, idSpender) AS userID, IF(idDebtor = @roomie, idSpender, idDebtor) AS otherID, 
-	IF(idDebtor= @roomie, -1*SUM(amount), SUM(amount)) AS amountOwed from roomies_db.Expenses left join roomies_db.Roomate ON Expenses.idDebtor = Roomate.id
+	IF(idDebtor= @roomie, -1*SUM(amount), SUM(amount)) AS amountOwed from roomies_db.expenses left join roomies_db.roomate ON expenses.idDebtor = roomate.id
 	where (idSpender = @roomie or idDebtor = @roomie) Group by idSpender, idDebtor, firstName, lastName;
 
-	Select CONCAT(firstName, ' ', lastName) as otherPerson, SUM(amountOwed) AS amountTheyOwe From roomies_db.ExpSummary left join roomies_db.Roomate on ExpSummary.otherID = Roomate.id 
+	Select CONCAT(firstName, ' ', lastName) as otherPerson, SUM(amountOwed) AS amountTheyOwe From roomies_db.ExpSummary left join roomies_db.roomate on ExpSummary.otherID = roomate.id 
 	Group by otherID, userID, firstName, lastName;
 
 	DROP TABLE roomies_db.ExpSummary;
@@ -348,19 +348,19 @@ router.post("/getExpenseReport", (req, res) => {
   //			Whether or not you only want to look at the user's tracactions(Boolean: True = just user, False = everything))
   //Output: Table of Transactions sorted and filtered.
   let getExpensesSQL = `
-	SET @roomie := (Select id from roomies_db.Roomate where firebaseUID = (?)); 
+	SET @roomie := (Select id from roomies_db.roomate where firebaseUID = (?)); 
     SET @justuser := (?);
 	
 	DROP TABLE IF EXISTS roomies_db.ExpLog;
-	CREATE TEMPORARY TABLE roomies_db.ExpLog Select Expenses.id as ExpenseID, CONCAT(firstName, ' ', lastName) as Spender, idDebtor, amount, tag, comments, tDate
-		From roomies_db.Expenses left join roomies_db.Roomate on Expenses.idSpender = Roomate.id where 
+	CREATE TEMPORARY TABLE roomies_db.ExpLog Select expenses.id as ExpenseID, CONCAT(firstName, ' ', lastName) as Spender, idDebtor, amount, tag, comments, tDate
+		From roomies_db.expenses left join roomies_db.roomate on expenses.idSpender = roomate.id where 
 		CASE @justUser WHEN TRUE THEN (idSpender = @roomie or idDebtor = @roomie) ELSE idSpender IN 
-			(SELECT id FROM roomies_db.Roomate WHERE idRoom = 
-				(SELECT idRoom FROM roomies_db.Roomate WHERE id = @roomie)) END
+			(SELECT id FROM roomies_db.roomate WHERE idRoom = 
+				(SELECT idRoom FROM roomies_db.roomate WHERE id = @roomie)) END
 		;
 		
-	Select ExpenseID as id, Spender, CONCAT(Roomate.firstName, ' ', Roomate.lastName) as Debtor, amount, tDate, tag, comments
-		From roomies_db.ExpLog left join roomies_db.Roomate on ExpLog.idDebtor = Roomate.id;
+	Select ExpenseID as id, Spender, CONCAT(roomate.firstName, ' ', roomate.lastName) as Debtor, amount, tDate, tag, comments
+		From roomies_db.ExpLog left join roomies_db.roomate on ExpLog.idDebtor = roomate.id;
 	
 	DROP TABLE IF EXISTS roomies_db.ExpLog;
 	`;
@@ -390,11 +390,11 @@ router.post("/addExpense", (req, res) => {
   //Output: None
   let addExpenseSQL = `
 	SET @amt = (?);
-	SET @spender = (Select id from roomies_db.Roomate where firebaseUID = (?));
-	SET @debtor = (Select id from roomies_db.Roomate where firebaseUID = (?));
-	INSERT INTO roomies_db.Expenses (idSpender, idDebtor, amount, tag, comments, tDate) VALUES (@spender, @debtor, @amt, ?, ?, ?);
-	Update roomies_db.Roomate set owed = owed + @amt where id = @spender;
-	Update roomies_db.Roomate set owed = owed - @amt where id = @debtor;
+	SET @spender = (Select id from roomies_db.roomate where firebaseUID = (?));
+	SET @debtor = (Select id from roomies_db.roomate where firebaseUID = (?));
+	INSERT INTO roomies_db.expenses (idSpender, idDebtor, amount, tag, comments, tDate) VALUES (@spender, @debtor, @amt, ?, ?, ?);
+	Update roomies_db.roomate set owed = owed + @amt where id = @spender;
+	Update roomies_db.roomate set owed = owed - @amt where id = @debtor;
 	`;
   let addExpenseData = [
     req.body.amount,
@@ -425,11 +425,11 @@ router.post("/addExpenseGrocery", (req, res) => {
   //Output: None
   let addExpenseSQL = `
 	SET @amt = (?);
-	SET @spender = (Select id from roomies_db.Roomate where firebaseUID = (?));
+	SET @spender = (Select id from roomies_db.roomate where firebaseUID = (?));
 	SET @debtor = (?);
-	INSERT INTO roomies_db.Expenses (idSpender, idDebtor, amount, tag, comments, tDate) VALUES (@spender, @debtor, @amt, ?, ?, ?);
-	Update roomies_db.Roomate set owed = owed + @amt where id = @spender AND @spender <> @debtor;
-	Update roomies_db.Roomate set owed = owed - @amt where id = @debtor AND @spender <> @debtor;
+	INSERT INTO roomies_db.expenses (idSpender, idDebtor, amount, tag, comments, tDate) VALUES (@spender, @debtor, @amt, ?, ?, ?);
+	Update roomies_db.roomate set owed = owed + @amt where id = @spender AND @spender <> @debtor;
+	Update roomies_db.roomate set owed = owed - @amt where id = @debtor AND @spender <> @debtor;
 	`;
   let addExpenseData = [
     req.body.amount,
@@ -460,13 +460,13 @@ router.post("/deleteExpense", (req, res) => {
   //Output: None
   let delExpenseSQL = `
 	SET @expID = (?);
-	SET @oldAmt = (SELECT amount from roomies_db.Expenses where id = @expID);
-	SET @oldS = (SELECT idSpender from roomies_db.Expenses where id = @expID);
-	SET @oldD = (SELECT idDebtor from roomies_db.Expenses where id = @expID);
+	SET @oldAmt = (SELECT amount from roomies_db.expenses where id = @expID);
+	SET @oldS = (SELECT idSpender from roomies_db.expenses where id = @expID);
+	SET @oldD = (SELECT idDebtor from roomies_db.expenses where id = @expID);
 
-	Update roomies_db.Roomate set owed = owed - @oldAmt where id = @oldS;
-	Update roomies_db.Roomate set owed = owed + @oldAmt where id = @oldD;
-	DELETE FROM roomies_db.Expenses WHERE id = @expID;
+	Update roomies_db.roomate set owed = owed - @oldAmt where id = @oldS;
+	Update roomies_db.roomate set owed = owed + @oldAmt where id = @oldD;
+	DELETE FROM roomies_db.expenses WHERE id = @expID;
 	`;
   let delExpenseData = [req.body.ExpenseID];
 
@@ -491,17 +491,17 @@ router.post("/editExpense", (req, res) => {
   let editExpenseSQL = `
 	SET @expID = (?);
 	SET @amt = (?);
-	SET @spender = (Select id from roomies_db.Roomate where firebaseUID = (?));
-	SET @debtor = (Select id from roomies_db.Roomate where firebaseUID = (?));
-	SET @oldAmt = (SELECT amount from roomies_db.Expenses where id = @expID);
-	SET @oldS = (SELECT idSpender from roomies_db.Expenses where id = @expID);
-	SET @oldD = (SELECT idDebtor from roomies_db.Expenses where id = @expID);
+	SET @spender = (Select id from roomies_db.roomate where firebaseUID = (?));
+	SET @debtor = (Select id from roomies_db.roomate where firebaseUID = (?));
+	SET @oldAmt = (SELECT amount from roomies_db.expenses where id = @expID);
+	SET @oldS = (SELECT idSpender from roomies_db.expenses where id = @expID);
+	SET @oldD = (SELECT idDebtor from roomies_db.expenses where id = @expID);
 
-	Update roomies_db.Roomate set owed = owed - @oldAmt where id = @oldS;
-	Update roomies_db.Roomate set owed = owed + @oldAmt where id = @oldD;
-	UPDATE roomies_db.Expenses SET idSpender = @spender, idDebtor = @debtor, amount = @amt, tag = (?), comments = (?), tDate = (?) WHERE id = @expID;
-	Update roomies_db.Roomate set owed = owed + @amt where id = @spender;
-	Update roomies_db.Roomate set owed = owed - @amt where id = @debtor;
+	Update roomies_db.roomate set owed = owed - @oldAmt where id = @oldS;
+	Update roomies_db.roomate set owed = owed + @oldAmt where id = @oldD;
+	UPDATE roomies_db.expenses SET idSpender = @spender, idDebtor = @debtor, amount = @amt, tag = (?), comments = (?), tDate = (?) WHERE id = @expID;
+	Update roomies_db.roomate set owed = owed + @amt where id = @spender;
+	Update roomies_db.roomate set owed = owed - @amt where id = @debtor;
 	`;
   let editExpenseData = [
     req.body.expenseID,
@@ -536,19 +536,19 @@ router.post("/shortExchange", (req, res) => {
   //Input: FireBase ID
   //Output:
   let shortExchangeSQL = `
-  SET @roomie := (Select id from roomies_db.Roomate where firebaseUID = (?)); 
+  SET @roomie := (Select id from roomies_db.roomate where firebaseUID = (?)); 
 
-  SELECT Rm8.id, SUM(amount) as amount, CONCAT(CONCAT(Rm8.firstName, ' ', Rm8.lastName), ' pays ', CONCAT(Roomate.firstName, ' ', Roomate.lastName), ' $', SUM(amount)) AS transaction
-  FROM roomies_db.Expenses
-  LEFT JOIN roomies_db.Roomate on Expenses.idSpender = Roomate.id
-  LEFT JOIN roomies_db.Roomate AS Rm8 on Expenses.idDebtor = Rm8.id
-  JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM roomies_db.Expenses UNION SELECT idSpender AS id FROM roomies_db.Expenses) AS allID JOIN roomies_db.Roomate ON allID.id1 = roomies_db.Roomate.id) AS debtor ON Expenses.idDebtor = debtor.id1
-  JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM roomies_db.Expenses UNION SELECT idSpender AS id FROM roomies_db.Expenses) AS allID JOIN roomies_db.Roomate ON allID.id1 = roomies_db.Roomate.id) AS spender ON Expenses.idSpender = spender.id1
+  SELECT Rm8.id, SUM(amount) as amount, CONCAT(CONCAT(Rm8.firstName, ' ', Rm8.lastName), ' pays ', CONCAT(roomate.firstName, ' ', roomate.lastName), ' $', SUM(amount)) AS transaction
+  FROM roomies_db.expenses
+  LEFT JOIN roomies_db.roomate on expenses.idSpender = roomate.id
+  LEFT JOIN roomies_db.roomate AS Rm8 on expenses.idDebtor = Rm8.id
+  JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM roomies_db.expenses UNION SELECT idSpender AS id FROM roomies_db.expenses) AS allID JOIN roomies_db.roomate ON allID.id1 = roomies_db.roomate.id) AS debtor ON expenses.idDebtor = debtor.id1
+  JOIN (SELECT id1, firstName FROM (SELECT idDebtor AS id1 FROM roomies_db.expenses UNION SELECT idSpender AS id FROM roomies_db.expenses) AS allID JOIN roomies_db.roomate ON allID.id1 = roomies_db.roomate.id) AS spender ON expenses.idSpender = spender.id1
 
   WHERE (debtor.id1 != spender.id1) AND debtor.id1 IN 
-            (SELECT id FROM roomies_db.Roomate WHERE idRoom = 
-                (SELECT idRoom FROM roomies_db.Roomate WHERE id = @roomie))
-  GROUP BY debtor.id1, spender.id1, Roomate.firstname, Roomate.lastname, Rm8.firstname, Rm8.lastname
+            (SELECT id FROM roomies_db.roomate WHERE idRoom = 
+                (SELECT idRoom FROM roomies_db.roomate WHERE id = @roomie))
+  GROUP BY debtor.id1, spender.id1, roomate.firstname, roomate.lastname, Rm8.firstname, Rm8.lastname
   HAVING SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END) <> 0
   ORDER BY SUM(CASE WHEN idDebtor = debtor.id1 THEN amount ELSE -amount END);
 	`;
@@ -572,16 +572,16 @@ router.post("/shortExchange", (req, res) => {
   connection.end();
 });
 
-//Calendar APIs
+//calendar APIs
 
 router.post("/addEvent", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: (Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
   let addEventSQL = `
-	INSERT INTO roomies_db.Calendar (idRoomate, title, startdate, enddate, tag, eventDescription, Consequence, allDay) 
+	INSERT INTO roomies_db.calendar (idRoomate, title, startdate, enddate, tag, eventDescription, Consequence, allDay) 
   VALUES (
-    (SELECT id FROM roomies_db.Roomate WHERE firebaseUID = ?), 
+    (SELECT id FROM roomies_db.roomate WHERE firebaseUID = ?), 
     ?, 
     CASE WHEN ? = 1 THEN ? ELSE CONVERT_TZ(?, "+0:00", "-4:00") END, 
     CASE WHEN ? = 1 THEN ? ELSE CONVERT_TZ(?, "+0:00", "-4:00") END, 
@@ -624,7 +624,7 @@ router.post("/deleteEvent", (req, res) => {
   //Input: Expense Trasaction ID
   //Output: None
   let delEventSQL = `
-	DELETE FROM roomies_db.Calendar WHERE id = ?;
+	DELETE FROM roomies_db.calendar WHERE id = ?;
 	`;
   let delEventData = [req.body.eventID];
 
@@ -646,7 +646,7 @@ router.post("/editEvent", (req, res) => {
   //Input: (Expense ID, Amount, Spender firebase ID, Debtor firebase ID, Tag, Comment, Date in 'yyyy-mm-dd')
   //Output: None
   let editEventSQL = `
-	UPDATE roomies_db.Calendar SET idRoomate = (Select id from roomies_db.Roomate where firebaseUID = (?)), title = ?, startdate = ?, enddate = ?, tag = ?, eventDescription = ?, Consequence = ?, allDay = ? WHERE id =?;
+	UPDATE roomies_db.calendar SET idRoomate = (Select id from roomies_db.roomate where firebaseUID = (?)), title = ?, startdate = ?, enddate = ?, tag = ?, eventDescription = ?, Consequence = ?, allDay = ? WHERE id =?;
 	`;
   let editEventData = [
     req.body.firebaseUID,
@@ -678,14 +678,14 @@ router.post("/viewEvent", (req, res) => {
   //Output: None
   let viewEventSQL = `
 	SELECT c.id, c.title, c.startdate as start, c.enddate as end, CONCAT(r.firstName, ' ', r.lastName) AS creator, c.allDay
-  FROM roomies_db.Calendar AS c 
-  LEFT JOIN roomies_db.Roomate AS r ON c.idRoomate = r.id 
+  FROM roomies_db.calendar AS c 
+  LEFT JOIN roomies_db.roomate AS r ON c.idRoomate = r.id 
   WHERE c.idRoomate IN (
     SELECT r1.id 
-    FROM roomies_db.Roomate AS r1
+    FROM roomies_db.roomate AS r1
     WHERE r1.idRoom = (
         SELECT r2.idRoom 
-        FROM roomies_db.Roomate AS r2 
+        FROM roomies_db.roomate AS r2 
         WHERE r2.firebaseUID = (?)
     )
   );
@@ -711,14 +711,14 @@ router.post("/viewEvent", (req, res) => {
   //Output: None
   let viewEventSQL = `
 	SELECT c.id, c.title, c.startdate as start, c.enddate as end, CONCAT(r.firstName, ' ', r.lastName) AS creator
-  FROM roomies_db.Calendar AS c 
-  LEFT JOIN roomies_db.Roomate AS r ON c.idRoomate = r.id 
+  FROM roomies_db.calendar AS c 
+  LEFT JOIN roomies_db.roomate AS r ON c.idRoomate = r.id 
   WHERE c.idRoomate IN (
     SELECT r1.id 
-    FROM roomies_db.Roomate AS r1
+    FROM roomies_db.roomate AS r1
     WHERE r1.idRoom = (
         SELECT r2.idRoom 
-        FROM roomies_db.Roomate AS r2 
+        FROM roomies_db.roomate AS r2 
         WHERE r2.firebaseUID = (?)
     )
   );
@@ -744,14 +744,14 @@ router.post("/getUpcomingEvents", (req, res) => {
   //Output: None
   let viewEventSQL = `
 	SELECT c.title, c.startdate as start, c.enddate as end, CONCAT(r.firstName, ' ', r.lastName) AS creator, c.allDay
-  FROM roomies_db.Calendar AS c 
-  LEFT JOIN roomies_db.Roomate AS r ON c.idRoomate = r.id 
+  FROM roomies_db.calendar AS c 
+  LEFT JOIN roomies_db.roomate AS r ON c.idRoomate = r.id 
   WHERE c.idRoomate IN (
     SELECT r1.id 
-    FROM roomies_db.Roomate AS r1
+    FROM roomies_db.roomate AS r1
     WHERE r1.idRoom = (
       SELECT r2.idRoom 
-      FROM roomies_db.Roomate AS r2 
+      FROM roomies_db.roomate AS r2 
       WHERE r2.firebaseUID = (?)
     )
   )
@@ -784,7 +784,7 @@ router.post("/getRoomates", (req, res) => {
   //Input: User Firebase ID
   //Output: Names and Firebase IDs of roomates (for use in Dropdowns and such)
   let getOwedSummarySQL = `
-	SELECT CONCAT(firstName, ' ', lastName) AS Roomate, firebaseUID FROM roomies_db.Roomate WHERE idRoom = (Select idRoom FROM roomies_db.Roomate WHERE firebaseUID = (?));
+	SELECT CONCAT(firstName, ' ', lastName) AS roomate, firebaseUID FROM roomies_db.roomate WHERE idRoom = (Select idRoom FROM roomies_db.roomate WHERE firebaseUID = (?));
 	`;
   let getOwedSummary = [req.body.user];
 
@@ -806,15 +806,15 @@ router.post("/getRoomates", (req, res) => {
   connection.end();
 });
 
-//Room Page APIs
+//room Page APIs
 router.post("/getRoomPageInfo", (req, res) => {
   let connection = mysql.createConnection(config);
   //Input: User Firebase ID
   let sql = `
   SELECT r.id, r.firstName, r.lastName, r.idRoom, r.owed * -1 AS owed, rm.roomName, r.firebaseUID 
-  FROM roomies_db.Roomate r 
-  INNER JOIN roomies_db.Room rm ON r.idRoom = rm.id 
-  WHERE r.idRoom = (SELECT idRoom FROM roomies_db.Roomate WHERE firebaseUID = (?))
+  FROM roomies_db.roomate r 
+  INNER JOIN roomies_db.room rm ON r.idRoom = rm.id 
+  WHERE r.idRoom = (SELECT idRoom FROM roomies_db.roomate WHERE firebaseUID = (?))
 	`;
   let data = [req.body.firebaseUID];
 
@@ -837,20 +837,20 @@ router.post("/getTopGrocery", (req, res) => {
   //Input: User Firebase ID
   let sql = `
   SELECT gi.item, gi.price, g.Quantity
-  FROM roomies_db.GroceryItem gi
-  JOIN roomies_db.Grocery g ON gi.id = g.idGroceryItem
+  FROM roomies_db.groceryitem gi
+  JOIN roomies_db.grocery g ON gi.id = g.idGroceryItem
   WHERE gi.id IN (
       SELECT g2.idGroceryItem 
-      FROM roomies_db.Grocery g2
+      FROM roomies_db.grocery g2
       WHERE g2.idRoomate IN (
           SELECT r.id
-          FROM roomies_db.Roomate r
+          FROM roomies_db.roomate r
           WHERE r.idRoom = (
               SELECT r2.idRoom 
-              FROM roomies_db.Roomate r2
+              FROM roomies_db.roomate r2
               WHERE r2.id = (
                   SELECT id 
-                  FROM roomies_db.Roomate 
+                  FROM roomies_db.roomate 
                   WHERE firebaseUID = (?)
               )
           )
