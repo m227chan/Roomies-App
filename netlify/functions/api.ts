@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const serverless = require('serverless-http')
 const { response } = require("express");
-const app = express;
+const app = express();
 const router = express.Router();
 router.use(cors());
 
