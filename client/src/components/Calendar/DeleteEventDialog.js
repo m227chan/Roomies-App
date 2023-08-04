@@ -8,7 +8,7 @@ import {
     Typography,
 } from "@mui/material";
 
-const serverURL = "https://roomies-app.netlify.app/"; //enable for dev mode
+const serverURL = "https://roomies-app.netlify.app"; //enable for dev mode
 
 const DeleteEventDialog = ({open, handleClose, event, title}) => {
 

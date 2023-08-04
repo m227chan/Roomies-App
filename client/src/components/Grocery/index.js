@@ -16,7 +16,7 @@ import AddGroceryItemDialog from "./AddGroceryItemDialog";
 import UserGroceryList from "./UserGroceryList";
 import RoomGroceryList from "./RoomGroceryList";
 
-const serverURL = "https://roomies-app.netlify.app/"; //enable for dev mode
+const serverURL = "https://roomies-app.netlify.app"; //enable for dev mode
 
 const Grocery = () => {
   const [userGroceryList, setUserGroceryList] = useState([]);

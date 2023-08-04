@@ -18,7 +18,7 @@ import { auth } from "../Firebase/firebase";
 import PayeeFormControl from "./PayeeFormControl";
 import PayerFormControl from "./PayerFormControl";
 
-const serverURL = "https://roomies-app.netlify.app/"; //enable for dev mode
+const serverURL = "https://roomies-app.netlify.app"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
 // ExpenseDialog component

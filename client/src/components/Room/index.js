@@ -13,7 +13,7 @@ import UpcomingEvents from "./UpcomingEvents";
 import DisplayTopGroceryList from "./DisplayTopGroceryList";
 import Wallet from "./Wallet";
 
-const serverURL = "https://roomies-app.netlify.app/"; //enable for dev mode
+const serverURL = "https://roomies-app.netlify.app"; //enable for dev mode
 
 const Room = () => {
   const [user, setUser] = useState({});

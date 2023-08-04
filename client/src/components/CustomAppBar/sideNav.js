@@ -32,7 +32,7 @@ import { auth } from "../Firebase/firebase";
 // Sets the width
 const drawerWidth = 240;
 
-const serverURL = "https://roomies-app.netlify.app/"; //enable for dev mode
+const serverURL = "https://roomies-app.netlify.app"; //enable for dev mode
 // const serverURL ="http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3006";
 
 // Sets the theme for the file

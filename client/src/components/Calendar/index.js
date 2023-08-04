@@ -14,7 +14,7 @@ import { auth } from "../Firebase/firebase";
 import DeleteEventDialog from "./DeleteEventDialog"
 import AddEventDialog from "./AddEventDialog"
 
-const serverURL = "https://roomies-app.netlify.app/"; //enable for dev mode
+const serverURL = "https://roomies-app.netlify.app"; //enable for dev mode
 
 const Calendar = () => {
   const [currentEvents, setCurrentEvents] = useState([]);
