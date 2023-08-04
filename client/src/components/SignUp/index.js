@@ -75,6 +75,7 @@ const SignUp = ({ history }) => {
     // console.log(user.uid);
 
     const url = serverURL + "/api/addUser";
+    console.log(firstName)
     const response = await fetch(url, {
       method: "POST",
       headers: {
