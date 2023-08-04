@@ -7,7 +7,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 
 const { response } = require("express");
-const app = express();
+const app = express.Router();
 const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
