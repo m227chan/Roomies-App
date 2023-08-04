@@ -1,5 +1,4 @@
 let mysql = require("mysql");
-let config = require("./config.js");
 const fetch = require("node-fetch");
 const express = require("express");
 const cors = require("cors");
@@ -8,6 +7,14 @@ const { response } = require("express");
 const app = express;
 const router = express.Router();
 router.use(cors());
+
+let config = {
+  host    : `${process.env.DB_HOST}`,
+  user    : `${process.env.DB_USER}`,
+  password: `${process.env.DB_PASSWORD}`,
+  database: `${process.env.DB_DATABASE}`,
+  multipleStatements: true
+};
 
 router.post("/loadUserSettings", (req, res) => {
   let connection = mysql.createConnection(config);
@@ -870,4 +877,4 @@ router.post("/getTopGrocery", (req, res) => {
 
 app.use('/api/', router);
 
-export const handler = serverless(api); // for netlify
+module.exports.handler = serverless(app);
