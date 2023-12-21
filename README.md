@@ -4,13 +4,13 @@
 Roomies addresses the prevalent challenge faced by roommates in coordinating tasks, leading to difficulties in maintaining an organized living space. Positioned against competitors like Splitwise, Listonic, and Outlook, Roomies distinguishes itself by seamlessly integrating expense tracking, grocery lists, and calendar functionalities into a single, user-friendly application. This consolidation eliminates the need for users to juggle between multiple tools. The app caters to the needs of busy students, offering a central hub for collaboration with roommates to optimize limited free time. Users benefit from a shared expense tracker, grocery list, and calendar, all housed in one convenient location, reducing the time spent navigating between different applications. The application's functionalities include a streamlined expense tracker that simplifies shared payments, a collaborative grocery feature minimizing trips to the store, and a calendar feature facilitating coordination of schedules and communication on shared responsibilities such as chores. Roomies aims to enhance roommate collaboration and organizational efficiency through its comprehensive and integrated platform.
 
 ## Tech stack
-• React/Node/MySQL: web development stack
-• Material UI - User interface
-• Github: Version control. Continuous integration.
-• Jest: Unit testing
-• Cypress: End-to-end testing
-• Redux - state management for React apps 
-• Trello - Agile project management
+- React/Node/MySQL: web development stack
+- Material UI - User interface
+- Github: Version control. Continuous integration.
+- Jest: Unit testing
+- Cypress: End-to-end testing
+- Redux - state management for React apps 
+- Trello - Agile project management
 
 https://github.com/m227chan/Roomies-App/assets/90334226/7cbaa3aa-2f20-468e-992a-7c874ac071c3
 
