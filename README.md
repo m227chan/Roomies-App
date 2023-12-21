@@ -18,7 +18,7 @@ https://github.com/m227chan/Roomies-App/assets/90334226/7cbaa3aa-2f20-468e-992a-
 
 ### Expense Tracker 💰
 
-No more headaches over splitting bills! Our expense tracker monitors shared expenses and streamlines the payment process into a single transaction.
+The expense tracker monitors shared expenses and streamlines the payment process into a single transaction.
 
 
 https://github.com/m227chan/Roomies-App/assets/90334226/2f614eb3-a6db-431d-ad18-2e102d2b1c8f
@@ -26,7 +26,7 @@ https://github.com/m227chan/Roomies-App/assets/90334226/2f614eb3-a6db-431d-ad18-
 
 ### Grocery List 🛒
 
-Team up with your roommates and embrace the convenience of our collaborative grocery list. With Roomies, you can create a combined shopping list, ensuring fewer trips to the store and more time for the things you love.
+Create a collaborative grocery list with your roommates. With Roomies, you can create a combined shopping list, ensuring fewer trips to the store and more time for the things you love.
 
 
 
