@@ -1,6 +1,6 @@
 # Roomies 🏠
 
-Discover our dynamic application packed with three incredible features that will streamline your shared living experience!
+https://github.com/m227chan/Roomies-App/assets/90334226/940df1af-c980-4954-ac3a-7d795a6022fb
 
 ## Features:
 
