@@ -5,12 +5,10 @@ Roomies addresses the prevalent challenge faced by roommates in coordinating tas
 
 ## Tech Stack
 - React/Node/MySQL: web development stack
-- Material UI - User interface
-- Github: Version control. Continuous integration.
+- Material UI: User interface
 - Jest: Unit testing
 - Cypress: End-to-end testing
-- Redux - state management for React apps 
-- Trello - Agile project management
+- Trello: Agile project management
 
 https://github.com/m227chan/Roomies-App/assets/90334226/7cbaa3aa-2f20-468e-992a-7c874ac071c3
 
