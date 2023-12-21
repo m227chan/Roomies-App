@@ -9,6 +9,7 @@ Roomies addresses the prevalent challenge faced by roommates in coordinating tas
 - Jest: Unit testing
 - Cypress: End-to-end testing
 - Trello: Agile project management
+- Google Firebase: User Authentication
 
 https://github.com/m227chan/Roomies-App/assets/90334226/7cbaa3aa-2f20-468e-992a-7c874ac071c3
 
